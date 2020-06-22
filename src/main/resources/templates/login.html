@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Good Thymes Virtual Grocery</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+
+	<h1>Online-Vokabeltrainer</h1>
+	<h2>Vokabeln lernen.</h2>
+	<h2>Von überall.</h2>
+
+	<h1>Login</h1>
+
+	<div th:object="${authentification}">
+		<div th:if="*{mandatory}">
+			<p th:text="#{login.mandatory}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div th:if="*{loginError}">
+			<p th:text="#{login.error}" class="error">Login failed.</p>
+		</div>
+		<div th:if="*{loginOK}">
+			<p class="loginOK">Login OK</p>
+		</div>
+	</div>
+
+	<form action="#" th:action="@{/checkLogin }"
+		th:object="${authentification}" method="post">
+		<p>
+			<div th:text="#{login.email}">
+				E-Mail:
+			</div>
+			 <input type="text" th:field="*{email}" />
+		</p>
+		<p>
+			<div  th:text="#{login.password}">
+				Password:
+			</div>
+			 <input type="password" th:field="*{password}" />
+		</p>
+		<p>
+			<input type="submit" value="Login" />
+		</p>
+	</form>
+
+</body>
+
+</html>
+
