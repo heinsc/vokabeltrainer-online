@@ -19,51 +19,61 @@
  */
 package de.heins.vokabeltraineronline.web.controller;
 
-import java.util.Calendar;
-
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import de.heins.vokabeltraineronline.web.entities.AuthentificationForm;
+import de.heins.vokabeltraineronline.business.service.UserService;
+import de.heins.vokabeltraineronline.web.entities.RegisterForm;
 
 @Controller
-public class LoginController {
+public class RegisterController {
+	@Autowired
+	private UserService userService;
 
-	public LoginController() {
+	public RegisterController() {
 		super();
 	}
 
-	@RequestMapping({ "/", "/login" })
+	@RequestMapping({ "/register" })
 	public String showStartPage(Model model) throws Exception {
-		model.addAttribute("authentification", new AuthentificationForm());
-		return "login";
+		model.addAttribute("register", new RegisterForm());
+		return "register";
 
 	}
 
-	@RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
-	public String checkLogin(//
-			@ModelAttribute(value = "authentification") AuthentificationForm authentificationForm//
+	@RequestMapping(value = "/addAccount", method = RequestMethod.POST)
+	public String addAccount(//
+			@ModelAttribute(value = "register") RegisterForm registerForm//
 	) {
 		if (//
-		Strings.isBlank(authentificationForm.getEmail())//
-				|| Strings.isBlank(authentificationForm.getPassword())//
+		Strings.isBlank(registerForm.getEmail())//
+				|| Strings.isBlank(registerForm.getPassword())//
+				|| Strings.isBlank(registerForm.getPasswordRepeated())
 		) {
-			authentificationForm.setMandatoryViolated(true);
+			registerForm.setMandatoryViolated(true);
 		} else {
-			if (// simulate success
-			"success".equals(authentificationForm.getEmail())//
+			if (// 
+					!registerForm.getPassword().equals(registerForm.getPasswordRepeated())
 			) {
-				authentificationForm.setLoginOK(true);
+				registerForm.setPasswordsNotEqual(true);
 			} else {
-				authentificationForm.setLoginError(true);
+				try {
+					userService.addUser(registerForm);
+					registerForm.setUserAdded(true);
+				} catch (VokabeltrainerException e) {
+					registerForm.setUserAlreadyExists(true);
+				}
 			}
 
 		}
-		return "login";
+		return "register";
 
 	}
+
+
 }

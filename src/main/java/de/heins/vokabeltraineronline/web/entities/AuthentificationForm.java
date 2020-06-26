@@ -1,7 +1,7 @@
 package de.heins.vokabeltraineronline.web.entities;
 
 public class AuthentificationForm {
-	private Boolean mandatory;
+	private Boolean mandatoryViolated;
 	private Boolean loginOK;
 	private Boolean loginError;
 	private String email;
@@ -18,11 +18,11 @@ public class AuthentificationForm {
 	public void setPassword(String aPassword) {
 		this.password = aPassword;
 	}
-	public Boolean getMandatory() {
-		return mandatory;
+	public Boolean getMandatoryViolated() {
+		return mandatoryViolated;
 	}
-	public void setMandatory(Boolean mandatory) {
-		this.mandatory = mandatory;
+	public void setMandatoryViolated(Boolean mandatory) {
+		this.mandatoryViolated = mandatory;
 	}
 	public Boolean getLoginOK() {
 		return loginOK;

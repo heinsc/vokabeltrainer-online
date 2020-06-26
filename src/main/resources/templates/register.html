@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Vokabeltrainer Online New Account</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+
+	<h1>Neuer Account</h1>
+
+	<div th:object="${register}">
+		<div th:if="*{mandatoryViolated}">
+			<p th:utext="#{register.mandatoryViolated}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div th:if="*{passwordsNotEqual}">
+			<p th:text="#{register.passwordsNotEqual}" class="error">The passwords are different.</p>
+		</div>
+		<div th:if="*{userAlreadyExists}">
+			<p th:utext="#{register.userAlreadyExists(*{email})}" class="error">This user already exists.</p>
+		</div>
+		<div th:if="*{userAdded}">
+			<p class="loginOK">User was added.</p>
+		</div>
+	</div>
+
+	<form action="#" th:action="@{/addAccount }"
+		th:object="${register}" method="post">
+		<p>
+			<div th:text="#{register.email}">
+				E-Mail:
+			</div>
+			 <input type="text" th:field="*{email}" />
+		</p>
+		<p>
+			<div  th:text="#{register.password}">
+				Password:
+			</div>
+			 <input type="password" th:field="*{password}" />
+		</p>
+		<p>
+			<div  th:text="#{register.passwordRepeated}">
+				Password:
+			</div>
+			 <input type="password" th:field="*{passwordRepeated}" />
+		</p>
+		<p>
+			<input type="submit" value="Add Account"/>
+		</p>
+	</form>
+	<a href="login.html" th:href="@{/login}" th:utext="#{register.cancel}">Cancel</a>
+</body>
+
+</html>
+

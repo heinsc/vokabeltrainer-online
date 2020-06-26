@@ -18,7 +18,7 @@
 	<h1>Login</h1>
 
 	<div th:object="${authentification}">
-		<div th:if="*{mandatory}">
+		<div th:if="*{mandatoryViolated}">
 			<p th:text="#{login.mandatory}" class="error">Please fill all
 				fields!</p>
 		</div>
@@ -48,7 +48,7 @@
 			<input type="submit" value="Login" />
 		</p>
 	</form>
-
+	<a href="register.html" th:href="@{/register}" th:text="#{login.newAccount}">Register</a>
 </body>
 
 </html>
