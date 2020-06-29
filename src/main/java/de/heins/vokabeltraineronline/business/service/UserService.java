@@ -3,7 +3,6 @@ package de.heins.vokabeltraineronline.business.service;
 import java.util.Calendar;
 import java.util.List;
 
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,9 @@ import de.heins.vokabeltraineronline.business.repository.UserRepository;
 import de.heins.vokabeltraineronline.business.entity.Student;
 import de.heins.vokabeltraineronline.business.entity.UserFactory;
 import de.heins.vokabeltraineronline.web.controller.VokabeltrainerException;
+import de.heins.vokabeltraineronline.web.entities.AuthentificationForm;
 import de.heins.vokabeltraineronline.web.entities.RegisterForm;
+import org.apache.logging.log4j.util.Strings;
 
 @Service
 public class UserService {
@@ -38,5 +39,23 @@ public class UserService {
 			.getNewObject();
 		userRepository.save(user);
 	
+	}
+	public void checkLogin(AuthentificationForm authentificationForm) {
+		if (//
+				Strings.isBlank(authentificationForm.getEmail())//
+				|| Strings.isBlank(authentificationForm.getPassword())//
+		) {
+			authentificationForm.setMandatoryViolated(true);
+		} else {
+			List<Student> findByEmailAndPassword = userRepository.findByEmailAndPassword(//
+					authentificationForm.getEmail()//
+					, authentificationForm.getPassword()//
+				);
+			if (!findByEmailAndPassword.isEmpty()) {
+				authentificationForm.setLoginOK(true);
+			} else {
+				authentificationForm.setLoginError(true);
+			}
+		}
 	}
 }

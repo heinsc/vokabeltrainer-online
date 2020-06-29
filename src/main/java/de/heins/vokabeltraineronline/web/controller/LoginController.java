@@ -19,19 +19,21 @@
  */
 package de.heins.vokabeltraineronline.web.controller;
 
-import java.util.Calendar;
-
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import de.heins.vokabeltraineronline.business.service.UserService;
 import de.heins.vokabeltraineronline.web.entities.AuthentificationForm;
 
 @Controller
 public class LoginController {
+	@Autowired
+	UserService loginService;
 
 	public LoginController() {
 		super();
@@ -48,21 +50,7 @@ public class LoginController {
 	public String checkLogin(//
 			@ModelAttribute(value = "authentification") AuthentificationForm authentificationForm//
 	) {
-		if (//
-		Strings.isBlank(authentificationForm.getEmail())//
-				|| Strings.isBlank(authentificationForm.getPassword())//
-		) {
-			authentificationForm.setMandatoryViolated(true);
-		} else {
-			if (// simulate success
-			"success".equals(authentificationForm.getEmail())//
-			) {
-				authentificationForm.setLoginOK(true);
-			} else {
-				authentificationForm.setLoginError(true);
-			}
-
-		}
+		loginService.checkLogin(authentificationForm);
 		return "login";
 
 	}
