@@ -4,19 +4,12 @@ public class AuthentificationForm {
 	private Boolean mandatoryViolated;
 	private Boolean loginOK;
 	private Boolean loginError;
-	private String email;
-	private String password;
-	public String getEmail() {
-		return email;
+	private UserForm user;
+	public UserForm getUser() {
+		return user;
 	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String aPassword) {
-		this.password = aPassword;
+	public void setUser(UserForm user) {
+		this.user = user;
 	}
 	public Boolean getMandatoryViolated() {
 		return mandatoryViolated;

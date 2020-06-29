@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Good Thymes Virtual Grocery</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+
+	<h1 th:utext=#{menu.mainmenu}>Online-Vokabeltrainer</h1>
+    <p th:utext="#{menu.loggedInAs(${session.user.email})}">Welcome, Sebastian!</p>
+
+	<a href="login.html" th:href="@{/login}" th:utext="#{menu.logout}">Logout</a>
+</body>
+
+</html>
+

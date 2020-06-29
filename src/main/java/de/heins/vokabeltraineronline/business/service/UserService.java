@@ -23,7 +23,7 @@ public class UserService {
 	private UserRepository userRepository;
 	public void addUser(RegisterForm registerForm) throws VokabeltrainerException {
 		try { 
-			List<Student> findByEmail = userRepository.findByEmail(registerForm.getEmail());
+			List<Student> findByEmail = userRepository.findByEmail(registerForm.getUser().getEmail());
 			if (!findByEmail.isEmpty()) {
 				throw new VokabeltrainerException();
 			}
@@ -33,8 +33,8 @@ public class UserService {
 		}
 
 		Student user = userFactory//
-			.setEMail(registerForm.getEmail())//
-			.setPassword(registerForm.getPassword())//
+			.setEMail(registerForm.getUser().getEmail())//
+			.setPassword(registerForm.getUser().getPassword())//
 			.setLastLogin(Calendar.getInstance().getTime())//
 			.getNewObject();
 		userRepository.save(user);
@@ -42,14 +42,14 @@ public class UserService {
 	}
 	public void checkLogin(AuthentificationForm authentificationForm) {
 		if (//
-				Strings.isBlank(authentificationForm.getEmail())//
-				|| Strings.isBlank(authentificationForm.getPassword())//
+				Strings.isBlank(authentificationForm.getUser().getEmail())//
+				|| Strings.isBlank(authentificationForm.getUser().getPassword())//
 		) {
 			authentificationForm.setMandatoryViolated(true);
 		} else {
 			List<Student> findByEmailAndPassword = userRepository.findByEmailAndPassword(//
-					authentificationForm.getEmail()//
-					, authentificationForm.getPassword()//
+					authentificationForm.getUser().getEmail()//
+					, authentificationForm.getUser().getPassword()//
 				);
 			if (!findByEmailAndPassword.isEmpty()) {
 				authentificationForm.setLoginOK(true);

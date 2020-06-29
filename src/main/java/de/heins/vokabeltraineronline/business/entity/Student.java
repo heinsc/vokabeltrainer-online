@@ -27,7 +27,7 @@ public class Student {
     	) {
 		this.email=email2;
 		this.password=password2;
-//		this.lastLogin=lastLogin2;
+		this.lastLogin=lastLogin2;
 	}
 
 	public Long getId() {

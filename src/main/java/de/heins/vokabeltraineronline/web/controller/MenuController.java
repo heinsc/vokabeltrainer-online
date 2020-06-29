@@ -21,44 +21,21 @@ package de.heins.vokabeltraineronline.web.controller;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.util.Strings;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import de.heins.vokabeltraineronline.business.service.UserService;
-import de.heins.vokabeltraineronline.web.entities.AuthentificationForm;
 
 @Controller
-public class LoginController {
-	@Autowired
-	UserService loginService;
-
-	public LoginController() {
+public class MenuController {
+	public MenuController() {
 		super();
 	}
 
-	@RequestMapping({ "/", "/login" })
-	public String showStartPage(Model model) throws Exception {
-		model.addAttribute("authentification", new AuthentificationForm());
-		return "login";
-
-	}
-
-	@RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
-	public String checkLogin(//
-			@ModelAttribute(value = "authentification") AuthentificationForm authentificationForm//
-			, HttpSession session
-	) {
-		loginService.checkLogin(authentificationForm);
-		if (authentificationForm.getLoginOK()) {
-			session.setAttribute("user", authentificationForm.getUser());
-			return "menu";
-		}
-		return "login";
+	@RequestMapping({ "/menu" })
+	public String showMenu(//
+			Model model//
+	) throws Exception {
+		return "menu";
 
 	}
 }

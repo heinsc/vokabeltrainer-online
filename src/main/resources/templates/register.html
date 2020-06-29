@@ -22,10 +22,7 @@
 			<p th:text="#{register.passwordsNotEqual}" class="error">The passwords are different.</p>
 		</div>
 		<div th:if="*{userAlreadyExists}">
-			<p th:utext="#{register.userAlreadyExists(*{email})}" class="error">This user already exists.</p>
-		</div>
-		<div th:if="*{userAdded}">
-			<p class="loginOK">User was added.</p>
+			<p th:utext="#{register.userAlreadyExists(*{user.email})}" class="error">This user already exists.</p>
 		</div>
 	</div>
 
@@ -35,13 +32,13 @@
 			<div th:text="#{register.email}">
 				E-Mail:
 			</div>
-			 <input type="text" th:field="*{email}" />
+			 <input type="text" th:field="*{user.email}" />
 		</p>
 		<p>
 			<div  th:text="#{register.password}">
 				Password:
 			</div>
-			 <input type="password" th:field="*{password}" />
+			 <input type="password" th:field="*{user.password}" />
 		</p>
 		<p>
 			<div  th:text="#{register.passwordRepeated}">

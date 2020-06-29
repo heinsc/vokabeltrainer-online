@@ -33,22 +33,19 @@
 	<form action="#" th:action="@{/checkLogin }"
 		th:object="${authentification}" method="post">
 		<p>
-			<div th:text="#{login.email}">
-				E-Mail:
-			</div>
-			 <input type="text" th:field="*{email}" />
+		<div th:text="#{login.email}">E-Mail:</div>
+		<input type="text" th:field="*{user.email}" />
 		</p>
 		<p>
-			<div  th:text="#{login.password}">
-				Password:
-			</div>
-			 <input type="password" th:field="*{password}" />
+		<div th:text="#{login.password}">Password:</div>
+		<input type="password" th:field="*{user.password}" />
 		</p>
 		<p>
 			<input type="submit" value="Login" />
 		</p>
 	</form>
-	<a href="register.html" th:href="@{/register}" th:text="#{login.newAccount}">Register</a>
+	<a href="register.html" th:href="@{/register}"
+		th:text="#{login.newAccount}">Register</a>
 </body>
 
 </html>

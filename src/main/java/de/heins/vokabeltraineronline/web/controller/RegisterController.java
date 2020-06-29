@@ -19,6 +19,8 @@
  */
 package de.heins.vokabeltraineronline.web.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,29 +51,31 @@ public class RegisterController {
 	@RequestMapping(value = "/addAccount", method = RequestMethod.POST)
 	public String addAccount(//
 			@ModelAttribute(value = "register") RegisterForm registerForm//
+			, HttpSession session
 	) {
 		if (//
-		Strings.isBlank(registerForm.getEmail())//
-				|| Strings.isBlank(registerForm.getPassword())//
+		Strings.isBlank(registerForm.getUser().getEmail())//
+				|| Strings.isBlank(registerForm.getUser().getPassword())//
 				|| Strings.isBlank(registerForm.getPasswordRepeated())
 		) {
 			registerForm.setMandatoryViolated(true);
 		} else {
 			if (// 
-					!registerForm.getPassword().equals(registerForm.getPasswordRepeated())
+					!registerForm.getUser().getPassword().equals(registerForm.getPasswordRepeated())
 			) {
 				registerForm.setPasswordsNotEqual(true);
 			} else {
 				try {
 					userService.addUser(registerForm);
-					registerForm.setUserAdded(true);
 				} catch (VokabeltrainerException e) {
 					registerForm.setUserAlreadyExists(true);
+					return "register";
 				}
 			}
 
 		}
-		return "register";
+		session.setAttribute("user", registerForm.getUser());
+		return "menu";
 
 	}
 
