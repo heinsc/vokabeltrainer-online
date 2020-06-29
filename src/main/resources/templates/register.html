@@ -50,7 +50,7 @@
 			 <input type="password" th:field="*{passwordRepeated}" />
 		</p>
 		<p>
-			<input type="submit" value="Add Account"/>
+			<button type="submit" th:utext="#{register.addUser}">Add Account</button>
 		</p>
 	</form>
 	<a href="login.html" th:href="@{/login}" th:utext="#{register.cancel}">Cancel</a>
