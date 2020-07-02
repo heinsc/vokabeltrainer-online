@@ -6,9 +6,19 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserFactory {
+	private Long id;
 	private String email;
 	private String password;
 	private Date lastLogin;
+
+	public Long getId() {
+		return id;
+	}
+
+	public UserFactory setId(Long id) {
+		this.id = id;
+		return this;
+	}
 
 	public UserFactory setEMail(String email) {
 		this.email=email;
@@ -28,7 +38,8 @@ public class UserFactory {
 	public Student getNewObject() {
 		// TODO Auto-generated method stub
 		return new Student(//
-				this.email//
+				this.id//
+				, this.email//
 				, this.password//
 				, this.lastLogin//
 		);

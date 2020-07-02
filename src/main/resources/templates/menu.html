@@ -11,9 +11,9 @@
 
 <body>
 
-	<h1 th:utext=#{menu.mainmenu}>Online-Vokabeltrainer</h1>
-    <p th:utext="#{menu.loggedInAs(${session.user.email})}">Welcome, Sebastian!</p>
-
+	<h1 th:utext="#{menu.mainmenu}">Online-Vokabeltrainer</h1>
+    <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionUser')})}">LoginInfo</div>
+	<a href="manageUser.html" th:href="@{/manageUser}" th:utext="#{menu.manageUser}">Logout</a>
 	<a href="login.html" th:href="@{/login}" th:utext="#{menu.logout}">Logout</a>
 </body>
 

@@ -21,10 +21,11 @@ public class Student {
     public Student() {
     }
     public Student(//
-    		String email2//
+    		Long id2, String email2//
     		, String password2//
     		, Date lastLogin2//
     	) {
+    	this.id=id2;
 		this.email=email2;
 		this.password=password2;
 		this.lastLogin=lastLogin2;

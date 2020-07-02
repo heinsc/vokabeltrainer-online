@@ -4,6 +4,7 @@ public class RegisterForm {
 	private Boolean mandatoryViolated;
 	private Boolean passwordsNotEqual;
 	private Boolean userAlreadyExists;
+	private Boolean wrongPassword;
 	private UserForm user;
 	public UserForm getUser() {
 		return user;
@@ -35,6 +36,12 @@ public class RegisterForm {
 	}
 	public void setPasswordsNotEqual(Boolean passwordsNotEqual) {
 		this.passwordsNotEqual = passwordsNotEqual;
+	}
+	public Boolean getWrongPassword() {
+		return wrongPassword;
+	}
+	public void setWrongPassword(Boolean wrongPassword) {
+		this.wrongPassword = wrongPassword;
 	}
 
 

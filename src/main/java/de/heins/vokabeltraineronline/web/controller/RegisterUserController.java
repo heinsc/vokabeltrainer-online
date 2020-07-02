@@ -31,13 +31,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import de.heins.vokabeltraineronline.business.service.UserService;
 import de.heins.vokabeltraineronline.web.entities.RegisterForm;
+import de.heins.vokabeltraineronline.web.entities.SessionUserForm;
 
 @Controller
-public class RegisterController {
+public class RegisterUserController {
 	@Autowired
 	private UserService userService;
 
-	public RegisterController() {
+	public RegisterUserController() {
 		super();
 	}
 
@@ -53,31 +54,37 @@ public class RegisterController {
 			@ModelAttribute(value = "register") RegisterForm registerForm//
 			, HttpSession session
 	) {
+		if (checkFields(registerForm)) {
+			try {
+				SessionUserForm sessionUserForm = userService.addUser(registerForm.getUser());
+				session.setAttribute("sessionUser", sessionUserForm);
+				return "menu";
+			} catch (UserAlreadyExistsException e) {
+				registerForm.setUserAlreadyExists(true);
+			}
+		}
+		return "register";
+	}
+
+	private boolean checkPasswords(RegisterForm registerForm) {
+		if (// 
+				!registerForm.getUser().getPassword().equals(registerForm.getPasswordRepeated())
+		) {
+			registerForm.setPasswordsNotEqual(true);
+			return false;
+		}
+		return true;
+	}
+	private boolean checkFields(RegisterForm registerForm) {
 		if (//
-		Strings.isBlank(registerForm.getUser().getEmail())//
+				Strings.isBlank(registerForm.getUser().getEmail())//
 				|| Strings.isBlank(registerForm.getUser().getPassword())//
 				|| Strings.isBlank(registerForm.getPasswordRepeated())
 		) {
 			registerForm.setMandatoryViolated(true);
-		} else {
-			if (// 
-					!registerForm.getUser().getPassword().equals(registerForm.getPasswordRepeated())
-			) {
-				registerForm.setPasswordsNotEqual(true);
-			} else {
-				try {
-					userService.addUser(registerForm);
-				} catch (VokabeltrainerException e) {
-					registerForm.setUserAlreadyExists(true);
-					return "register";
-				}
-			}
-
+			return false;
 		}
-		session.setAttribute("user", registerForm.getUser());
-		return "menu";
-
+		return checkPasswords(registerForm);
 	}
-
 
 }

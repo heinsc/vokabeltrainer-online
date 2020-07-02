@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+  <body>
+  
+    <div th:fragment="loginInfo(sessionUserForm)" th:utext="#{insertions.loggedInAs(${sessionUserForm.email}, ${sessionUserForm.id})}">
+      loginAs
+    </div>
+  </body>
+  
+</html>
+

@@ -25,9 +25,6 @@
 		<div th:if="*{loginError}">
 			<p th:text="#{login.error}" class="error">Login failed.</p>
 		</div>
-		<div th:if="*{loginOK}">
-			<p class="loginOK">Login OK</p>
-		</div>
 	</div>
 
 	<form action="#" th:action="@{/checkLogin }"

@@ -1,0 +1,39 @@
+Passwort leer, Passwort wiederholen leer, E-Mail-Adresse leer
+Passwort leer, Passwort wiederholen gefüllt, E-Mail-Adresse leer
+Passwort leer, Passwort wiederholen leer, E-Mail-Adresse gefüllt neu
+Passwort leer, Passwort wiederholen gefüllt, E-Mail-Adresse gefüllt neu
+Passwort leer, Passwort wiederholen leer, E-Mail-Adresse gefüllt existiert
+Passwort leer, Passwort wiederholen gefüllt, E-Mail-Adresse gefüllt existiert
+Passwort leer -> mandatory violation
+
+Passwort gefüllt richtig, Passwort wiederholen leer, E-Mail Adresse leer
+Passwort gefüllt richtig, Passwort wiederholen leer, E-Mail-Adresse gefüllt original
+Passwort gefüllt falsch, Passwort wiederholen leer, E-Mail-Adresse gefüllt original
+Passwort gefüllt falsch, Passwort wiederholen leer, E-Mail Adresse leer
+-> mandatory violation
+
+Passwort gefüllt, Passwort wiederholen gefüllt anders, E-Mail-Adresse leer
+Passwort gefüllt, Passwort wiederholen gefüllt anders, E-Mail-Adresse gefüllt neu
+Passwort gefüllt, Passwort wiederholen gefüllt anders, E-Mail-Adresse gefüllt existiert
+Passwort gefüllt, Passwort wiederholen gefüllt anders -> Passwörter müssen gleich sein.
+
+Passwort gefüllt richtig, Passwort wiederholen gefüllt gleich, E-Mail-Adresse gefüllt existiert
+Passwort gefüllt falsch, Passwort wiederholen gefüllt gleich, E-Mail-Adresse gefüllt existiert
+Passwort gefüllt richtig, Passwort wiederholen leer, E-Mail-Adresse gefüllt existiert
+Passwort gefüllt falsch, Passwort wiederholen leer, E-Mail-Adresse gefüllt existiert
+-> UserAlreadyExistsException
+
+Passwort gefüllt falsch, Passwort wiederholen leer, E-Mail-Adresse gefüllt neu
+Passwort falsch -> WrongPasswordException
+
+Passwort gefüllt, Passwort wiederholen gefüllt gleich, E-Mail-Adresse leer
+Passwort gefüllt, Passwort wiederholen gefüllt gleich, E-Mail-Adresse gefüllt original
+-> Update von Passwort
+
+Passwort gefüllt, Passwort wiederholen gefüllt gleich, E-Mail-Adresse gefüllt neu
+-> Update von Passwort und E-Mail
+
+Passwort gefüllt richtig, Passwort wiederholen leer, E-Mail-Adresse gefüllt neu
+-> Update von E-Mail
+
+
