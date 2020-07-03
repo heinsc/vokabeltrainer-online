@@ -70,7 +70,7 @@ public class UserService {
 		if (!originalEmail.equals(userForm.getEmail())) {
 			checkUserAlreadyExists(userForm);
 			if (Strings.isEmpty(newPassword)) {
-				tryPasswordValidationForManageUser(originalEmail, userForm.getPassword());
+				tryPasswordValidationForManageUserOrDeleteUser(originalEmail, userForm.getPassword());
 			}
 
 		}
@@ -87,7 +87,7 @@ public class UserService {
 		userRepository.save(user);
 		
 	}
-	private void tryPasswordValidationForManageUser(String eMail, String password) throws WrongPasswordException {
+	private void tryPasswordValidationForManageUserOrDeleteUser(String eMail, String password) throws WrongPasswordException {
 	
 		List<Student>  findByEmailAndPassword = userRepository.findByEmailAndPassword(//
 				eMail//
@@ -97,5 +97,9 @@ public class UserService {
 			throw new WrongPasswordException();
 		} 
 		return;
+	}
+	public void deleteUser(Long id, String email, String password)  throws WrongPasswordException {
+		tryPasswordValidationForManageUserOrDeleteUser(email, password);
+		userRepository.deleteById(id);
 	}
 }

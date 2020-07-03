@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>Good Thymes Virtual Grocery</title>
+<title>Words trainer main menu</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" media="all"
 	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
@@ -13,7 +13,8 @@
 
 	<h1 th:utext="#{menu.mainmenu}">Online-Vokabeltrainer</h1>
     <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionUser')})}">LoginInfo</div>
-	<a href="manageUser.html" th:href="@{/manageUser}" th:utext="#{menu.manageUser}">Logout</a>
+	<a href="manageUser.html" th:href="@{/manageUser}" th:utext="#{menu.manageUser}">manage user</a>
+	<a href="deleteUser.html" th:href="@{/deleteUser}" th:utext="#{menu.deleteUser}">delete user</a>
 	<a href="login.html" th:href="@{/login}" th:utext="#{menu.logout}">Logout</a>
 </body>
 
