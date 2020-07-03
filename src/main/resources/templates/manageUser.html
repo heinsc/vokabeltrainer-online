@@ -12,6 +12,12 @@
 <body>
 
 	<h1 th:utext="#{manageUser.manageUser}">Manage User</h1>
+	<h2 th:utext="#{manageUser.possibility1Header}">Possibility 1</h2>
+	<p th:utext="#{manageUser.possibility1Text}">first possibility description</p>
+	<h2 th:utext="#{manageUser.possibility2Header}">Possibility 2</h2>
+	<p th:utext="#{manageUser.possibility2Text}">second possibility description</p>
+	<h2 th:utext="#{manageUser.possibility3Header}">Possibility 3</h2>
+	<p th:utext="#{manageUser.possibility3Text}">third possibility description</p>
 	<div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionUser')})}">LoginInfo</div>
 	
 
