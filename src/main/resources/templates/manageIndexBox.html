@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Words trainer main menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+
+	<h1 th:utext="#{manageIndexBox.manageIndexBoxes}">Manage your index boxes</h1>
+    <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionUser')})}">LoginInfo</div>
+    <h2 th:utext="#{manageIndexBox.successSteps}">Success Steps</h2>
+	<h2 th:utext="#{manageIndexBox.indexBoxes}">Index Boxes</h2>
+	<br/>
+	<a href="menu.html" th:href="@{/menu}" th:utext="#{manageIndexBox.menu}">delete user</a>
+	<a href="login.html" th:href="@{/login}" th:utext="#{manageIndexBox.logout}">Logout</a>
+</body>
+
+</html>
+
