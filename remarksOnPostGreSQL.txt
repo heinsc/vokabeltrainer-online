@@ -1,0 +1,29 @@
+Bei der Installation von PostGreSQL ist ein Password anzugeben.
+Ich habe dazu Pin12345 gewählt.
+Der StackBuilder, der nach der PostGreSQL-Installation automatisch folgt, kann abgebrochen werden. Die Programme und Tools daraus werden nicht benötigt.
+
+Wenn man unmittelbar nach der Installation pgAdmin öffnet, sieht man zwei Datenbanken:
+- PostgreSQL 12
+- localhost
+
+Bei der "PostgreSQL 12" erfährt man in den Properties (Kontextmenü), dass der Speicherort C:\Program Files\PostgreSQL\12\data ist.
+Bei der localhost erfährt man an gleicher Stelle nichts über den Speicherort. Wo letztendlich die Daten abgelegt werden, bleibt mir ein Rätsel.
+
+Warum diese beiden Datenbanken initial angelegt werden, weiß ich ebenfalls nicht.
+
+Um den Fehler
+Caused by: org.postgresql.util.PSQLException: FATAL: Passwort-Authentifizierung für Benutzer »postgres« fehlgeschlagen (pgjdbc: autodetected server-encoding to be ISO-8859-1, if the message is not readable, please check database logs and/or host, port, dbname, user, password, pg_hba.conf)
+zu beheben, gibt es zwei Möglichkeiten:
+1. In der Datei src/main/resources/application.properties
+spring.datasource.password=Pin12345
+(Passwort wie oben bei der Installation gewählt)
+2. In C:\Program Files\PostgreSQL\12\data\pg_hba.conf (oder wo auch immer sich pg_hba.conf befindet)
+alle "mb5" durch "trust" ersetzen.
+Obwohl sich diese Datei im Verzeichnis der Datenbank "PostgreSQL 12" befindet, hat sie auch Auswirkungen auf die Datenbank localhost, die für die Applikationen verwendet wird.
+
+Die Datenbank "localhost" wird für die Applikationen verwendet. Ob es an der Einstellung spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+ in application.properties liegt, kann ich nicht sicher sagen.
+ 
+ Der Eintrag 
+ spring.jpa.hibernate.ddl-auto=create
+ in application.properties bewirkt, dass die DB-Tabellen jedesmal wieder gelöscht werden.
