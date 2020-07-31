@@ -11,9 +11,11 @@ Bei der localhost erfährt man an gleicher Stelle nichts über den Speicherort. 
 
 Warum diese beiden Datenbanken initial angelegt werden, weiß ich ebenfalls nicht.
 
-Um den Fehler
+Im Ursprungszustand laufen Anwendungen auf Fehler. Dies sind im Falle der Beispiel-Anwendung von MKYong:
 Caused by: org.postgresql.util.PSQLException: FATAL: Passwort-Authentifizierung für Benutzer »postgres« fehlgeschlagen (pgjdbc: autodetected server-encoding to be ISO-8859-1, if the message is not readable, please check database logs and/or host, port, dbname, user, password, pg_hba.conf)
-zu beheben, gibt es zwei Möglichkeiten:
+Im Falle dieser Anwendung ist es 
+org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'org.springframework.context.annotation.ConfigurationClassPostProcessor.importRegistry' available
+Um den Fehler in der Beispiel-Anwendung von MKYong zu beheben, gibt es zwei Möglichkeiten:
 1. In der Datei src/main/resources/application.properties
 spring.datasource.password=Pin12345
 (Passwort wie oben bei der Installation gewählt)
@@ -21,9 +23,17 @@ spring.datasource.password=Pin12345
 alle "mb5" durch "trust" ersetzen.
 Obwohl sich diese Datei im Verzeichnis der Datenbank "PostgreSQL 12" befindet, hat sie auch Auswirkungen auf die Datenbank localhost, die für die Applikationen verwendet wird.
 
+Obwohl der Fehler in meiner Anwendung keine Andeutung über eine fehlgeschlagene Authentifizierung macht, lässt sich auch dieser durch obige, zweite Maßnahme beheben.
+Die erste Maßnahme hat hingegen keine Wirkung. 
+
 Die Datenbank "localhost" wird für die Applikationen verwendet. Ob es an der Einstellung spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
  in application.properties liegt, kann ich nicht sicher sagen.
  
  Der Eintrag 
  spring.jpa.hibernate.ddl-auto=create
  in application.properties bewirkt, dass die DB-Tabellen jedesmal wieder gelöscht werden.
+ 
+ Eine Tabelle namens "User" kann nicht angelegt werden. Um eine Entity "User" anzulegen, muss deren Ablage auf der Datenbank mittels @Table(name =...) definiert werden.
+ Wird bei einer existierenden Entity "@Table" eingefügt, oder das "name"-Attribut geändert, muss in application.properties "spring.jpa.hibernate.ddl-auto=create" definiert sein.
+ Sonst kommt es zu org.postgresql.util.PSQLException: FEHLER: Relation »applicationusers« existiert nicht. Offenbar bewirkt dies nicht nur das Droppen der Tabelle, sondern auch die Neuanlage.
+  

@@ -35,9 +35,9 @@ public class UserFactory {
 		return this;
 	}
 
-	public Student getNewObject() {
+	public User getNewObject() {
 		// TODO Auto-generated method stub
-		return new Student(//
+		return new User(//
 				this.id//
 				, this.email//
 				, this.password//
