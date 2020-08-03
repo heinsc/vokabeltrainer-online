@@ -1,0 +1,12 @@
+// https://yuml.me/diagram/scruffy/class/draw
+// ------------------
+
+[IndexBox|name:string;maxNumberOfWrongAnswersPerSession:int]->[<<enum>>BehaviourIfPoolOfWrongAnswersIsFull | FILL_POOL_IMMEADLY;ANSWER_ALL_QUESTIONS_CORRECT]
+[Word|question:string;answer:string;nextAppearance:Date]
+[<<enum>>;BehaviourWhenWrong|STAY_SUCCESSSTEP_NEXTDAY_TOMORROW;STAY_SUCCESSSTEP_NEXTDAY_SUCCESSSTEP_DURATION;PREVIOUS_SUCCESSSTEP]
+[SuccessStep|name:string;nextAppearanceInDays:int]
+[IndexBox]++-successSteps (ordered) / 1..*>[SuccessStep]
+[IndexBox]<>-words / 0..*>[Word]
+[Word]-actualSuccessStep / 0..1>[SuccessStep]
+[SuccessStep]++-1>[BehaviourWhenWrong]
+[Word]-[note: special behaviour on answer{bg:wheat}]

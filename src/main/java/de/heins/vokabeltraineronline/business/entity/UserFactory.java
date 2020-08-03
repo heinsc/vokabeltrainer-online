@@ -11,10 +11,6 @@ public class UserFactory {
 	private String password;
 	private Date lastLogin;
 
-	public Long getId() {
-		return id;
-	}
-
 	public UserFactory setId(Long id) {
 		this.id = id;
 		return this;
