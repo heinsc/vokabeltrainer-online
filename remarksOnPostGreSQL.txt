@@ -37,3 +37,4 @@ Die Datenbank "localhost" wird für die Applikationen verwendet. Ob es an der Ei
  Wird bei einer existierenden Entity "@Table" eingefügt, oder das "name"-Attribut geändert, muss in application.properties "spring.jpa.hibernate.ddl-auto=create" definiert sein.
  Sonst kommt es zu org.postgresql.util.PSQLException: FEHLER: Relation »applicationusers« existiert nicht. Offenbar bewirkt dies nicht nur das Droppen der Tabelle, sondern auch die Neuanlage.
   
+  littleChange
