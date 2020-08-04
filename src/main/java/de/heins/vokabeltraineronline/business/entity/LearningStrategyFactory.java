@@ -8,6 +8,8 @@ public class LearningStrategyFactory {
 
     private String name;
     private User user;
+    private BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull; 
+    private int maxNumberOfWrongAnswersPerSession;
     public LearningStrategyFactory() {
     }
 
@@ -24,7 +26,23 @@ public class LearningStrategyFactory {
 		this.user=user;
 		return this;
 	}
-   public LearningStrategy getNewObject() {
-    	return new LearningStrategy(this.id, this.name, this.user);
+   public LearningStrategyFactory setBehaviourIfPoolWithWrongAnswersIsFull(BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull) {
+		this.behaviourIfPoolWithWrongAnswersIsFull = behaviourIfPoolWithWrongAnswersIsFull;
+		return this;
+	}
+
+public LearningStrategyFactory setMaxNumberOfWrongAnswersPerSession(int maxNumberOfWrongAnswersPerSession) {
+	this.maxNumberOfWrongAnswersPerSession = maxNumberOfWrongAnswersPerSession;
+	return this;
+}
+
+public LearningStrategy getNewObject() {
+    	return new LearningStrategy(//
+    			this.id//
+    			, this.name//
+    			, this.maxNumberOfWrongAnswersPerSession//
+    			, this.behaviourIfPoolWithWrongAnswersIsFull//
+    			, this.user//
+    	);
  	}
 }

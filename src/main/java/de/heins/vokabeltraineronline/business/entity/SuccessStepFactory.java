@@ -8,9 +8,10 @@ public class SuccessStepFactory {
 
     private String name;
     
-	private int durationOfNextAppearance;
+	private int nextAppearanceInDays;
 	
 	private LearningStrategy learningStrategy;
+	private BehaviourIfWrong behaviourIfWrong;
 	private User user;
     public SuccessStepFactory() {
     }
@@ -23,14 +24,19 @@ public class SuccessStepFactory {
 		this.name = name;
 		return this;
 	}
-		public SuccessStepFactory setDurationOfNextAppearance(int durationOfNextAppearance) {
-		this.durationOfNextAppearance = durationOfNextAppearance;
+		public SuccessStepFactory setNextAppearanceInDays(int durationOfNextAppearance) {
+		this.nextAppearanceInDays = durationOfNextAppearance;
 		return this;
 	}
 	public SuccessStepFactory setLearningStrategy(LearningStrategy learningStrategy) {
 		this.learningStrategy = learningStrategy;
 		return this;
 	}
+	public SuccessStepFactory setBehaviourIfWrong(BehaviourIfWrong behaviourIfWrong) {
+		this.behaviourIfWrong = behaviourIfWrong;
+		return this;
+	}
+
 	public SuccessStepFactory setUser(User user) {
 		this.user=user;
 		return this;
@@ -39,8 +45,9 @@ public class SuccessStepFactory {
     	return new SuccessStep(//
     			this.id//
     			, this.name//
-    			, this.durationOfNextAppearance//
+    			, this.nextAppearanceInDays//
     			, this.learningStrategy//
+    			, this.behaviourIfWrong//
     			, this.user//
     	);
 	}

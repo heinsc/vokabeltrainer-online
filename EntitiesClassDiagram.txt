@@ -1,12 +1,27 @@
 // https://yuml.me/diagram/scruffy/class/draw
 // ------------------
 
-[IndexBox|name:string;maxNumberOfWrongAnswersPerSession:int]->[<<enum>>BehaviourIfPoolOfWrongAnswersIsFull | FILL_POOL_IMMEADLY;ANSWER_ALL_QUESTIONS_CORRECT]
-[Word|question:string;answer:string;nextAppearance:Date]
-[<<enum>>;BehaviourWhenWrong|STAY_SUCCESSSTEP_NEXTDAY_TOMORROW;STAY_SUCCESSSTEP_NEXTDAY_SUCCESSSTEP_DURATION;PREVIOUS_SUCCESSSTEP]
+[User|email:String;passQuestionWithAnswer:hiddenString]
+[IndexBox|name:string]
+[LearningStrategy|name:String;maxNumberOfWrongAnswersPerSession:int]
+[QuestionWithAnswer|question:string;answer:string;nextAppearance:Date]
 [SuccessStep|name:string;nextAppearanceInDays:int]
-[IndexBox]++-successSteps (ordered) / 1..*>[SuccessStep]
-[IndexBox]<>-words / 0..*>[Word]
-[Word]-actualSuccessStep / 0..1>[SuccessStep]
-[SuccessStep]++-1>[BehaviourWhenWrong]
-[Word]-[note: special behaviour on answer{bg:wheat}]
+
+[<<enum>>BehaviourIfPoolOfWrongAnswersIsFull| FILL_POOL_IMMEADLY;EMPTY_POOL_UNTIL_ALL_QUESTIONS_CORRECT]
+[<<enum>>BehaviourIfWrong|STAY_SUCCESSSTEP_NEXTDAY_TOMORROW;STAY_SUCCESSSTEP_NEXTDAY_SUCCESSSTEP_DURATION;PREVIOUS_SUCCESSSTEP_NEXTDAY_TOMORROW;PREVIOUS_SUCCESSSTEP_NEXTDAY_DURATION]
+
+[LearningStrategy] -> [BehaviourIfPoolOfWrongAnswersIsFull]
+[SuccessStep]++-1>[BehaviourIfWrong]
+[QuestionWithAnswer]-[note: special behaviour on answer{bg:wheat}]
+
+[IndexBox]->[User]
+[LearningStrategy]->[User]
+[QuestionWithAnswer]->[User]
+[SuccessStep]->[User]
+
+[IndexBox]->[LearningStrategy]
+[IndexBox]<>-questionWithAnswers / 0..*>[QuestionWithAnswer]
+
+[LearningStrategy]<learningStrategy / 1-successSteps (ordered) / 0..*>[SuccessStep]
+
+[QuestionWithAnswer]-actualSuccessStep / 0..1>[SuccessStep]

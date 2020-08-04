@@ -18,14 +18,24 @@ public class LearningStrategy extends UserOwnedObject {
 
     private String name;
     
+    private int maxNumberOfWrongAnswersPerSession;
+    
+    private BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull;
+    
 	private List<SuccessStep> successSteps;
     public LearningStrategy() {
     }
     public LearningStrategy(//
-    		Long id2, String name, User user
+    		Long id2//
+    		, String name//
+    		, int maxNumberOfWrongAnswersPerSession//
+    		, BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull//
+    		, User user
     	) {
     	this.id=id2;
 		this.name=name;
+		this.maxNumberOfWrongAnswersPerSession=maxNumberOfWrongAnswersPerSession;
+		this.behaviourIfPoolWithWrongAnswersIsFull=behaviourIfPoolWithWrongAnswersIsFull;
 		this.user=user;
 	}
 
@@ -45,6 +55,18 @@ public class LearningStrategy extends UserOwnedObject {
 		this.name = name;
 	}
 
+	public int getMaxNumberOfWrongAnswersPerSession() {
+		return maxNumberOfWrongAnswersPerSession;
+	}
+	public void setMaxNumberOfWrongAnswersPerSession(int maxNumberOfWrongAnswersPerSession) {
+		this.maxNumberOfWrongAnswersPerSession = maxNumberOfWrongAnswersPerSession;
+	}
+	public BehaviourIfPoolWithWrongAnswersIsFull getBehaviourIfPoolWithWrongAnswersIsFull() {
+		return behaviourIfPoolWithWrongAnswersIsFull;
+	}
+	public void setBehaviourIfPoolWithWrongAnswersIsFull(BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull) {
+		this.behaviourIfPoolWithWrongAnswersIsFull = behaviourIfPoolWithWrongAnswersIsFull;
+	}
 	public void addSuccessStep(SuccessStep step) {
 		this.successSteps.add(step);
 	}

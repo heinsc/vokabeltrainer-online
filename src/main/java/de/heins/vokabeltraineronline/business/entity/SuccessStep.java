@@ -16,21 +16,25 @@ public class SuccessStep extends UserOwnedObject {
 
     private String name;
     
-	private int durationOfNextAppearance;
+	private int nextAppearanceInDays;
 	
 	private LearningStrategy learningStrategy;
+	
+	private BehaviourIfWrong behaviourIfWrong;
     public SuccessStep() {
     }
     public SuccessStep(//
     		Long id2//
     		, String name2//
-    		, int durationOfNextAppearance2//
+    		, int nextAppearanceInDays2//
     		, LearningStrategy lerLearningStrategy//
+    		, BehaviourIfWrong behaviourIfWrong//
     		, User user//
     	) {
     	this.id=id2;
 		this.name=name2;
-		this.durationOfNextAppearance=durationOfNextAppearance2;
+		this.nextAppearanceInDays=nextAppearanceInDays2;
+		this.behaviourIfWrong=behaviourIfWrong;
 		this.user=user;
 	}
 
@@ -48,17 +52,23 @@ public class SuccessStep extends UserOwnedObject {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getDurationOfNextAppearance() {
-		return durationOfNextAppearance;
+	public int getNextAppearanceInDays() {
+		return nextAppearanceInDays;
 	}
-	public void setDurationOfNextAppearance(int durationOfNextAppearance) {
-		this.durationOfNextAppearance = durationOfNextAppearance;
+	public void setNextAppearanceInDays(int durationOfNextAppearance) {
+		this.nextAppearanceInDays = durationOfNextAppearance;
 	}
 	public LearningStrategy getLearningStrategy() {
 		return learningStrategy;
 	}
 	public void setLearningStrategy(LearningStrategy learningStrategy) {
 		this.learningStrategy = learningStrategy;
+	}
+	public BehaviourIfWrong getBehaviourIfWrong() {
+		return behaviourIfWrong;
+	}
+	public void setBehaviourIfWrong(BehaviourIfWrong behaviourIfWrong) {
+		this.behaviourIfWrong = behaviourIfWrong;
 	}
 
 
