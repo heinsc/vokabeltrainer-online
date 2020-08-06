@@ -4,12 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(uniqueConstraints={@UniqueConstraint(columnNames={"name", "user"})})
-public class SuccessStep extends UserOwnedObject {
+public class SuccessStep {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -18,9 +20,15 @@ public class SuccessStep extends UserOwnedObject {
     
 	private int nextAppearanceInDays;
 	
+	@ManyToOne
 	private LearningStrategy learningStrategy;
 	
 	private BehaviourIfWrong behaviourIfWrong;
+
+	@ManyToOne
+	@JoinColumn(name="user")
+	private User user;
+	
     public SuccessStep() {
     }
     public SuccessStep(//
@@ -69,6 +77,12 @@ public class SuccessStep extends UserOwnedObject {
 	}
 	public void setBehaviourIfWrong(BehaviourIfWrong behaviourIfWrong) {
 		this.behaviourIfWrong = behaviourIfWrong;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 

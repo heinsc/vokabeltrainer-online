@@ -7,11 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 @Entity
 @Table(uniqueConstraints={@UniqueConstraint(columnNames={"user", "question"})})
-public class QuestionWithAnswer extends UserOwnedObject{
+public class QuestionWithAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -22,7 +24,12 @@ public class QuestionWithAnswer extends UserOwnedObject{
     
     private Date nextAppearance;
     
+    @ManyToOne
     private SuccessStep actualSuccessStep;
+
+	@ManyToOne
+	@JoinColumn(name="user")
+	private User user;
     public QuestionWithAnswer() {
     }
     public QuestionWithAnswer(//
@@ -68,6 +75,12 @@ public class QuestionWithAnswer extends UserOwnedObject{
 	}
 	public void setActualSuccessStep(SuccessStep actualSuccessStep) {
 		this.actualSuccessStep = actualSuccessStep;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }
