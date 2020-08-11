@@ -13,7 +13,7 @@
 
 	<h1 th:utext="#{menu.mainmenu}">Online-Vokabeltrainer</h1>
     <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionUser')})}">LoginInfo</div>
-    <a href="manageIndexBox.html" th:href="@{/manageIndexBox}" th:utext="#{menu.manageIndexBox}">manage user</a>
+    <a href="manageIndexBoxes.html" th:href="@{/manageIndexBoxes}" th:utext="#{menu.manageIndexBoxes}">manage index boxes</a>
 	<br/>
 	<a href="manageUser.html" th:href="@{/manageUser}" th:utext="#{menu.manageUser}">manage user</a>
 	<a href="deleteUser.html" th:href="@{/deleteUser}" th:utext="#{menu.deleteUser}">delete user</a>

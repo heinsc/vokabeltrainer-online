@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Index Box Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+
+	<h1 th:utext="#{manageIndexBoxes.manageIndexBoxes}">Manage your index boxes</h1>
+    <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionUser')})}">LoginInfo</div>
+	<h2 th:utext="#{manageIndexBoxes.indexBoxes}">Index Boxes</h2>
+	<table>
+      <tr>
+        <th>NAME</th>
+        <th>LEARNING STRATEGY</th>
+      </tr>
+      <tr th:each="indexBox : ${indexBoxes}">
+        <td th:text="${indexBox.name}">Onions</td>
+        <td th:text="${indexBox.learningStrategyForm.name}">2.41</td>
+      </tr>
+    </table>
+  
+	<h2 th:utext="#{manageIndexBoxes.learningStrategies}">Learning Strategies</h2>
+	<table>
+      <tr th:each="learningStrategy : ${learningStrategies}">
+        <td th:text="${learningStrategy.name}">Onions</td>
+      </tr>
+    </table>
+
+    <h2 th:utext="#{manageIndexBoxes.successSteps}">Success Steps</h2>
+	<br/>
+	<a href="menu.html" th:href="@{/menu}" th:utext="#{manageIndexBoxes.menu}">delete user</a>
+	<a href="login.html" th:href="@{/login}" th:utext="#{manageIndexBoxes.logout}">Logout</a>
+</body>
+
+</html>
+
