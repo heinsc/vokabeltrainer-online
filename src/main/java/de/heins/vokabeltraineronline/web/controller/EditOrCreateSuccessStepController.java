@@ -59,12 +59,12 @@ public class EditOrCreateSuccessStepController {
 			}
 		}
 		successStepService.update(sessionAppUserForm, successStepForm, oldVersionOfSuccessStepName);
-		return "/manageIndexBoxes";
+		return "redirect:manageIndexBoxes";
 	}
 	
 	@RequestMapping(value="/editOrCreateSuccessStep", method=RequestMethod.POST, params= {"cancel"})
 	public String cancel() {
-		return "/manageIndexBoxes";
+		return "redirect:manageIndexBoxes";
 		
 	}
 
