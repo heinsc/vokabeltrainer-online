@@ -10,15 +10,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import de.heins.vokabeltraineronline.business.entity.QuestionWithAnswer;
-import de.heins.vokabeltraineronline.business.entity.User;
+import de.heins.vokabeltraineronline.business.entity.AppUser;
 
 @Repository
 public interface QuestionWithAnswerRepository extends CrudRepository<QuestionWithAnswer, Long> {
-	public List<QuestionWithAnswer> findByUser(User user);
+	public List<QuestionWithAnswer> findByAppUser(AppUser appUser);
 
 //	// noch mal rausfinden, wie man eine BeforeDate-Suche umsetzt.
-//	@Query("select questionWithAnswer from QuestionWithAnser questionWithAnswe where questionWithAnswer.nextAppearance <= :today and questionWithAnswer.user = :user")
-//	Set<QuestionWithAnswer> findAllByUserWithNextAppearanceBeforeToday(@Param("today") Date today,
-//			@Param("user") User user);
-	public Set<QuestionWithAnswer> findByNextAppearanceLessThanEqualAndUser(Date today, User user);
+//	@Query("select questionWithAnswer from QuestionWithAnser questionWithAnswe where questionWithAnswer.nextAppearance <= :today and questionWithAnswer.appUser = :appUser")
+//	Set<QuestionWithAnswer> findAllByAppUserWithNextAppearanceBeforeToday(@Param("today") Date today,
+//			@Param("appUser") AppUser appUser);
+	public Set<QuestionWithAnswer> findByNextAppearanceLessThanEqualAndAppUser(Date today, AppUser appUser);
 }

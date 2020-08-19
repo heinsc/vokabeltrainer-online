@@ -1,6 +1,6 @@
 package de.heins.vokabeltraineronline.web.entities;
 
-public class UserForm {
+public class AppUserForm {
 	private String email;
 	private String password;
 	public String getEmail() {

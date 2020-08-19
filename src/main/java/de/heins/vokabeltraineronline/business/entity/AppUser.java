@@ -9,8 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "USERS")
-public class User {
+public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -20,9 +19,9 @@ public class User {
 	private String password;
     
     private Date lastLogin;
-    public User() {
+    public AppUser() {
     }
-    public User(//
+    public AppUser(//
     		Long id2, String email2//
     		, String password2//
     		, Date lastLogin2//

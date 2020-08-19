@@ -31,11 +31,11 @@
 		th:object="${authentification}" method="post">
 		<p>
 		<div th:text="#{login.email}">E-Mail:</div>
-		<input type="text" th:field="*{user.email}" />
+		<input type="text" th:field="*{appUser.email}" />
 		</p>
 		<p>
 		<div th:text="#{login.password}">Password:</div>
-		<input type="password" th:field="*{user.password}" />
+		<input type="password" th:field="*{appUser.password}" />
 		</p>
 		<p>
 			<input type="submit" value="Login" />

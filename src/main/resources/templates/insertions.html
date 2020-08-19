@@ -4,7 +4,7 @@
 
   <body>
   
-    <div th:fragment="loginInfo(sessionUserForm)" th:utext="#{insertions.loggedInAs(${sessionUserForm.email}, ${sessionUserForm.id})}">
+    <div th:fragment="loginInfo(sessionAppUserForm)" th:utext="#{insertions.loggedInAs(${sessionAppUserForm.email}, ${sessionAppUserForm.id})}">
       loginAs
     </div>
   </body>

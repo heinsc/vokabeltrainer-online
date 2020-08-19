@@ -9,11 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import de.heins.vokabeltraineronline.business.entity.SuccessStep;
 import de.heins.vokabeltraineronline.business.service.IndexBoxService;
 import de.heins.vokabeltraineronline.business.service.LearningStrategyService;
+import de.heins.vokabeltraineronline.business.service.SuccessStepService;
 import de.heins.vokabeltraineronline.web.entities.IndexBoxForm;
 import de.heins.vokabeltraineronline.web.entities.LearningStrategyForm;
-import de.heins.vokabeltraineronline.web.entities.SessionUserForm;
+import de.heins.vokabeltraineronline.web.entities.SessionAppUserForm;
+import de.heins.vokabeltraineronline.web.entities.SuccessStepForm;
 
 @Controller
 public class ManageIndexBoxesController {
@@ -24,6 +27,9 @@ public class ManageIndexBoxesController {
 	@Autowired
 	private LearningStrategyService learningStrategyService;
 
+	@Autowired
+	private SuccessStepService successStepService;
+
 	public ManageIndexBoxesController() {
 		super();
 	}
@@ -33,27 +39,21 @@ public class ManageIndexBoxesController {
 			Model model//
 			, StandardSessionFacade session//
 	) throws Exception {
-		SessionUserForm sessionUserForm = (SessionUserForm)session.getAttribute("sessionUser");
+		SessionAppUserForm sessionAppUserForm = (SessionAppUserForm)session.getAttribute("sessionAppUser");
 
-	    List<IndexBoxForm> allIndexBoxes = indexBoxService.findAllForUser(sessionUserForm);
+	    List<IndexBoxForm> allIndexBoxes = indexBoxService.findAllForAppUser(sessionAppUserForm);
 	    // only for testing, remove later
 	    {
-		    LearningStrategyForm learningStrategyForm = new LearningStrategyForm();
-		    learningStrategyForm.setName("firstLearningStrategy");
 		    IndexBoxForm indexBoxForm = new IndexBoxForm();
 		    indexBoxForm.setName("firstIndexBox");
-		    indexBoxForm.setLearningStrategyForm(learningStrategyForm);
 		    allIndexBoxes.add(indexBoxForm);
-		    learningStrategyForm = new LearningStrategyForm();
-		    learningStrategyForm.setName("secondLearningStrategy");
 		    indexBoxForm = new IndexBoxForm();
 		    indexBoxForm.setName("secondIndexBox");
-		    indexBoxForm.setLearningStrategyForm(learningStrategyForm);
 		    allIndexBoxes.add(indexBoxForm);
 	    }
 	    model.addAttribute("indexBoxes", allIndexBoxes);
 	    
-	    List<LearningStrategyForm> allLearningStrategies = learningStrategyService.findAllForUser(sessionUserForm);
+	    List<LearningStrategyForm> allLearningStrategies = learningStrategyService.findAllForAppUser(sessionAppUserForm);
 	    {
 	    	// only for testing, remove later
 		    LearningStrategyForm learningStrategyForm = new LearningStrategyForm();
@@ -64,6 +64,22 @@ public class ManageIndexBoxesController {
 		    allLearningStrategies.add(learningStrategyForm);
 	    }
 	    model.addAttribute("learningStrategies", allLearningStrategies);
+		
+		List<SuccessStepForm> allSuccessSteps = successStepService.findAllForAppUser(sessionAppUserForm);
+		{
+	    	// only for testing, remove later
+		    SuccessStepForm successStepForm = new SuccessStepForm();
+		    successStepForm.setName("firstSuccessStep");
+		    successStepForm.setNextAppearanceInDays(5);
+		    successStepForm.setBehaviourIfWrong("firstBehaviourIfWrong");
+		    allSuccessSteps.add(successStepForm);
+		    successStepForm = new SuccessStepForm();
+		    successStepForm.setName("secondSuccessStep");
+		    successStepForm.setNextAppearanceInDays(10);
+		    successStepForm.setBehaviourIfWrong("secondBehaviourIfWrong");
+		    allSuccessSteps.add(successStepForm);
+	    }
+	    model.addAttribute("successSteps", allSuccessSteps);
 		return "manageIndexBoxes";
 
 	}

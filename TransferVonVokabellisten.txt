@@ -1,13 +1,13 @@
  Es gibt 2 Möglichkeiten, Vokabeln oder Vokabellisten zu transferieren:
  
- 1. Für denselben User innerhalb einer Session
+ 1. Für denselben AppUser innerhalb einer Session
  
- 2. Durch Schnelleingabe im CSV-Format Session- oder User-übergreifend.
+ 2. Durch Schnelleingabe im CSV-Format Session- oder AppUser-übergreifend.
  
- Zu 1.: Der User muss die Möglichkeit haben, sich übergreifend über mehrere Karteikästen hinweg alle Vokabeln anzeigen zu lassen. Es gibt also hierzu einen extra, zusätzlichen Menüpunkt "Vokabeln verwalten". Hier kann eine Einschränkung nach Karteikästen vorgenommen werden.
+ Zu 1.: Der AppUser muss die Möglichkeit haben, sich übergreifend über mehrere Karteikästen hinweg alle Vokabeln anzeigen zu lassen. Es gibt also hierzu einen extra, zusätzlichen Menüpunkt "Vokabeln verwalten". Hier kann eine Einschränkung nach Karteikästen vorgenommen werden.
  Es können Vokabeln ausgewählt werden.
  Ist nur eine Vokabel ausgewählt, kann sie bearbeitet oder kopiert werden. Bedingung beim Speichern ist, dass keine Dublette vermöge der Eindeutigkeit der Frage entstanden ist.
- Ist eine Vokabel oder sind mehrere Vokabeln ausgewählt, können sie anderen Karteikästen zugeordnet werden. Hierbei kann nur eine weitere Zuordnung erfolgen, da die Frage innerhalb des Users eindeutig bleiben muss.
+ Ist eine Vokabel oder sind mehrere Vokabeln ausgewählt, können sie anderen Karteikästen zugeordnet werden. Hierbei kann nur eine weitere Zuordnung erfolgen, da die Frage innerhalb des AppUsers eindeutig bleiben muss.
  Ziel einer Kopier- oder Transferaktion kann immer nur 1 Karteikasten sein. Dabei muss sich der Karteikasten beim Transferieren vom Quellkasten unterscheiden.
  
  Zu 2.: In eine Textarea werden alle Vokabeln nach einem bestimmten Format eingefügt. Für jede Vokabel wird überprüft, ob bereits eine Dublette vermöge der Eindeutigkeit der Frage vorhanden ist. Ist dies der Fall, kann entweder die alte übernommen werden, oder die neue ersetzt die alte, oder die neue wird bearbeitet, sodass die Frage eindeutig ist.

@@ -1,5 +1,6 @@
 Bei der Installation von PostGreSQL ist ein Password anzugeben.
 Ich habe dazu Pin12345 gewählt.
+Siehe dazu auch weiter unten, bei "FATAL: Rolle >>Heins<< existiert nicht"
 Der StackBuilder, der nach der PostGreSQL-Installation automatisch folgt, kann abgebrochen werden. Die Programme und Tools daraus werden nicht benötigt.
 
 Wenn man unmittelbar nach der Installation pgAdmin öffnet, sieht man zwei Datenbanken:
@@ -28,6 +29,15 @@ Die erste Maßnahme hat hingegen keine Wirkung.
 
 Die Datenbank "localhost" wird für die Applikationen verwendet. Ob es an der Einstellung spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
  in application.properties liegt, kann ich nicht sicher sagen.
+ 
+ In application.properties bewirken die Einträge
+ spring.datasource.username=postgres
+ spring.datasource.password=Pin12345
+ dass der User "postgres" mit dem Passwort Pin12345 verwendet wird. Dies ist das Passwort, was 
+ zu Beginn der Installation angegeben wurde. Fehlt der Eintrag spring.datasource.username, so
+ wird der User des Betriebssystems (in meinem Falle also Windows -> "Heins" genommen. Für diesen\
+ existiert keine Rolle auf der Datenbank, geschweige denn, dass für ihn ein Passwort definiert
+ wurde. Daher kommt es dann zu der Fehlermeldung "FATAL: Rolle >>Heins<< existiert nicht"
  
  Der Eintrag 
  spring.jpa.hibernate.ddl-auto=create

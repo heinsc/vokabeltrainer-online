@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import de.heins.vokabeltraineronline.business.entity.LearningStrategy;
 import de.heins.vokabeltraineronline.business.entity.SuccessStep;
-import de.heins.vokabeltraineronline.business.entity.User;
+import de.heins.vokabeltraineronline.business.entity.AppUser;
 
 @Repository
 public interface SuccessStepRepository extends CrudRepository<SuccessStep, Long>{
-	public List<SuccessStep> findByUser(User user);
-	public List<SuccessStep> findByUserAndLearningStrategy(User user, LearningStrategy learningStrategy);
+	public List<SuccessStep> findByAppUser(AppUser appUser);
+
+	public List<SuccessStep> findByAppUserAndName(AppUser appUser, String name);
 
 }

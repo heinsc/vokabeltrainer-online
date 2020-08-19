@@ -1,6 +1,6 @@
 package de.heins.vokabeltraineronline.web.entities;
 
-public class SessionUserForm {
+public class SessionAppUserForm {
 	private String email;
 	private Long id;
 	public Long getId() {

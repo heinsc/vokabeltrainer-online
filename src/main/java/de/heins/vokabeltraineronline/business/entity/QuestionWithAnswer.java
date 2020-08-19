@@ -12,13 +12,21 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"user", "question"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"appUser", "question"})})
 public class QuestionWithAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @ManyToOne
+	private LearningStrategy learningStrategy;
 
-    private String question;
+    public LearningStrategy getLearningStrategy() {
+		return learningStrategy;
+	}
+	public void setLearningStrategy(LearningStrategy learningStrategy) {
+		this.learningStrategy = learningStrategy;
+	}
+	private String question;
     
 	private String answer;
     
@@ -28,20 +36,22 @@ public class QuestionWithAnswer {
     private SuccessStep actualSuccessStep;
 
 	@ManyToOne
-	@JoinColumn(name="user")
-	private User user;
+	@JoinColumn(name="appUser")
+	private AppUser appUser;
     public QuestionWithAnswer() {
     }
     public QuestionWithAnswer(//
     		Long id2//
+    		, LearningStrategy learningStrategy//
     		, String question2//
     		, String answer2//
-    		, User user2//
+    		, AppUser appUser2//
     	) {
     	this.id=id2;
+    	this.learningStrategy=learningStrategy;
 		this.question=question2;
 		this.answer=answer2;
-		this.user=user2;
+		this.appUser=appUser2;
 		this.nextAppearance = Calendar.getInstance().getTime();
 	}
 
@@ -76,11 +86,11 @@ public class QuestionWithAnswer {
 	public void setActualSuccessStep(SuccessStep actualSuccessStep) {
 		this.actualSuccessStep = actualSuccessStep;
 	}
-	public User getUser() {
-		return user;
+	public AppUser getAppUser() {
+		return appUser;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
 	}
 
 }

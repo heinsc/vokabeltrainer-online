@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import de.heins.vokabeltraineronline.business.service.UserService;
+import de.heins.vokabeltraineronline.business.service.AppUserService;
 import de.heins.vokabeltraineronline.web.entities.RegisterForm;
-import de.heins.vokabeltraineronline.web.entities.SessionUserForm;
+import de.heins.vokabeltraineronline.web.entities.SessionAppUserForm;
 
 @Controller
-public class RegisterUserController {
+public class RegisterAppUserController {
 	@Autowired
-	private UserService userService;
+	private AppUserService appUserService;
 
-	public RegisterUserController() {
+	public RegisterAppUserController() {
 		super();
 	}
 
@@ -37,11 +37,11 @@ public class RegisterUserController {
 	) {
 		if (checkFields(registerForm)) {
 			try {
-				SessionUserForm sessionUserForm = userService.addUser(registerForm.getUser());
-				session.setAttribute("sessionUser", sessionUserForm);
+				SessionAppUserForm sessionAppUserForm = appUserService.addAppUser(registerForm.getAppUser());
+				session.setAttribute("sessionAppUser", sessionAppUserForm);
 				return "menu";
-			} catch (UserAlreadyExistsException e) {
-				registerForm.setUserAlreadyExists(true);
+			} catch (AppUserAlreadyExistsException e) {
+				registerForm.setAppUserAlreadyExists(true);
 			}
 		}
 		return "register";
@@ -49,7 +49,7 @@ public class RegisterUserController {
 
 	private boolean checkPasswords(RegisterForm registerForm) {
 		if (// 
-				!registerForm.getUser().getPassword().equals(registerForm.getPasswordRepeated())
+				!registerForm.getAppUser().getPassword().equals(registerForm.getPasswordRepeated())
 		) {
 			registerForm.setPasswordsNotEqual(true);
 			return false;
@@ -58,8 +58,8 @@ public class RegisterUserController {
 	}
 	private boolean checkFields(RegisterForm registerForm) {
 		if (//
-				Strings.isBlank(registerForm.getUser().getEmail())//
-				|| Strings.isBlank(registerForm.getUser().getPassword())//
+				Strings.isBlank(registerForm.getAppUser().getEmail())//
+				|| Strings.isBlank(registerForm.getAppUser().getPassword())//
 				|| Strings.isBlank(registerForm.getPasswordRepeated())
 		) {
 			registerForm.setMandatoryViolated(true);

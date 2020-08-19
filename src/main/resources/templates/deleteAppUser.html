@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Delete AppUser Account</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+
+	<h1 th:utext="#{deleteAppUser.deleteAppUser}">Delete AppUser</h1>
+	<div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+	
+
+	<div th:object="${register}">
+		<div th:if="*{mandatoryViolated}">
+			<p th:utext="#{deleteAppUser.mandatoryViolated}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div th:if="*{wrongPassword}">
+			<p th:utext="#{manageAppUser.wrongPassword(*{appUser.email})}" class="error">This appUser already exists.</p>
+		</div>
+	</div>
+
+	<form action="#" th:action="@{/doDeleteAppUser }"
+		th:object="${register}" method="post">
+		<p>
+			<div  th:text="#{register.password}">
+				Password:
+			</div>
+			 <input type="password" th:field="*{appUser.password}" />
+		</p>
+		<p>
+			<button type="submit" th:utext="#{deleteAppUser.delete}">Delete</button>
+		</p>
+	</form>
+	<a href="main.html" th:href="@{/main}" th:utext="#{deleteAppUser.cancel}">Cancel</a>
+</body>
+
+</html>
+

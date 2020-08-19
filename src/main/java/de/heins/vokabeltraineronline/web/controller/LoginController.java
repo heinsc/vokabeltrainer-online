@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import de.heins.vokabeltraineronline.business.service.UserService;
+import de.heins.vokabeltraineronline.business.service.AppUserService;
 import de.heins.vokabeltraineronline.web.entities.AuthentificationForm;
-import de.heins.vokabeltraineronline.web.entities.SessionUserForm;
+import de.heins.vokabeltraineronline.web.entities.SessionAppUserForm;
 
 @Controller
 public class LoginController {
 	@Autowired
-	UserService userService;
+	AppUserService appUserService;
 
 	public LoginController() {
 		super();
@@ -35,18 +35,18 @@ public class LoginController {
 			, StandardSessionFacade session
 	) {
 		if (//
-				Strings.isBlank(authentificationForm.getUser().getEmail())//
-				|| Strings.isBlank(authentificationForm.getUser().getPassword())//
+				Strings.isBlank(authentificationForm.getAppUser().getEmail())//
+				|| Strings.isBlank(authentificationForm.getAppUser().getPassword())//
 		) {
 			authentificationForm.setMandatoryViolated(true);
 			return "login";
 		}
 		try {
-			SessionUserForm sessionUserForLogin = userService.getSessionUserForLogin(authentificationForm.getUser());
-			session.setAttribute("sessionUser", sessionUserForLogin);
+			SessionAppUserForm sessionAppUserForLogin = appUserService.getSessionAppUserForLogin(authentificationForm.getAppUser());
+			session.setAttribute("sessionAppUser", sessionAppUserForLogin);
 			return "menu";
 		} catch (WrongPasswordException e) {
-			// wrong user credentials
+			// wrong appUser credentials
 			authentificationForm.setLoginError(true);
 			return "login";
 		}

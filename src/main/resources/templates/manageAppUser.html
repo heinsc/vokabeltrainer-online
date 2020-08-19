@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>Vokabeltrainer Online New Account</title>
+<title>Manage AppUser Account</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" media="all"
 	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
@@ -11,11 +11,19 @@
 
 <body>
 
-	<h1>Neuer Account</h1>
+	<h1 th:utext="#{manageAppUser.manageAppUser}">Manage AppUser</h1>
+	<h2 th:utext="#{manageAppUser.possibility1Header}">Possibility 1</h2>
+	<p th:utext="#{manageAppUser.possibility1Text}">first possibility description</p>
+	<h2 th:utext="#{manageAppUser.possibility2Header}">Possibility 2</h2>
+	<p th:utext="#{manageAppUser.possibility2Text}">second possibility description</p>
+	<h2 th:utext="#{manageAppUser.possibility3Header}">Possibility 3</h2>
+	<p th:utext="#{manageAppUser.possibility3Text}">third possibility description</p>
+	<div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+	
 
 	<div th:object="${register}">
 		<div th:if="*{mandatoryViolated}">
-			<p th:utext="#{register.mandatoryViolated}" class="error">Please fill all
+			<p th:utext="#{manageAppUser.mandatoryViolated}" class="error">Please fill all
 				fields!</p>
 		</div>
 		<div th:if="*{passwordsNotEqual}">
@@ -24,9 +32,12 @@
 		<div th:if="*{appUserAlreadyExists}">
 			<p th:utext="#{register.appUserAlreadyExists(*{appUser.email})}" class="error">This appUser already exists.</p>
 		</div>
+		<div th:if="*{wrongPassword}">
+			<p th:utext="#{manageAppUser.wrongPassword(*{appUser.email})}" class="error">This appUser already exists.</p>
+		</div>
 	</div>
 
-	<form action="#" th:action="@{/addAccount }"
+	<form action="#" th:action="@{/changeAppUser }"
 		th:object="${register}" method="post">
 		<p>
 			<div th:text="#{register.email}">
@@ -47,10 +58,10 @@
 			 <input type="password" th:field="*{passwordRepeated}" />
 		</p>
 		<p>
-			<button type="submit" th:utext="#{register.addAppUser}">Add Account</button>
+			<button type="submit" th:utext="#{manageAppUser.submitChanges}">Add Account</button>
 		</p>
 	</form>
-	<a href="login.html" th:href="@{/login}" th:utext="#{register.cancel}">Cancel</a>
+	<a href="main.html" th:href="@{/main}" th:utext="#{manageAppUser.cancel}">Cancel</a>
 </body>
 
 </html>

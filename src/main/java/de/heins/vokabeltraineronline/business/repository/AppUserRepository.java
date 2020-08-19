@@ -5,11 +5,13 @@ import java.util.List;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import de.heins.vokabeltraineronline.business.entity.LearningStrategy;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
 
 @Repository
-public interface LearningStrategyRepository extends CrudRepository<LearningStrategy, Long>{
-	public List<LearningStrategy> findByAppUser(AppUser appUser);
+public interface AppUserRepository extends CrudRepository<AppUser, Long>{
+
+	public List<AppUser> findByEmail(String email);
+
+	public List<AppUser> findByEmailAndPassword(String email, String password);
 
 }

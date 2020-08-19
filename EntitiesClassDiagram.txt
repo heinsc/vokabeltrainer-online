@@ -1,7 +1,7 @@
-// https://yuml.me/diagram/scruffy/class/draw
+// editOrCreateSuccessStep=Erfolgsstufe bearbeiten
 // ------------------
 
-[User|email:String;passQuestionWithAnswer:hiddenString]
+[AppUser|email:String;passQuestionWithAnswer:hiddenString]
 [IndexBox|name:string]
 [LearningStrategy|name:String;maxNumberOfWrongAnswersPerSession:int]
 [QuestionWithAnswer|question:string;answer:string;nextAppearance:Date]
@@ -14,14 +14,14 @@
 [SuccessStep]++-1>[BehaviourIfWrong]
 [QuestionWithAnswer]-[note: special behaviour on answer{bg:wheat}]
 
-[IndexBox]->[User]
-[LearningStrategy]->[User]
-[QuestionWithAnswer]->[User]
-[SuccessStep]->[User]
+[IndexBox]->[AppUser]
+[LearningStrategy]->[AppUser]
+[QuestionWithAnswer]->[AppUser]
+[SuccessStep]->[AppUser]
 
-[IndexBox]->[LearningStrategy]
 [IndexBox]<>-questionWithAnswers / 0..*>[QuestionWithAnswer]
 
-[LearningStrategy]<learningStrategy / 1-successSteps (ordered) / 0..*>[SuccessStep]
+[LearningStrategy]-successSteps (ordered) / 0..*>[SuccessStep]
 
+[QuestionWithAnswer]->[LearningStrategy]
 [QuestionWithAnswer]-actualSuccessStep / 0..1>[SuccessStep]

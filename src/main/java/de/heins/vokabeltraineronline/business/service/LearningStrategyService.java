@@ -7,30 +7,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.heins.vokabeltraineronline.business.entity.LearningStrategy;
-import de.heins.vokabeltraineronline.business.entity.User;
+import de.heins.vokabeltraineronline.business.entity.AppUser;
 import de.heins.vokabeltraineronline.business.repository.LearningStrategyRepository;
-import de.heins.vokabeltraineronline.business.repository.UserRepository;
+import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
 import de.heins.vokabeltraineronline.web.entities.LearningStrategyForm;
-import de.heins.vokabeltraineronline.web.entities.SessionUserForm;
+import de.heins.vokabeltraineronline.web.entities.SessionAppUserForm;
 
 @Service
 public class LearningStrategyService {
 	@Autowired
 	private LearningStrategyRepository learningStrategyRepository;
 	@Autowired
-	private UserRepository userRepository;
+	private AppUserRepository appUserRepository;
 	public LearningStrategyForm getForLearningStrategy(LearningStrategy learningStrategy) {
 		LearningStrategyForm learningStrategyForm = new LearningStrategyForm();
 		learningStrategyForm.setName(learningStrategy.getName());
 		return learningStrategyForm;
 	}
-	public List<LearningStrategyForm> findAllForUser(SessionUserForm sessionUserForm) {
-		List<User> users = userRepository.findByEmail(sessionUserForm.getEmail());
-		if (users.size() == 1) {
-			User user = users.get(0);
+	public List<LearningStrategyForm> findAllForAppUser(SessionAppUserForm sessionAppUserForm) {
+		List<AppUser> appUsers = appUserRepository.findByEmail(sessionAppUserForm.getEmail());
+		if (appUsers.size() == 1) {
+			AppUser appUser = appUsers.get(0);
 			List<LearningStrategyForm> learningStrategyForms = new ArrayList<LearningStrategyForm>();
 			try {
-				List<LearningStrategy> learningStrategies = learningStrategyRepository.findByUser(user);
+				List<LearningStrategy> learningStrategies = learningStrategyRepository.findByAppUser(appUser);
 				learningStrategies.iterator().forEachRemaining(//
 						learningStrategy -> {
 							LearningStrategyForm learningStrategyForm = new LearningStrategyForm();
@@ -45,7 +45,7 @@ public class LearningStrategyService {
 			}
 			return learningStrategyForms;
 		} else {
-			throw new RuntimeException("No User found or User not unique by email");
+			throw new RuntimeException("No AppUser found or AppUser not unique by email");
 		}
 	}
 }

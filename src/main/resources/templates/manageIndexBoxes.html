@@ -12,16 +12,11 @@
 <body>
 
 	<h1 th:utext="#{manageIndexBoxes.manageIndexBoxes}">Manage your index boxes</h1>
-    <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionUser')})}">LoginInfo</div>
+    <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
 	<h2 th:utext="#{manageIndexBoxes.indexBoxes}">Index Boxes</h2>
 	<table>
-      <tr>
-        <th>NAME</th>
-        <th>LEARNING STRATEGY</th>
-      </tr>
       <tr th:each="indexBox : ${indexBoxes}">
         <td th:text="${indexBox.name}">Onions</td>
-        <td th:text="${indexBox.learningStrategyForm.name}">2.41</td>
       </tr>
     </table>
   
@@ -33,8 +28,21 @@
     </table>
 
     <h2 th:utext="#{manageIndexBoxes.successSteps}">Success Steps</h2>
+	<table>
+	  <tr>
+	    <th>NAME</th>
+	    <th>NEXT_APPEARANCE_IN_DAYS</th>
+	    <th>BEHAVIOUR_IF_WRONG</th>
+	  </tr>
+      <tr th:each="successStep : ${successSteps}">
+        <td th:text="${successStep.name}">Onions</td>
+        <td th:text="${successStep.nextAppearanceInDays}">Onions</td>
+        <td th:text="${successStep.behaviourIfWrong}">Onions</td>
+      </tr>
+    </table>
+	<a href="editSuccessStep.html" th:href="@{/createSuccessStep}" th:utext="#{manageIndexBoxes.createNewSuccessStep}">Create New SuccessStep</a>
 	<br/>
-	<a href="menu.html" th:href="@{/menu}" th:utext="#{manageIndexBoxes.menu}">delete user</a>
+	<a href="menu.html" th:href="@{/menu}" th:utext="#{manageIndexBoxes.menu}">delete appUser</a>
 	<a href="login.html" th:href="@{/login}" th:utext="#{manageIndexBoxes.logout}">Logout</a>
 </body>
 

@@ -6,11 +6,11 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import de.heins.vokabeltraineronline.business.entity.IndexBox;
-import de.heins.vokabeltraineronline.business.entity.User;
+import de.heins.vokabeltraineronline.business.entity.AppUser;
 
 @Repository
 public interface IndexBoxRepository extends CrudRepository<IndexBox, Long>{
 
-	public List<IndexBox> findByUser(User user);
+	public List<IndexBox> findByAppUser(AppUser appUser);
 
 }

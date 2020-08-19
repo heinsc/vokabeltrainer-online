@@ -21,7 +21,7 @@ Passwort gefüllt richtig, Passwort wiederholen gefüllt gleich, E-Mail-Adresse 
 Passwort gefüllt falsch, Passwort wiederholen gefüllt gleich, E-Mail-Adresse gefüllt existiert
 Passwort gefüllt richtig, Passwort wiederholen leer, E-Mail-Adresse gefüllt existiert
 Passwort gefüllt falsch, Passwort wiederholen leer, E-Mail-Adresse gefüllt existiert
--> UserAlreadyExistsException
+-> AppUserAlreadyExistsException
 
 Passwort gefüllt falsch, Passwort wiederholen leer, E-Mail-Adresse gefüllt neu
 Passwort falsch -> WrongPasswordException

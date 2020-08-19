@@ -3,12 +3,12 @@ package de.heins.vokabeltraineronline.web.entities;
 public class AuthentificationForm {
 	private Boolean mandatoryViolated;
 	private Boolean loginError;
-	private UserForm user;
-	public UserForm getUser() {
-		return user;
+	private AppUserForm appUser;
+	public AppUserForm getAppUser() {
+		return appUser;
 	}
-	public void setUser(UserForm user) {
-		this.user = user;
+	public void setAppUser(AppUserForm appUser) {
+		this.appUser = appUser;
 	}
 	public Boolean getMandatoryViolated() {
 		return mandatoryViolated;

@@ -5,35 +5,35 @@ import java.util.Date;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserFactory {
+public class AppUserFactory {
 	private Long id;
 	private String email;
 	private String password;
 	private Date lastLogin;
 
-	public UserFactory setId(Long id) {
+	public AppUserFactory setId(Long id) {
 		this.id = id;
 		return this;
 	}
 
-	public UserFactory setEMail(String email) {
+	public AppUserFactory setEMail(String email) {
 		this.email=email;
 		return this;
 	}
 
-	public UserFactory setPassword(String password) {
+	public AppUserFactory setPassword(String password) {
 		this.password=password;
 		return this;
 	}
 
-	public UserFactory setLastLogin(Date time) {
+	public AppUserFactory setLastLogin(Date time) {
 		this.lastLogin=time;
 		return this;
 	}
 
-	public User getNewObject() {
+	public AppUser getNewObject() {
 		// TODO Auto-generated method stub
-		return new User(//
+		return new AppUser(//
 				this.id//
 				, this.email//
 				, this.password//

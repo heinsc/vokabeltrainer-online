@@ -1,6 +1,8 @@
 package de.heins.vokabeltraineronline.business.entity;
 
 
+import javax.persistence.ManyToOne;
+
 import org.springframework.stereotype.Component;
 @Component
 public class QuestionWithAnswerFactory {
@@ -10,8 +12,10 @@ public class QuestionWithAnswerFactory {
     
 	private String answer;
 	
-	private User user;
+	private AppUser appUser;
     
+	private LearningStrategy learningStrategy;
+
     public QuestionWithAnswerFactory() {
     }
 
@@ -27,16 +31,21 @@ public class QuestionWithAnswerFactory {
 		this.answer = answer;
 		return this;
 	}
-	public QuestionWithAnswerFactory setUser(User user) {
-		this.user=user;
+	public QuestionWithAnswerFactory setAppUser(AppUser appUser) {
+		this.appUser=appUser;
+		return this;
+	}
+	public QuestionWithAnswerFactory setLearningStrategy(LearningStrategy learningStrategy) {
+		this.learningStrategy = learningStrategy;
 		return this;
 	}
     public QuestionWithAnswer getNewObject() {
     	return new QuestionWithAnswer(//
     			this.id//
+    			, this.learningStrategy//
     			, this.question
     			, this.answer//
-    			, this.user//
+    			, this.appUser//
     	);
  	}
 }

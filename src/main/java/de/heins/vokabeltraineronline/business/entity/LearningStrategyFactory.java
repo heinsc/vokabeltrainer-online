@@ -7,7 +7,7 @@ public class LearningStrategyFactory {
     private Long id;
 
     private String name;
-    private User user;
+    private AppUser appUser;
     private BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull; 
     private int maxNumberOfWrongAnswersPerSession;
     public LearningStrategyFactory() {
@@ -22,8 +22,8 @@ public class LearningStrategyFactory {
 		this.id = id;
 		return this;
 	}
-	public LearningStrategyFactory setUser(User user) {
-		this.user=user;
+	public LearningStrategyFactory setAppUser(AppUser appUser) {
+		this.appUser=appUser;
 		return this;
 	}
    public LearningStrategyFactory setBehaviourIfPoolWithWrongAnswersIsFull(BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull) {
@@ -42,7 +42,7 @@ public LearningStrategy getNewObject() {
     			, this.name//
     			, this.maxNumberOfWrongAnswersPerSession//
     			, this.behaviourIfPoolWithWrongAnswersIsFull//
-    			, this.user//
+    			, this.appUser//
     	);
  	}
 }

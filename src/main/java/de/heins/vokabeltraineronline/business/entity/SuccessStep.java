@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"name", "user"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"name", "appUser"})})
 public class SuccessStep {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,14 +20,11 @@ public class SuccessStep {
     
 	private int nextAppearanceInDays;
 	
-	@ManyToOne
-	private LearningStrategy learningStrategy;
-	
 	private BehaviourIfWrong behaviourIfWrong;
 
 	@ManyToOne
-	@JoinColumn(name="user")
-	private User user;
+	@JoinColumn(name="appUser")
+	private AppUser appUser;
 	
     public SuccessStep() {
     }
@@ -35,15 +32,14 @@ public class SuccessStep {
     		Long id2//
     		, String name2//
     		, int nextAppearanceInDays2//
-    		, LearningStrategy lerLearningStrategy//
     		, BehaviourIfWrong behaviourIfWrong//
-    		, User user//
+    		, AppUser appUser//
     	) {
     	this.id=id2;
 		this.name=name2;
 		this.nextAppearanceInDays=nextAppearanceInDays2;
 		this.behaviourIfWrong=behaviourIfWrong;
-		this.user=user;
+		this.appUser=appUser;
 	}
 
 	public Long getId() {
@@ -66,23 +62,17 @@ public class SuccessStep {
 	public void setNextAppearanceInDays(int durationOfNextAppearance) {
 		this.nextAppearanceInDays = durationOfNextAppearance;
 	}
-	public LearningStrategy getLearningStrategy() {
-		return learningStrategy;
-	}
-	public void setLearningStrategy(LearningStrategy learningStrategy) {
-		this.learningStrategy = learningStrategy;
-	}
 	public BehaviourIfWrong getBehaviourIfWrong() {
 		return behaviourIfWrong;
 	}
 	public void setBehaviourIfWrong(BehaviourIfWrong behaviourIfWrong) {
 		this.behaviourIfWrong = behaviourIfWrong;
 	}
-	public User getUser() {
-		return user;
+	public AppUser getAppUser() {
+		return appUser;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
 	}
 
 

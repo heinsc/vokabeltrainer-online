@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"user", "name"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"appUser", "name"})})
 public class LearningStrategy {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,8 +30,8 @@ public class LearningStrategy {
 	private List<SuccessStep> successSteps;
 
 	@ManyToOne
-	@JoinColumn(name="user")
-	private User user;
+	@JoinColumn(name="appUser")
+	private AppUser appUser;
     public LearningStrategy() {
     }
     public LearningStrategy(//
@@ -39,13 +39,13 @@ public class LearningStrategy {
     		, String name//
     		, int maxNumberOfWrongAnswersPerSession//
     		, BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull//
-    		, User user
+    		, AppUser appUser
     	) {
     	this.id=id2;
 		this.name=name;
 		this.maxNumberOfWrongAnswersPerSession=maxNumberOfWrongAnswersPerSession;
 		this.behaviourIfPoolWithWrongAnswersIsFull=behaviourIfPoolWithWrongAnswersIsFull;
-		this.user=user;
+		this.appUser=appUser;
 		this.successSteps=new LinkedList<SuccessStep>();
 	}
 
@@ -77,11 +77,11 @@ public class LearningStrategy {
 	public void setBehaviourIfPoolWithWrongAnswersIsFull(BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull) {
 		this.behaviourIfPoolWithWrongAnswersIsFull = behaviourIfPoolWithWrongAnswersIsFull;
 	}
-	public User getUser() {
-		return user;
+	public AppUser getAppUser() {
+		return appUser;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
 	}
 	public void addSuccessStep(SuccessStep step) {
 		this.successSteps.add(step);

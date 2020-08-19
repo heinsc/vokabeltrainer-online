@@ -3,14 +3,14 @@ package de.heins.vokabeltraineronline.web.entities;
 public class RegisterForm {
 	private Boolean mandatoryViolated;
 	private Boolean passwordsNotEqual;
-	private Boolean userAlreadyExists;
+	private Boolean appUserAlreadyExists;
 	private Boolean wrongPassword;
-	private UserForm user;
-	public UserForm getUser() {
-		return user;
+	private AppUserForm appUser;
+	public AppUserForm getAppUser() {
+		return appUser;
 	}
-	public void setUser(UserForm user) {
-		this.user = user;
+	public void setAppUser(AppUserForm appUser) {
+		this.appUser = appUser;
 	}
 	private String passwordRepeated;
 	public String getPasswordRepeated() {
@@ -25,11 +25,11 @@ public class RegisterForm {
 	public void setMandatoryViolated(Boolean mandatory) {
 		this.mandatoryViolated = mandatory;
 	}
-	public Boolean getUserAlreadyExists() {
-		return userAlreadyExists;
+	public Boolean getAppUserAlreadyExists() {
+		return appUserAlreadyExists;
 	}
-	public void setUserAlreadyExists(Boolean loginError) {
-		this.userAlreadyExists = loginError;
+	public void setAppUserAlreadyExists(Boolean loginError) {
+		this.appUserAlreadyExists = loginError;
 	}
 	public Boolean getPasswordsNotEqual() {
 		return passwordsNotEqual;

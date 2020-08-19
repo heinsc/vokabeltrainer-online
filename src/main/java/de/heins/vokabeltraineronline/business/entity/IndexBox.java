@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"user", "name"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"appUser", "name"})})
 public class IndexBox  {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,26 +22,23 @@ public class IndexBox  {
     
     private String name;
     
-    @ManyToOne
-	private LearningStrategy learningStrategy;
-	
-	@ManyToMany
+    @ManyToMany
 	private Set<QuestionWithAnswer> questionWithAnswers;
 
-	@JoinColumn(name = "user")
+	@JoinColumn(name = "appUser")
 	@ManyToOne
-	private User user;
+	private AppUser appUser;
     
     public IndexBox() {
     }
     public IndexBox(//
     		Long id2//
     		, String name2//
-    		, User user2//
+    		, AppUser appUser2//
     	) {
     	this.id=id2;
 		this.name=name2;
-		this.user=user2;
+		this.appUser=appUser2;
 		
 		this.questionWithAnswers=new HashSet<QuestionWithAnswer>();
 	}
@@ -61,17 +58,11 @@ public class IndexBox  {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public LearningStrategy getLearningStrategy() {
-		return learningStrategy;
+	public AppUser getAppUser() {
+		return appUser;
 	}
-	public void setLearningStrategy(LearningStrategy learningStrategy) {
-		this.learningStrategy = learningStrategy;
-	}
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setAppUser(AppUser appUser) {
+		this.appUser = appUser;
 	}
 
 	public void addQuestionWithAnswer(QuestionWithAnswer questionWithAnswer) {
