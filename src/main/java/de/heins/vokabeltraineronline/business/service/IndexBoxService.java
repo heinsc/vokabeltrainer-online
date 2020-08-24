@@ -10,8 +10,8 @@ import de.heins.vokabeltraineronline.business.repository.IndexBoxRepository;
 import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
 import de.heins.vokabeltraineronline.business.entity.IndexBox;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
-import de.heins.vokabeltraineronline.web.entities.IndexBoxForm;
-import de.heins.vokabeltraineronline.web.entities.SessionAppUserForm;
+import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
+import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
 
 
 @Service
@@ -20,15 +20,15 @@ public class IndexBoxService {
 	private IndexBoxRepository indexBoxRepository;
 	@Autowired
 	private AppUserRepository appUserRepository;
-	public List<IndexBoxForm> findAllForAppUser(SessionAppUserForm sessionAppUserForm) {
+	public List<IndexBoxAttrRef> findAllForAppUser(SessionAppUser sessionAppUserForm) {
 		List<AppUser> appUsers = appUserRepository.findByEmail(sessionAppUserForm.getEmail());
 		if (appUsers.size() == 1) {
 			AppUser appUser = appUsers.get(0);
-			List<IndexBoxForm> indexBoxForms = new ArrayList<IndexBoxForm>();
+			List<IndexBoxAttrRef> indexBoxForms = new ArrayList<IndexBoxAttrRef>();
 			try {
 				List<IndexBox> indexBoxes = indexBoxRepository.findByAppUser(appUser);
 				indexBoxes.iterator().forEachRemaining(indexBox -> {
-					IndexBoxForm indexBoxForm = new IndexBoxForm();
+					IndexBoxAttrRef indexBoxForm = new IndexBoxAttrRef();
 					indexBoxForm.setName(indexBox.getName());
 					indexBoxForms.add(indexBoxForm);
 				});

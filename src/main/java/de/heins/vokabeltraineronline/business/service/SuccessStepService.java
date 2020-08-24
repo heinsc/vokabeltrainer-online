@@ -2,6 +2,7 @@ package de.heins.vokabeltraineronline.business.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +13,13 @@ import de.heins.vokabeltraineronline.business.entity.BehaviourIfWrong;
 import de.heins.vokabeltraineronline.business.entity.SuccessStep;
 import de.heins.vokabeltraineronline.business.entity.SuccessStepFactory;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
-import de.heins.vokabeltraineronline.web.entities.SessionAppUserForm;
-import de.heins.vokabeltraineronline.web.entities.SuccessStepForm;
+import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
+import de.heins.vokabeltraineronline.web.entities.attributereference.SuccessStepAttrRef;
 
 
 @Service
 public class SuccessStepService {
+	private static final boolean INITIAL_VALUE_FOR_SELECTED_FALSE = false;
 	@Autowired
 	private SuccessStepRepository successStepRepository;
 	@Autowired
@@ -25,43 +27,46 @@ public class SuccessStepService {
 	@Autowired
 	private SuccessStepFactory successStepFactory;
 	
-	public static final SuccessStepForm EMPTY_SUCCESS_STEP = new SuccessStepForm();
-	public List<SuccessStepForm> findAllForAppUser(SessionAppUserForm sessionAppUserForm) {
+	public static final SuccessStepAttrRef EMPTY_SUCCESS_STEP = new SuccessStepAttrRef();
+	
+	public List<SuccessStepAttrRef> findAllForAppUser(SessionAppUser sessionAppUserForm) {
 		List<AppUser> appUsers = appUserRepository.findByEmail(sessionAppUserForm.getEmail());
 		if (appUsers.size() == 1) {
 			AppUser appUser = appUsers.get(0);
-			List<SuccessStepForm> successStepForms = new ArrayList<SuccessStepForm>();
+			List<SuccessStepAttrRef> successStepAttrRefs = new ArrayList<SuccessStepAttrRef>();
 			try {
 				List<SuccessStep> successSteps = successStepRepository.findByAppUser(appUser);
 				successSteps.iterator().forEachRemaining(successStep -> {
-					SuccessStepForm successStepForm = new SuccessStepForm();
-					successStepForm.setName(successStep.getName());
-					successStepForm.setNextAppearanceInDays(successStep.getNextAppearanceInDays());
-					successStepForm.setBehaviourIfWrong(successStep.getBehaviourIfWrong().name());
-					successStepForms.add(successStepForm);
+					SuccessStepAttrRef successStepAttrRef = new SuccessStepAttrRef();
+					successStepAttrRef.setName(successStep.getName());
+					successStepAttrRef.setNextAppearanceInDays(successStep.getNextAppearanceInDays());
+					successStepAttrRef.setBehaviourIfWrong(successStep.getBehaviourIfWrong().name());
+					successStepAttrRef.setSelected(INITIAL_VALUE_FOR_SELECTED_FALSE);
+					successStepAttrRefs.add(successStepAttrRef);
 				});
 			} catch (Exception e) {
 				// this occurs only if there are no items in the database table,
 				// or the table wasn't created yet.
 				// nothing to do then.
 			}
-			return successStepForms;
+			return successStepAttrRefs;
 		} else {
 			throw new RuntimeException("No AppUser found or AppUser not unique by email");
 		}
 	}
-	public SuccessStepForm findForAppUserAndName(SessionAppUserForm sessionAppUserForm, String name) {
+	public SuccessStepAttrRef findForAppUserAndName(SessionAppUser sessionAppUserForm, String name) {
 		AppUser appUser = appUserRepository.findByEmail(sessionAppUserForm.getEmail()).get(0);
 		
 		try {
 			List<SuccessStep> resultByAppUserAndName = successStepRepository.findByAppUserAndName(appUser, name);
 			if (!resultByAppUserAndName.isEmpty()) {
 				SuccessStep successStep = resultByAppUserAndName.get(0);
-				SuccessStepForm successStepForm = new SuccessStepForm();
-				successStepForm.setName(successStep.getName());
-				successStepForm.setNextAppearanceInDays(successStep.getNextAppearanceInDays());
-				successStepForm.setBehaviourIfWrong(successStep.getBehaviourIfWrong().name());
-				return successStepForm;
+				SuccessStepAttrRef successStepAttrRef = new SuccessStepAttrRef();
+				successStepAttrRef.setName(successStep.getName());
+				successStepAttrRef.setNextAppearanceInDays(successStep.getNextAppearanceInDays());
+				successStepAttrRef.setBehaviourIfWrong(successStep.getBehaviourIfWrong().name());
+				successStepAttrRef.setSelected(INITIAL_VALUE_FOR_SELECTED_FALSE);
+				return successStepAttrRef;
 			}
 		} catch (Exception e) {
 			// this occurs only if there are no items in the database table,
@@ -70,7 +75,7 @@ public class SuccessStepService {
 		}
 		return EMPTY_SUCCESS_STEP;
 	}
-	public void update(SessionAppUserForm appUserForm, SuccessStepForm successStepForm, String oldName) {
+	public void update(SessionAppUser appUserForm, SuccessStepAttrRef successStepAttrRef, String oldName) {
 		AppUser appUser = appUserRepository.findByEmail(appUserForm.getEmail()).get(0);
 		List<SuccessStep> findByAppUserAndNameList = new ArrayList<SuccessStep>();
 		try {
@@ -83,17 +88,24 @@ public class SuccessStepService {
 		SuccessStep successStep;
 		if (findByAppUserAndNameList.isEmpty()) {//
 				successStep = successStepFactory//
-					.setName(successStepForm.getName())//
-					.setNextAppearanceInDays(successStepForm.getNextAppearanceInDays())//
-					.setBehaviourIfWrong(BehaviourIfWrong.valueOf(successStepForm.getBehaviourIfWrong()))//
+					.setName(successStepAttrRef.getName())//
+					.setNextAppearanceInDays(successStepAttrRef.getNextAppearanceInDays())//
+					.setBehaviourIfWrong(BehaviourIfWrong.valueOf(successStepAttrRef.getBehaviourIfWrong()))//
 					.setAppUser(appUser)//
 					.getNewObject();
 		} else {
 			successStep = findByAppUserAndNameList.get(0); //
-			successStep.setName(successStepForm.getName());//
-			successStep.setNextAppearanceInDays(successStepForm.getNextAppearanceInDays());//
-			successStep.setBehaviourIfWrong(BehaviourIfWrong.valueOf(successStepForm.getBehaviourIfWrong()));
+			successStep.setName(successStepAttrRef.getName());//
+			successStep.setNextAppearanceInDays(successStepAttrRef.getNextAppearanceInDays());//
+			successStep.setBehaviourIfWrong(BehaviourIfWrong.valueOf(successStepAttrRef.getBehaviourIfWrong()));
 		}
 		successStepRepository.save(successStep);
+	}
+	public List<String> getAllBehavioursIfWrongAsStringArray() {
+		// TODO Auto-generated method stub
+		return java.util.stream.Stream//
+				.of(BehaviourIfWrong.values())//
+				.map(BehaviourIfWrong::name)//
+				.collect(Collectors.toList());
 	}
 }

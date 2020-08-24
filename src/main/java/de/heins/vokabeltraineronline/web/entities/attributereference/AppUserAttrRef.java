@@ -1,6 +1,6 @@
-package de.heins.vokabeltraineronline.web.entities;
+package de.heins.vokabeltraineronline.web.entities.attributereference;
 
-public class AppUserForm {
+public class AppUserAttrRef {
 	private String email;
 	private String password;
 	public String getEmail() {

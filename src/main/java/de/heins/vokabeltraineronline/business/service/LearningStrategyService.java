@@ -10,8 +10,8 @@ import de.heins.vokabeltraineronline.business.entity.LearningStrategy;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
 import de.heins.vokabeltraineronline.business.repository.LearningStrategyRepository;
 import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
-import de.heins.vokabeltraineronline.web.entities.LearningStrategyForm;
-import de.heins.vokabeltraineronline.web.entities.SessionAppUserForm;
+import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
+import de.heins.vokabeltraineronline.web.entities.attributereference.LearningStrategyModAttr;
 
 @Service
 public class LearningStrategyService {
@@ -19,21 +19,21 @@ public class LearningStrategyService {
 	private LearningStrategyRepository learningStrategyRepository;
 	@Autowired
 	private AppUserRepository appUserRepository;
-	public LearningStrategyForm getForLearningStrategy(LearningStrategy learningStrategy) {
-		LearningStrategyForm learningStrategyForm = new LearningStrategyForm();
+	public LearningStrategyModAttr getForLearningStrategy(LearningStrategy learningStrategy) {
+		LearningStrategyModAttr learningStrategyForm = new LearningStrategyModAttr();
 		learningStrategyForm.setName(learningStrategy.getName());
 		return learningStrategyForm;
 	}
-	public List<LearningStrategyForm> findAllForAppUser(SessionAppUserForm sessionAppUserForm) {
+	public List<LearningStrategyModAttr> findAllForAppUser(SessionAppUser sessionAppUserForm) {
 		List<AppUser> appUsers = appUserRepository.findByEmail(sessionAppUserForm.getEmail());
 		if (appUsers.size() == 1) {
 			AppUser appUser = appUsers.get(0);
-			List<LearningStrategyForm> learningStrategyForms = new ArrayList<LearningStrategyForm>();
+			List<LearningStrategyModAttr> learningStrategyForms = new ArrayList<LearningStrategyModAttr>();
 			try {
 				List<LearningStrategy> learningStrategies = learningStrategyRepository.findByAppUser(appUser);
 				learningStrategies.iterator().forEachRemaining(//
 						learningStrategy -> {
-							LearningStrategyForm learningStrategyForm = new LearningStrategyForm();
+							LearningStrategyModAttr learningStrategyForm = new LearningStrategyModAttr();
 							learningStrategyForm.setName(learningStrategy.getName());
 							learningStrategyForms.add(learningStrategyForm);
 						}

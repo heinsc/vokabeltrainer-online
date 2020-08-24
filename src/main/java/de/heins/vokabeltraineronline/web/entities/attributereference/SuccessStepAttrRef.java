@@ -1,9 +1,14 @@
-package de.heins.vokabeltraineronline.web.entities;
+package de.heins.vokabeltraineronline.web.entities.attributereference;
 
 
-public class SuccessStepForm {
+public class SuccessStepAttrRef {
 	private String name;
 	private int nextAppearanceInDays;
+	
+	private String behaviourIfWrong;
+	//transient
+	private boolean selected;
+
 	public int getNextAppearanceInDays() {
 		return nextAppearanceInDays;
 	}
@@ -20,15 +25,20 @@ public class SuccessStepForm {
 		this.behaviourIfWrong = behaviourIfWrong;
 	}
 
-	private String behaviourIfWrong;
-	
-
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean getSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean b) {
+		this.selected = b;
 	}
 	
 	

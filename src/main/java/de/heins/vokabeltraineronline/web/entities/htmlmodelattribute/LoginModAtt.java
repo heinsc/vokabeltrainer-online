@@ -1,13 +1,15 @@
-package de.heins.vokabeltraineronline.web.entities;
+package de.heins.vokabeltraineronline.web.entities.htmlmodelattribute;
 
-public class AuthentificationForm {
+import de.heins.vokabeltraineronline.web.entities.attributereference.AppUserAttrRef;
+
+public class LoginModAtt {
 	private Boolean mandatoryViolated;
 	private Boolean loginError;
-	private AppUserForm appUser;
-	public AppUserForm getAppUser() {
+	private AppUserAttrRef appUser;
+	public AppUserAttrRef getAppUser() {
 		return appUser;
 	}
-	public void setAppUser(AppUserForm appUser) {
+	public void setAppUser(AppUserAttrRef appUser) {
 		this.appUser = appUser;
 	}
 	public Boolean getMandatoryViolated() {

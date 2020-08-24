@@ -1,6 +1,6 @@
-package de.heins.vokabeltraineronline.web.entities;
+package de.heins.vokabeltraineronline.web.entities.attributereference;
 
-public class IndexBoxForm {
+public class IndexBoxAttrRef {
 	private String name;
 	public String getName() {
 		return name;

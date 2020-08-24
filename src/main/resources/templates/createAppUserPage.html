@@ -13,44 +13,44 @@
 
 	<h1>Neuer Account</h1>
 
-	<div th:object="${register}">
+	<div th:object="${createAppUserModAtt}">
 		<div th:if="*{mandatoryViolated}">
-			<p th:utext="#{register.mandatoryViolated}" class="error">Please fill all
+			<p th:utext="#{createAppUserPage.mandatoryViolated}" class="error">Please fill all
 				fields!</p>
 		</div>
 		<div th:if="*{passwordsNotEqual}">
-			<p th:text="#{register.passwordsNotEqual}" class="error">The passwords are different.</p>
+			<p th:text="#{createAppUserPage.passwordsNotEqual}" class="error">The passwords are different.</p>
 		</div>
 		<div th:if="*{appUserAlreadyExists}">
-			<p th:utext="#{register.appUserAlreadyExists(*{appUser.email})}" class="error">This appUser already exists.</p>
+			<p th:utext="#{createAppUserPage.appUserAlreadyExists(*{appUser.email})}" class="error">This appUser already exists.</p>
 		</div>
 	</div>
 
-	<form action="#" th:action="@{/addAccount }"
-		th:object="${register}" method="post">
+	<form action="#" th:action="@{/controlActionCreateAppUser }"
+		th:object="${createAppUserModAtt}" method="post">
 		<p>
-			<div th:text="#{register.email}">
+			<div th:text="#{createAppUserPage.email}">
 				E-Mail:
 			</div>
 			 <input type="text" th:field="*{appUser.email}" />
 		</p>
 		<p>
-			<div  th:text="#{register.password}">
+			<div  th:text="#{createAppUserPage.password}">
 				Password:
 			</div>
 			 <input type="password" th:field="*{appUser.password}" />
 		</p>
 		<p>
-			<div  th:text="#{register.passwordRepeated}">
+			<div  th:text="#{createAppUserPage.passwordRepeated}">
 				Password:
 			</div>
 			 <input type="password" th:field="*{passwordRepeated}" />
 		</p>
 		<p>
-			<button type="submit" th:utext="#{register.addAppUser}">Add Account</button>
+			<button type="submit" name="submit" th:utext="#{createAppUserPage.addAppUser}">Add Account</button>
+			<button type="submit" name="cancel" th:utext="#{createAppUserPage.cancel}">Cancel</button>
 		</p>
 	</form>
-	<a href="login.html" th:href="@{/login}" th:utext="#{register.cancel}">Cancel</a>
 </body>
 
 </html>

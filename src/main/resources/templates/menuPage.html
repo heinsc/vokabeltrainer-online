@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Words Trainer Main Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+
+	<h1 th:utext="#{menuPage.mainmenu}">Online-Vokabeltrainer Hauptmenü</h1>
+    <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+	<br/>
+	<form action="#" th:action="@{/controlActionMenu }" method="post">
+		<button type="submit" name="manageConfigurations" th:utext="#{menuPage.manageConfigurations}" >Manage Configurations</button>
+		<br/>
+		<button type="submit" name="editAppUser" th:utext="#{menuPage.editAppUser}" >Edit AppUser</button>
+		<button type="submit" name="deleteAppUser" th:utext="#{menuPage.deleteAppUser}" >Edit AppUser</button>
+		<button type="submit" name="logout" th:utext="#{menuPage.logout}" >Logout</button>
+	</form>
+</body>
+
+</html>
+

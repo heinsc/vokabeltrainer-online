@@ -17,32 +17,27 @@
 
 	<h1>Login</h1>
 
-	<div th:object="${authentification}">
+	<div th:object="${loginModAtt}">
 		<div th:if="*{mandatoryViolated}">
-			<p th:text="#{login.mandatory}" class="error">Please fill all
+			<p th:text="#{loginPage.mandatory}" class="error">Please fill all
 				fields!</p>
 		</div>
 		<div th:if="*{loginError}">
-			<p th:text="#{login.error}" class="error">Login failed.</p>
+			<p th:text="#{loginPage.error}" class="error">Login failed.</p>
 		</div>
 	</div>
 
-	<form action="#" th:action="@{/checkLogin }"
-		th:object="${authentification}" method="post">
-		<p>
-		<div th:text="#{login.email}">E-Mail:</div>
+	<form action="#" th:action="@{/controlActionLogin }"
+		th:object="${loginModAtt}" method="post">
+		<div th:text="#{loginPage.email}">E-Mail:</div>
 		<input type="text" th:field="*{appUser.email}" />
-		</p>
-		<p>
-		<div th:text="#{login.password}">Password:</div>
+		<div th:utext="#{loginPage.password}">Password:</div>
 		<input type="password" th:field="*{appUser.password}" />
-		</p>
 		<p>
-			<input type="submit" value="Login" />
+			<button type="submit" name="login" th:utext="#{loginPage.login}" ></button>
+			<button type="submit" name="createAppUser" th:utext="#{loginPage.newAccount}" ></button>
 		</p>
 	</form>
-	<a href="register.html" th:href="@{/register}"
-		th:text="#{login.newAccount}">Register</a>
 </body>
 
 </html>

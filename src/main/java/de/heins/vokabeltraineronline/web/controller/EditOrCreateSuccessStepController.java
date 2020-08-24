@@ -1,70 +1,99 @@
 package de.heins.vokabeltraineronline.web.controller;
 
 
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.catalina.session.StandardSessionFacade;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import de.heins.vokabeltraineronline.business.entity.BehaviourIfWrong;
 import de.heins.vokabeltraineronline.business.service.SuccessStepService;
-import de.heins.vokabeltraineronline.web.entities.SessionAppUserForm;
-import de.heins.vokabeltraineronline.web.entities.SuccessStepForm;
+import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
+import de.heins.vokabeltraineronline.web.entities.attributereference.SuccessStepAttrRef;
+import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.EditOrCreateSuccessStepModAttr;
 
 @Controller
 public class EditOrCreateSuccessStepController {
+	private static enum Constants {
+		editOrCreateSuccessStepPage//
+		, editOrCreateSuccessStepModAtt
+	}
 	
 	@Autowired
 	private SuccessStepService successStepService;
-	private String oldVersionOfSuccessStepName;
 
 	public EditOrCreateSuccessStepController() {
 		super();
 	}
 
-	@RequestMapping({ "/createSuccessStep" })
-	public String editSuccessStep(//
+	@RequestMapping({ "/controlEditOrCreateSuccessStep" })
+	public String showEditOrCreateSuccessStepPage(//
 			Model model//
 			, StandardSessionFacade session//
 	) throws Exception {
-		oldVersionOfSuccessStepName = "";
 		
-		SuccessStepForm newSuccessStepForm = new SuccessStepForm();
-	    model.addAttribute("successStepForm", newSuccessStepForm);
-	    
-	    List<BehaviourIfWrong> selectableBehaviours = Arrays.asList(BehaviourIfWrong.values());
-	    model.addAttribute("selectableBehaviours", selectableBehaviours);
-	    	    
-		return "editOrCreateSuccessStep";
+		EditOrCreateSuccessStepModAttr editOrCreateSuccessStep = new EditOrCreateSuccessStepModAttr();
+		model.addAttribute(//
+				Constants.editOrCreateSuccessStepModAtt.name()//
+				, editOrCreateSuccessStep);
+		
+		String oldVersionOfSuccessStepName = (String) session.getAttribute(//
+				ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
+		);
+		SuccessStepAttrRef successStep = null;
+		if (Strings.isEmpty(oldVersionOfSuccessStepName)) {
+			successStep = new SuccessStepAttrRef();
+		} else {
+			successStep = successStepService.findForAppUserAndName(//
+					(SessionAppUser) session.getAttribute(//
+							ControllerConstants.sessionAppUser.name()//
+					)//
+					, oldVersionOfSuccessStepName//
+			);
+		}
+	    editOrCreateSuccessStep.setSuccessStep(successStep);
+	    editOrCreateSuccessStep.setSelectableBehaviours(successStepService.getAllBehavioursIfWrongAsStringArray());
+		return Constants.editOrCreateSuccessStepPage.name();
 	}
-	@RequestMapping(value="/editOrCreateSuccessStep", method=RequestMethod.POST, params= {"submit"})
+	@RequestMapping(value="/controlActionEditOrCreateSuccessStep", method=RequestMethod.POST, params= {"submit"})
 	public String submit(//
-			SuccessStepForm successStepForm//
+			@ModelAttribute(name = "editOrCreateSuccessStepModAtt")
+			EditOrCreateSuccessStepModAttr editOrCreateSuccessModAtt//
 			, StandardSessionFacade session//
 	) {
-		SessionAppUserForm sessionAppUserForm = (SessionAppUserForm)session.getAttribute("sessionAppUser");
-		
-		if (Strings.isEmpty(oldVersionOfSuccessStepName) || !oldVersionOfSuccessStepName.equals(successStepForm.getName())) {
+		SessionAppUser sessionAppUserForm = (SessionAppUser)session.getAttribute(//
+				ControllerConstants.sessionAppUser.name()//
+		);
+		String oldVersionOfSuccessStepName = (String) session.getAttribute(//
+				ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
+				);
+		if (//
+				Strings.isEmpty(oldVersionOfSuccessStepName)//
+				|| !oldVersionOfSuccessStepName.equals(//
+						editOrCreateSuccessModAtt.getSuccessStep().getName())//
+			) {
 			// look for duplicates
-			SuccessStepForm fromDataBase = successStepService.findForAppUserAndName(sessionAppUserForm, successStepForm.getName());
+			SuccessStepAttrRef fromDataBase = successStepService.findForAppUserAndName(//
+					sessionAppUserForm//
+					, editOrCreateSuccessModAtt.getSuccessStep().getName()//
+			);
 			if (SuccessStepService.EMPTY_SUCCESS_STEP != fromDataBase) {
 				// handle duplicate new success step
-				return "editOrCreateSuccessStep";
+				return Constants.editOrCreateSuccessStepPage.name();
 			}
 		}
-		successStepService.update(sessionAppUserForm, successStepForm, oldVersionOfSuccessStepName);
-		return "redirect:manageIndexBoxes";
+		successStepService.update(//
+				sessionAppUserForm, editOrCreateSuccessModAtt.getSuccessStep(), oldVersionOfSuccessStepName);
+		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
 	}
 	
 	@RequestMapping(value="/editOrCreateSuccessStep", method=RequestMethod.POST, params= {"cancel"})
 	public String cancel() {
-		return "redirect:manageIndexBoxes";
+		return ControllerConstants.controlManageConfigurations.name();
 		
 	}
 

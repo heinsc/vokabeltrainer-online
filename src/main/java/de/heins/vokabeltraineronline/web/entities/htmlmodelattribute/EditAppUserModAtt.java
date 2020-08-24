@@ -1,15 +1,17 @@
-package de.heins.vokabeltraineronline.web.entities;
+package de.heins.vokabeltraineronline.web.entities.htmlmodelattribute;
 
-public class RegisterForm {
+import de.heins.vokabeltraineronline.web.entities.attributereference.AppUserAttrRef;
+
+public class EditAppUserModAtt {
 	private Boolean mandatoryViolated;
 	private Boolean passwordsNotEqual;
 	private Boolean appUserAlreadyExists;
 	private Boolean wrongPassword;
-	private AppUserForm appUser;
-	public AppUserForm getAppUser() {
+	private AppUserAttrRef appUser;
+	public AppUserAttrRef getAppUser() {
 		return appUser;
 	}
-	public void setAppUser(AppUserForm appUser) {
+	public void setAppUser(AppUserAttrRef appUser) {
 		this.appUser = appUser;
 	}
 	private String passwordRepeated;

@@ -13,8 +13,8 @@ import de.heins.vokabeltraineronline.business.entity.AppUser;
 import de.heins.vokabeltraineronline.business.entity.AppUserFactory;
 import de.heins.vokabeltraineronline.web.controller.AppUserAlreadyExistsException;
 import de.heins.vokabeltraineronline.web.controller.WrongPasswordException;
-import de.heins.vokabeltraineronline.web.entities.SessionAppUserForm;
-import de.heins.vokabeltraineronline.web.entities.AppUserForm;
+import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
+import de.heins.vokabeltraineronline.web.entities.attributereference.AppUserAttrRef;
 
 
 @Service
@@ -23,7 +23,7 @@ public class AppUserService {
 	private AppUserFactory appUserFactory;
 	@Autowired
 	private AppUserRepository appUserRepository;
-	public SessionAppUserForm addAppUser(AppUserForm appUserForm) throws AppUserAlreadyExistsException {
+	public SessionAppUser addAppUser(AppUserAttrRef appUserForm) throws AppUserAlreadyExistsException {
 		checkAppUserAlreadyExists(appUserForm);
 		AppUser appUser = appUserFactory//
 			.setEMail(appUserForm.getEmail())//
@@ -31,12 +31,12 @@ public class AppUserService {
 			.setLastLogin(Calendar.getInstance().getTime())//
 			.getNewObject();
 		appUserRepository.save(appUser);
-		SessionAppUserForm sessionAppUserForm = new SessionAppUserForm();
+		SessionAppUser sessionAppUserForm = new SessionAppUser();
 		sessionAppUserForm.setEmail(appUser.getEmail());
 		sessionAppUserForm.setId(appUser.getId());
 		return sessionAppUserForm;
 	}
-	private void checkAppUserAlreadyExists(AppUserForm appUser) throws AppUserAlreadyExistsException {
+	private void checkAppUserAlreadyExists(AppUserAttrRef appUser) throws AppUserAlreadyExistsException {
 		try { 
 			List<AppUser> findByEmail = appUserRepository.findByEmail(appUser.getEmail());
 			if (!findByEmail.isEmpty()) {
@@ -48,7 +48,7 @@ public class AppUserService {
 		}
 	}
 
-	public SessionAppUserForm getSessionAppUserForLogin(AppUserForm appUserForm) throws WrongPasswordException {
+	public SessionAppUser getSessionAppUserForLogin(AppUserAttrRef appUserForm) throws WrongPasswordException {
 
 		List<AppUser>  findByEmailAndPassword = appUserRepository.findByEmailAndPassword(//
 				appUserForm.getEmail()//
@@ -58,7 +58,7 @@ public class AppUserService {
 			AppUser appUser = findByEmailAndPassword.get(0);
 			appUser.setLastLogin(Calendar.getInstance().getTime());
 			appUserRepository.save(appUser);
-			SessionAppUserForm sessionAppUserForm = new SessionAppUserForm();
+			SessionAppUser sessionAppUserForm = new SessionAppUser();
 			sessionAppUserForm.setEmail(appUser.getEmail());
 			sessionAppUserForm.setId(appUser.getId());
 			return sessionAppUserForm;
@@ -66,11 +66,16 @@ public class AppUserService {
 		throw new WrongPasswordException();
 	}
 
-	public void updateAppUserByManageAppUser(Long id, String originalEmail, AppUserForm appUserForm, String newPassword) throws AppUserAlreadyExistsException, WrongPasswordException {
+	public void updateAppUserByEditAppUser(//
+			Long id//
+			, String originalEmail//
+			, AppUserAttrRef appUserForm//
+			, String newPassword//
+	) throws AppUserAlreadyExistsException, WrongPasswordException {
 		if (!originalEmail.equals(appUserForm.getEmail())) {
 			checkAppUserAlreadyExists(appUserForm);
 			if (Strings.isEmpty(newPassword)) {
-				tryPasswordValidationForManageAppUserOrDeleteAppUser(originalEmail, appUserForm.getPassword());
+				tryPasswordValidationForEditAppUserOrDeleteAppUser(originalEmail, appUserForm.getPassword());
 			}
 
 		}
@@ -87,7 +92,7 @@ public class AppUserService {
 		appUserRepository.save(appUser);
 		
 	}
-	private void tryPasswordValidationForManageAppUserOrDeleteAppUser(String eMail, String password) throws WrongPasswordException {
+	private void tryPasswordValidationForEditAppUserOrDeleteAppUser(String eMail, String password) throws WrongPasswordException {
 	
 		List<AppUser>  findByEmailAndPassword = appUserRepository.findByEmailAndPassword(//
 				eMail//
@@ -99,7 +104,7 @@ public class AppUserService {
 		return;
 	}
 	public void deleteAppUser(Long id, String email, String password)  throws WrongPasswordException {
-		tryPasswordValidationForManageAppUserOrDeleteAppUser(email, password);
+		tryPasswordValidationForEditAppUserOrDeleteAppUser(email, password);
 		appUserRepository.deleteById(id);
 	}
 }

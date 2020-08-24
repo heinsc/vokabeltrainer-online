@@ -10,45 +10,59 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import de.heins.vokabeltraineronline.business.service.AppUserService;
-import de.heins.vokabeltraineronline.web.entities.AuthentificationForm;
-import de.heins.vokabeltraineronline.web.entities.SessionAppUserForm;
+import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
+import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.LoginModAtt;
 
 @Controller
 public class LoginController {
+	private static enum Constants {
+		loginPage, loginModAtt
+	}
 	@Autowired
-	AppUserService appUserService;
+	private AppUserService appUserService;
 
 	public LoginController() {
 		super();
 	}
 
-	@RequestMapping({ "/", "/login" })
-	public String showStartPage(Model model) throws Exception {
-		model.addAttribute("authentification", new AuthentificationForm());
-		return "login";
+	@RequestMapping({ "/", "/login", "/controlLogin" })
+	public String showLoginPage(Model model) throws Exception {
+		LoginModAtt loginModelAttribute = new LoginModAtt();
+		model.addAttribute(Constants.loginModAtt.name(), loginModelAttribute);
+		return Constants.loginPage.name();
 
 	}
 
-	@RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
+	@RequestMapping(value = "/controlActionLogin", params = {"login"}, method = RequestMethod.POST)
 	public String checkLogin(//
-			@ModelAttribute(value = "authentification") AuthentificationForm authentificationForm//
+			@ModelAttribute(name = "loginModAtt")
+			LoginModAtt loginModelAttribute
 			, StandardSessionFacade session
 	) {
 		if (//
-				Strings.isBlank(authentificationForm.getAppUser().getEmail())//
-				|| Strings.isBlank(authentificationForm.getAppUser().getPassword())//
+				Strings.isBlank(loginModelAttribute.getAppUser().getEmail())//
+				|| Strings.isBlank(loginModelAttribute.getAppUser().getPassword())//
 		) {
-			authentificationForm.setMandatoryViolated(true);
-			return "login";
+			loginModelAttribute.setMandatoryViolated(true);
+			return Constants.loginPage.name();
 		}
 		try {
-			SessionAppUserForm sessionAppUserForLogin = appUserService.getSessionAppUserForLogin(authentificationForm.getAppUser());
-			session.setAttribute("sessionAppUser", sessionAppUserForLogin);
-			return "menu";
+			SessionAppUser sessionAppUserForLogin = appUserService.getSessionAppUserForLogin(loginModelAttribute.getAppUser());
+			session.setAttribute(//
+					ControllerConstants.sessionAppUser.name()//
+					, sessionAppUserForLogin//
+			);
+			return "redirect:" + ControllerConstants.controlMenu.name();
 		} catch (WrongPasswordException e) {
 			// wrong appUser credentials
-			authentificationForm.setLoginError(true);
-			return "login";
+			loginModelAttribute.setLoginError(true);
+			return Constants.loginPage.name();
 		}
 	}
+	@RequestMapping(value = "/controlActionLogin", params = {"createAppUser"}, method = RequestMethod.POST)
+	public String createAppUser() {
+		//direct go to CreateAppUserController
+		return "redirect:" + ControllerConstants.controlCreateAppUser.name();
+	}
+
 }
