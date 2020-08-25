@@ -19,7 +19,6 @@ import de.heins.vokabeltraineronline.web.entities.attributereference.SuccessStep
 
 @Service
 public class SuccessStepService {
-	private static final boolean INITIAL_VALUE_FOR_SELECTED_FALSE = false;
 	@Autowired
 	private SuccessStepRepository successStepRepository;
 	@Autowired
@@ -41,7 +40,6 @@ public class SuccessStepService {
 					successStepAttrRef.setName(successStep.getName());
 					successStepAttrRef.setNextAppearanceInDays(successStep.getNextAppearanceInDays());
 					successStepAttrRef.setBehaviourIfWrong(successStep.getBehaviourIfWrong().name());
-					successStepAttrRef.setSelected(INITIAL_VALUE_FOR_SELECTED_FALSE);
 					successStepAttrRefs.add(successStepAttrRef);
 				});
 			} catch (Exception e) {
@@ -65,7 +63,6 @@ public class SuccessStepService {
 				successStepAttrRef.setName(successStep.getName());
 				successStepAttrRef.setNextAppearanceInDays(successStep.getNextAppearanceInDays());
 				successStepAttrRef.setBehaviourIfWrong(successStep.getBehaviourIfWrong().name());
-				successStepAttrRef.setSelected(INITIAL_VALUE_FOR_SELECTED_FALSE);
 				return successStepAttrRef;
 			}
 		} catch (Exception e) {

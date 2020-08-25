@@ -7,9 +7,9 @@ import org.apache.catalina.session.StandardSessionFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import de.heins.vokabeltraineronline.business.service.IndexBoxService;
 import de.heins.vokabeltraineronline.business.service.LearningStrategyService;
@@ -48,8 +48,8 @@ public class ManageConfigurationsController {
 				ControllerConstants.sessionAppUser.name()//
 		);
 		ManageConfigurationsModAtt manageConfigurationsModAtt = new ManageConfigurationsModAtt();
-		model.addAttribute(Constants.manageConfigurationsModAtt.name(), manageConfigurationsModAtt);
 
+		manageConfigurationsModAtt.setTestOutput("bla");
 	    List<IndexBoxAttrRef> allIndexBoxes = indexBoxService.findAllForAppUser(sessionAppUserForm);
 	    // only for testing, remove later
 	    {
@@ -76,33 +76,19 @@ public class ManageConfigurationsController {
 		
 		List<SuccessStepAttrRef> allSuccessSteps = successStepService.findAllForAppUser(sessionAppUserForm);
 		manageConfigurationsModAtt.setAllSuccessSteps(allSuccessSteps);
+		model.addAttribute(Constants.manageConfigurationsModAtt.name(), manageConfigurationsModAtt);
 		return Constants.manageConfigurationsPage.name();
 	}
-	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"editSuccessStep"})
+	@RequestMapping({"controlLinkEditAppUser"})
 	public String editSuccessStep(//
-			@ModelAttribute(name="manageConfigurationsModAtt")
-			ManageConfigurationsModAtt manageConfigurationsModAtt
+            @RequestParam(name = "name", required = false, defaultValue = "")
+            String name//
 			, StandardSessionFacade session//
 	) throws Exception {
-		List<SuccessStepAttrRef> successSteps = manageConfigurationsModAtt.getAllSuccessSteps();
-		int counterSelected = 0;
-		SuccessStepAttrRef selectedSuccessStepAttrRef = null;
-		for (SuccessStepAttrRef currentSuccessStep : successSteps) {
-			if (currentSuccessStep.getSelected()) {
-				counterSelected ++;
-				selectedSuccessStepAttrRef = currentSuccessStep;
-			}
-		}
-		if (counterSelected != 1) {
-			// TODO handle wrong number of selected SuccessSteps
-			return Constants.manageConfigurationsPage.name();
-		}
-		
 	    session.setAttribute(//
 	    		ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
-	    		, selectedSuccessStepAttrRef.getName()//
+	    		, name//
 	    );
-	    	    
 		return "redirect:" + ControllerConstants.controlEditOrCreateSuccessStep.name();
 	}
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"createSuccessStep"})

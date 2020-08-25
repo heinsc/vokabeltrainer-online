@@ -32,25 +32,43 @@
 	    <h2 th:utext="#{manageConfigurationsPage.successSteps}">Success Steps</h2>
 		<table>
 		  <tr>
-		  	<th>SELECTED</th>
+		  	<th>ACTION</th>
 		    <th>NAME</th>
 		    <th>NEXT_APPEARANCE_IN_DAYS</th>
 		    <th>BEHAVIOUR_IF_WRONG</th>
 		  </tr>
 	      <tr th:each="successStep : *{allSuccessSteps}">
 	      	<td>
-	      		<input type="checkbox" name="isSuccessStepTableEntrySelected" th:checked="successStep.selected"/>
+	      		<table>
+	      			<tr>
+		      			<td>
+				      		<a href="editAppUserPage.html"
+									th:href="@{/controlLinkEditAppUser(name=${successStep.name})}"
+									th:utext="#{manageConfigurationsPage.edit}">
+										edit
+									</a>
+						</td>
+		      			<td>
+				      		<a href="editAppUserPage.html"
+									th:href="@{/controlLinkEditAppUser(name=${successStep.name})}"
+									th:utext="#{manageConfigurationsPage.delete}">
+										delete
+									</a>
+						</td>
+					</tr>
+				</table>
 	      	</td> 
 	        <td th:text="${successStep.name}">Onions</td>
 	        <td th:text="${successStep.nextAppearanceInDays}">Onions</td>
 	        <td th:text="${successStep.behaviourIfWrong}">Onions</td>
 	      </tr>
 	    </table>
-	    <button type="submit" name="editSuccessStep" th:utext="#{manageConfigurationsPage.editSuccessStep}" ></button>
-		<button type="submit" name="createSuccessStep" th:utext="#{manageConfigurationsPage.createSuccessStep}" ></button>
-		<br/>
-		<button type="submit" name="backToMenu" th:utext="#{manageConfigurationsPage.menu}" ></button>
-		<button type="submit" name="logout" th:utext="#{manageConfigurationsPage.logout}" ></button>
+	    <p>
+			<button type="submit" name="createSuccessStep" th:utext="#{manageConfigurationsPage.createSuccessStep}" ></button>
+			<br/>
+			<button type="submit" name="backToMenu" th:utext="#{manageConfigurationsPage.menu}" ></button>
+			<button type="submit" name="logout" th:utext="#{manageConfigurationsPage.logout}" ></button>
+		</p>
 	</form>
 </body>
 

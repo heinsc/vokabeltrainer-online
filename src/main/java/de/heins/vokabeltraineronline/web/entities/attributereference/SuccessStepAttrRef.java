@@ -6,9 +6,6 @@ public class SuccessStepAttrRef {
 	private int nextAppearanceInDays;
 	
 	private String behaviourIfWrong;
-	//transient
-	private boolean selected;
-
 	public int getNextAppearanceInDays() {
 		return nextAppearanceInDays;
 	}
@@ -31,14 +28,6 @@ public class SuccessStepAttrRef {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public boolean getSelected() {
-		return selected;
-	}
-
-	public void setSelected(boolean b) {
-		this.selected = b;
 	}
 	
 	
