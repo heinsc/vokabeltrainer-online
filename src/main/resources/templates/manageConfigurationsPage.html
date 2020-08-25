@@ -38,7 +38,9 @@
 		    <th>BEHAVIOUR_IF_WRONG</th>
 		  </tr>
 	      <tr th:each="successStep : *{allSuccessSteps}">
-	      	<td th:text="${successStep.selected}">Onions</td> 
+	      	<td>
+	      		<input type="checkbox" name="isSuccessStepTableEntrySelected" th:checked="successStep.selected"/>
+	      	</td> 
 	        <td th:text="${successStep.name}">Onions</td>
 	        <td th:text="${successStep.nextAppearanceInDays}">Onions</td>
 	        <td th:text="${successStep.behaviourIfWrong}">Onions</td>

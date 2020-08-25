@@ -11,57 +11,55 @@
 
 <body>
 
-	<h1 th:utext="#{manageAppUser.manageAppUser}">Manage AppUser</h1>
-	<h2 th:utext="#{manageAppUser.possibility1Header}">Possibility 1</h2>
-	<p th:utext="#{manageAppUser.possibility1Text}">first possibility description</p>
-	<h2 th:utext="#{manageAppUser.possibility2Header}">Possibility 2</h2>
-	<p th:utext="#{manageAppUser.possibility2Text}">second possibility description</p>
-	<h2 th:utext="#{manageAppUser.possibility3Header}">Possibility 3</h2>
-	<p th:utext="#{manageAppUser.possibility3Text}">third possibility description</p>
+	<h1 th:utext="#{editAppUserPage.manageAppUser}">Manage AppUser</h1>
+	<h2 th:utext="#{editAppUserPage.possibility1Header}">Possibility 1</h2>
+	<p th:utext="#{editAppUserPage.possibility1Text}">first possibility description</p>
+	<h2 th:utext="#{editAppUserPage.possibility2Header}">Possibility 2</h2>
+	<p th:utext="#{editAppUserPage.possibility2Text}">second possibility description</p>
+	<h2 th:utext="#{editAppUserPage.possibility3Header}">Possibility 3</h2>
+	<p th:utext="#{editAppUserPage.possibility3Text}">third possibility description</p>
 	<div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
 	
 
-	<div th:object="${registerForm}">
+	<form action="#" th:action="@{/controlActionAppUser}"
+		th:object="${editAppUserModAtt}" method="post">
 		<div th:if="*{mandatoryViolated}">
-			<p th:utext="#{manageAppUser.mandatoryViolated}" class="error">Please fill all
+			<p th:utext="#{editAppUserPage.mandatoryViolated}" class="error">Please fill all
 				fields!</p>
 		</div>
 		<div th:if="*{passwordsNotEqual}">
-			<p th:text="#{register.passwordsNotEqual}" class="error">The passwords are different.</p>
+			<p th:text="#{editAppUserPage.passwordsNotEqual}" class="error">The passwords are different.</p>
 		</div>
 		<div th:if="*{appUserAlreadyExists}">
-			<p th:utext="#{register.appUserAlreadyExists(*{appUser.email})}" class="error">This appUser already exists.</p>
+			<p th:utext="#{editAppUserPage.appUserAlreadyExists(*{appUser.email})}" class="error">This appUser already exists.</p>
 		</div>
 		<div th:if="*{wrongPassword}">
-			<p th:utext="#{manageAppUser.wrongPassword(*{appUser.email})}" class="error">This appUser already exists.</p>
+			<p th:utext="#{editAppUserPage.wrongPassword(*{appUser.email})}" class="error">This appUser already exists.</p>
 		</div>
-	</div>
 
-	<form action="#" th:action="@{/changeAppUser }"
-		th:object="${registerForm}" method="post">
 		<p>
-			<div th:text="#{register.email}">
+			<div th:text="#{editAppUserPage.email}">
 				E-Mail:
 			</div>
 			 <input type="text" th:field="*{appUser.email}" />
 		</p>
 		<p>
-			<div  th:text="#{register.password}">
+			<div  th:utext="#{editAppUserPage.password}">
 				Password:
 			</div>
 			 <input type="password" th:field="*{appUser.password}" />
 		</p>
 		<p>
-			<div  th:text="#{register.passwordRepeated}">
+			<div  th:text="#{editAppUserPage.passwordRepeated}">
 				Password:
 			</div>
 			 <input type="password" th:field="*{passwordRepeated}" />
 		</p>
 		<p>
-			<button type="submit" th:utext="#{manageAppUser.submitChanges}">Add Account</button>
+			<button type="submit" name="submit" th:utext="#{editAppUserPage.submitChanges}">Add Account</button>
+			<button type="submit" name="cancel" th:utext="#{editAppUserPage.cancel}">Cancel</button>
 		</p>
 	</form>
-	<a href="main.html" th:href="@{/main}" th:utext="#{manageAppUser.cancel}">Cancel</a>
 </body>
 
 </html>

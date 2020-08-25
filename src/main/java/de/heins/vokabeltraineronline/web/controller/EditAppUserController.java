@@ -46,7 +46,7 @@ public class EditAppUserController {
 
 	}
 
-	@RequestMapping(value = "/changeAppUser", method = RequestMethod.POST)
+	@RequestMapping(value = "/controlActionAppUser", params= {"submit"}, method = RequestMethod.POST)
 	public String submitChanges(//
 			@ModelAttribute(name = "editAppUserModAtt")
 			EditAppUserModAtt editAppUser//
@@ -80,6 +80,15 @@ public class EditAppUserController {
 		return Constants.editAppUserPage.name();
 	}
 
+	@RequestMapping(value = "/controlActionAppUser", params= {"cancel"}, method = RequestMethod.POST)
+	public String cancel(//
+			@ModelAttribute(name = "editAppUserModAtt")
+			EditAppUserModAtt editAppUser//
+			, HttpSession session
+	) {
+		return "redirect:" + ControllerConstants.controlMenu.name();
+	}
+	
 	private boolean checkPasswords(EditAppUserModAtt editAppUserModAtt) {
 		if (!Strings.isEmpty(editAppUserModAtt.getPasswordRepeated())) {
 			if (// 
