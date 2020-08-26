@@ -60,7 +60,7 @@ public class DeleteAppUserController {
 		SessionAppUser sessionAppUserForm = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
-		if (checkFields(deleteAppUser, sessionAppUserForm)) {
+		if (checkFields(deleteAppUser)) {
 			AppUserAttrRef appUserForm = deleteAppUser.getAppUser();
 			try {
 				appUserService.deleteAppUser(sessionAppUserForm.getId(), sessionAppUserForm.getEmail(), appUserForm.getPassword());
@@ -72,7 +72,7 @@ public class DeleteAppUserController {
 		return Constants.deleteAppUserPage.name();
 	}
 
-	private boolean checkFields(DeleteAppUserModAtt deleteAppUserModAtt, SessionAppUser sessionAppUser) {
+	private boolean checkFields(DeleteAppUserModAtt deleteAppUserModAtt) {
 		if (//
 				Strings.isBlank(deleteAppUserModAtt.getAppUser().getPassword())//
 		) {

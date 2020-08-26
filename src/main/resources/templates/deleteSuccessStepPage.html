@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Delete AppUser Account</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+
+	<h1 th:utext="#{deleteSuccessStepPage.deleteSuccessStep}">Delete Success Step</h1>
+	<div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+	
+	<h2 th:utext="#{deleteSuccessStepPage.caution}">Caution</h2>
+	<div th:utext="#{deleteSuccessStepPage.consequences}">Consequences</div>
+
+	<form action="#" th:action="@{/controlActionDeleteSuccessStep}"
+		th:object="${deleteSuccessStepModAtt}" method="post">
+		<div th:if="*{mandatoryViolated}">
+			<p th:utext="#{deleteSuccessStepPage.mandatoryViolated}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div th:if="*{wrongPassword}">
+			<p th:utext="#{deleteSuccessStepPage.wrongPassword}" class="error">This appUser already exists.</p>
+		</div>
+		<p>
+			<div  th:utext="#{deleteSuccessStepPage.password}">
+				Password:
+			</div>
+			 <input type="password" th:field="*{password}" />
+		</p>
+		<p>
+ 			<button type="submit" name="delete" th:utext="#{deleteSuccessStepPage.delete}" >Delete</button>
+ 			<button type="submit" name="cancel" th:utext="#{deleteSuccessStepPage.cancel}" >Cancel</button>
+		</p>
+	</form>
+</body>
+
+</html>
+

@@ -10,4 +10,5 @@ public enum ControllerConstants {
 	, controlDeleteAppUser
 	, controlCreateAppUser
 	, controlEditOrCreateSuccessStep
+	, controlDeleteSuccessStep
 }

@@ -79,8 +79,8 @@ public class ManageConfigurationsController {
 		model.addAttribute(Constants.manageConfigurationsModAtt.name(), manageConfigurationsModAtt);
 		return Constants.manageConfigurationsPage.name();
 	}
-	@RequestMapping({"controlLinkEditAppUser"})
-	public String editSuccessStep(//
+	@RequestMapping({"controlLinkDeleteSuccessStep"})
+	public String deleteSuccessStep(//
             @RequestParam(name = "name", required = false, defaultValue = "")
             String name//
 			, StandardSessionFacade session//
@@ -89,7 +89,7 @@ public class ManageConfigurationsController {
 	    		ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
 	    		, name//
 	    );
-		return "redirect:" + ControllerConstants.controlEditOrCreateSuccessStep.name();
+		return "redirect:" + ControllerConstants.controlDeleteSuccessStep.name();
 	}
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"createSuccessStep"})
 	public String createSuccessStep(//
@@ -111,6 +111,19 @@ public class ManageConfigurationsController {
 	public String logout() {
 		//direct go to login 
 		return "redirect:" + ControllerConstants.controlLogin.name();
+	}
+
+	@RequestMapping({"controlLinkEditSuccessStep"})
+	public String editSuccessStep(//
+	        @RequestParam(name = "name", required = false, defaultValue = "")
+	        String name//
+			, StandardSessionFacade session//
+	) throws Exception {
+	    session.setAttribute(//
+	    		ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
+	    		, name//
+	    );
+		return "redirect:" + ControllerConstants.controlEditOrCreateSuccessStep.name();
 	}
 
 
