@@ -91,9 +91,9 @@ public class EditOrCreateSuccessStepController {
 		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
 	}
 	
-	@RequestMapping(value="/editOrCreateSuccessStep", method=RequestMethod.POST, params= {"cancel"})
+	@RequestMapping(value="/controlActionEditOrCreateSuccessStep", method=RequestMethod.POST, params= {"cancel"})
 	public String cancel() {
-		return ControllerConstants.controlManageConfigurations.name();
+		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
 		
 	}
 

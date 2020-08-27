@@ -21,8 +21,12 @@
 		<input type="text" th:field="*{successStep.nextAppearanceInDays}" />
 		<div th:text="#{editOrCreateSuccessStepPage.behaviourIfWrong}">Behaviour If Wrong:</div>
 	    <select th:field="*{successStep.behaviourIfWrong}"  id="dropOperator">
-	    	<option th:each="selectableBehaviour : *{selectableBehaviours}" th:value="${selectableBehaviour}" th:text="${selectableBehaviour}"></option>
+	    	<option	
+	    		th:each="selectableBehaviour : *{selectableBehaviours}"
+	    		th:value="${selectableBehaviour}"
+	    		th:utext="#{${'manageConfigurationsPage.'}+${selectableBehaviour}}"/>
 	    </select>
+	    <br/>
 		<button type="submit" name="submit" th:utext="#{editOrCreateSuccessStepPage.submit}" ></button>
 		<button type="submit" name="cancel" th:utext="#{editOrCreateSuccessStepPage.cancel}" ></button>
 	</form>
