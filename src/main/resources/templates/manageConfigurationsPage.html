@@ -32,10 +32,10 @@
 	    <h2 th:utext="#{manageConfigurationsPage.successSteps}">Success Steps</h2>
 		<table>
 		  <tr>
-		  	<th>ACTION</th>
-		    <th>NAME</th>
-		    <th>NEXT_APPEARANCE_IN_DAYS</th>
-		    <th>BEHAVIOUR_IF_WRONG</th>
+		  	<th th:utext="#{manageConfigurationsPage.action}">ACTION</th>
+		    <th th:utext="#{manageConfigurationsPage.name}">NAME</th>
+		    <th th:utext="#{manageConfigurationsPage.nextAppearanceInDays}">NEXT_APPEARANCE_IN_DAYS</th>
+		    <th th:utext="#{manageConfigurationsPage.behaviourIfWrong}">BEHAVIOUR_IF_WRONG</th>
 		  </tr>
 	      <tr th:each="successStep : *{allSuccessSteps}">
 	      	<td>
@@ -58,9 +58,9 @@
 					</tr>
 				</table>
 	      	</td> 
-	        <td th:text="${successStep.name}">Onions</td>
-	        <td th:text="${successStep.nextAppearanceInDays}">Onions</td>
-	        <td th:text="${successStep.behaviourIfWrong}">Onions</td>
+	        <td th:utext="${successStep.name}">Onions</td>
+	        <td th:utext="${successStep.nextAppearanceInDays}">Onions</td>
+	        <td th:utext="#{${'manageConfigurationsPage.'}+${successStep.behaviourIfWrong}}">Onions</td>
 	      </tr>
 	    </table>
 	    <p>
