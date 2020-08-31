@@ -22,11 +22,7 @@ public class LearningStrategy {
 
     private String name;
     
-    private int maxNumberOfWrongAnswersPerSession;
-    
-    private BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull;
-    
-	@OneToMany
+    @OneToMany
 	private List<SuccessStep> successSteps;
 
 	@ManyToOne
@@ -37,14 +33,10 @@ public class LearningStrategy {
     public LearningStrategy(//
     		Long id2//
     		, String name//
-    		, int maxNumberOfWrongAnswersPerSession//
-    		, BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull//
     		, AppUser appUser
     	) {
     	this.id=id2;
 		this.name=name;
-		this.maxNumberOfWrongAnswersPerSession=maxNumberOfWrongAnswersPerSession;
-		this.behaviourIfPoolWithWrongAnswersIsFull=behaviourIfPoolWithWrongAnswersIsFull;
 		this.appUser=appUser;
 		this.successSteps=new LinkedList<SuccessStep>();
 	}
@@ -65,18 +57,6 @@ public class LearningStrategy {
 		this.name = name;
 	}
 
-	public int getMaxNumberOfWrongAnswersPerSession() {
-		return maxNumberOfWrongAnswersPerSession;
-	}
-	public void setMaxNumberOfWrongAnswersPerSession(int maxNumberOfWrongAnswersPerSession) {
-		this.maxNumberOfWrongAnswersPerSession = maxNumberOfWrongAnswersPerSession;
-	}
-	public BehaviourIfPoolWithWrongAnswersIsFull getBehaviourIfPoolWithWrongAnswersIsFull() {
-		return behaviourIfPoolWithWrongAnswersIsFull;
-	}
-	public void setBehaviourIfPoolWithWrongAnswersIsFull(BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull) {
-		this.behaviourIfPoolWithWrongAnswersIsFull = behaviourIfPoolWithWrongAnswersIsFull;
-	}
 	public AppUser getAppUser() {
 		return appUser;
 	}
@@ -99,6 +79,9 @@ public class LearningStrategy {
 			successSteps.remove(indexOfSuccessStep);
 			successSteps.add(indexOfSuccessStep+1, step);
 		}
+	}
+	public List<SuccessStep> getSuccessSteps() {
+		return successSteps;
 	}
 	
 }

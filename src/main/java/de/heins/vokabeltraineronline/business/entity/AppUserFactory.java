@@ -10,6 +10,8 @@ public class AppUserFactory {
 	private String email;
 	private String password;
 	private Date lastLogin;
+	private BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull;
+	private int maxNumberOfWrongAnswersPerSession;
 
 	public AppUserFactory setId(Long id) {
 		this.id = id;
@@ -32,13 +34,24 @@ public class AppUserFactory {
 	}
 
 	public AppUser getNewObject() {
-		// TODO Auto-generated method stub
 		return new AppUser(//
 				this.id//
 				, this.email//
 				, this.password//
+				, this.maxNumberOfWrongAnswersPerSession//
+				, this.behaviourIfPoolWithWrongAnswersIsFull//
 				, this.lastLogin//
 		);
+	}
+
+	public AppUserFactory setBehaviourIfPoolWithWrongAnswersIsFull(BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull) {
+		this.behaviourIfPoolWithWrongAnswersIsFull = behaviourIfPoolWithWrongAnswersIsFull;
+		return this;
+	}
+
+	public AppUserFactory setMaxNumberOfWrongAnswersPerSession(int maxNumberOfWrongAnswersPerSession) {
+		this.maxNumberOfWrongAnswersPerSession = maxNumberOfWrongAnswersPerSession;
+		return this;
 	}
 
 }

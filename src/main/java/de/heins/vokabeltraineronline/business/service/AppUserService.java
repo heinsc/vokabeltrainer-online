@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
 import de.heins.vokabeltraineronline.business.entity.AppUserFactory;
+import de.heins.vokabeltraineronline.business.entity.BehaviourIfPoolWithWrongAnswersIsFull;
 import de.heins.vokabeltraineronline.web.controller.AppUserAlreadyExistsException;
 import de.heins.vokabeltraineronline.web.controller.WrongPasswordException;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
@@ -23,11 +24,14 @@ public class AppUserService {
 	private AppUserFactory appUserFactory;
 	@Autowired
 	private AppUserRepository appUserRepository;
-	public SessionAppUser addAppUser(AppUserAttrRef appUserForm) throws AppUserAlreadyExistsException {
-		checkAppUserAlreadyExists(appUserForm);
+	public SessionAppUser addAppUser(AppUserAttrRef appUserAttrRef) throws AppUserAlreadyExistsException {
+		checkAppUserAlreadyExists(appUserAttrRef);
 		AppUser appUser = appUserFactory//
-			.setEMail(appUserForm.getEmail())//
-			.setPassword(appUserForm.getPassword())//
+			.setEMail(appUserAttrRef.getEmail())//
+			.setPassword(appUserAttrRef.getPassword())//
+			.setBehaviourIfPoolWithWrongAnswersIsFull(//
+					BehaviourIfPoolWithWrongAnswersIsFull.FILL_POOL_IMMEADLY//
+			).setMaxNumberOfWrongAnswersPerSession(5)
 			.setLastLogin(Calendar.getInstance().getTime())//
 			.getNewObject();
 		appUserRepository.save(appUser);

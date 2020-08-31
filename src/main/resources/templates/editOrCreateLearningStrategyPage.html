@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Index Box Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+
+    <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+	<h1 th:utext="#{editOrCreateLearningStrategyPage.header}">Edit Or Create SuccessStep</h1>
+ 	<form action="#" th:action="@{/controlActionEditOrCreateLearningStrategy}"
+			th:object="${editOrCreateLearningStrategyModAtt}" method="post">
+		<div th:text="#{editOrCreateLearningStrategyPage.name}">Name:</div>
+		<input type="text" th:field="*{learningStrategy.name}" />
+		<h2 th:utext="#{editOrCreateLearningStrategyPage.selectableSuccessSteps}">Selectable Success Steps</h2>
+	    <table>
+	    	<tr>
+				<th th:utext="#{editOrCreateLearningStrategyPage.action}">ACTION</th>
+				<th th:utext="#{editOrCreateLearningStrategyPage.name}">NAME</th>
+	    	</tr>
+	    	<tr  th:each="successStepName : *{selectableSuccessSteps}">
+	    		<td>
+					<a href="editOrCreateLearningStrategyPage.html"
+						th:href="@{/controlLinkAddSuccessStep(name=${successStepName})}"
+						th:utext="#{editOrCreateLearningStrategyPage.addSuccessStep}">
+							edit
+					</a>
+				</td>
+	        	<td th:utext="${successStepName}">Onions</td>
+	    	</tr>
+	    </table>
+	    <br/>
+		<h2 th:utext="#{editOrCreateLearningStrategyPage.assignedSuccessSteps}">Assigned Success Steps</h2>
+	    <table>
+	    	<tr>
+				<th th:utext="#{editOrCreateLearningStrategyPage.action}">ACTION</th>
+				<th th:utext="#{editOrCreateLearningStrategyPage.position}">POSITION</th>
+				<th th:utext="#{editOrCreateLearningStrategyPage.name}">NAME</th>
+	    	</tr>
+	    	<tr  th:each="successStepName : *{learningStrategy.assignedSuccessSteps}">
+	    		<td>
+	      		<table>
+	      			<tr>
+		      			<td>
+				      		<a href="editOrCreateLearningStrategyPage.html"
+									th:href="@{/controlLinkMoveUpSuccessStep(index=${successStepNameStat.index})}"
+									th:utext="#{editOrCreateLearningStrategyPage.moveUpSuccessStep}">
+										edit
+									</a>
+						</td>
+		      			<td>
+				      		<a href="editOrCreateLearningStrategyPage.html"
+									th:href="@{/controlLinkMoveDownSuccessStep(index=${successStepNameStat.index})}"
+									th:utext="#{editOrCreateLearningStrategyPage.moveDownSuccessStep}">
+										delete
+									</a>
+						</td>
+		      			<td>
+				      		<a href="editOrCreateLearningStrategyPage.html"
+									th:href="@{/controlLinkRemoveSuccessStep(index=${successStepNameStat.index})}"
+									th:utext="#{editOrCreateLearningStrategyPage.remove}">
+										remove
+									</a>
+						</td>
+					</tr>
+				</table>
+				</td>
+	        	<td th:utext="${successStepNameStat.count}">Onions</td>
+	        	<td th:utext="${successStepName}">Onions</td>
+	    	</tr>
+	    </table>
+		<button type="submit" name="submit" th:utext="#{editOrCreateLearningStrategyPage.submit}" ></button>
+		<button type="submit" name="cancel" th:utext="#{editOrCreateLearningStrategyPage.cancel}" ></button>
+	</form>
+
+ </body>
+
+</html>
+

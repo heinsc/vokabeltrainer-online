@@ -3,14 +3,14 @@ package de.heins.vokabeltraineronline.web.entities.htmlmodelattribute;
 import java.util.List;
 
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
-import de.heins.vokabeltraineronline.web.entities.attributereference.LearningStrategyModAttr;
+import de.heins.vokabeltraineronline.web.entities.attributereference.LearningStrategyAttrRef;
 import de.heins.vokabeltraineronline.web.entities.attributereference.SuccessStepAttrRef;
 
 public class ManageConfigurationsModAtt {
 	private String testOutput;
 	
 	private List<IndexBoxAttrRef> allIndexBoxes;
-	private List<LearningStrategyModAttr> allLearningStrategies;
+	private List<LearningStrategyAttrRef> allLearningStrategies;
 	private List<SuccessStepAttrRef> allSuccessSteps;
 
 	public List<IndexBoxAttrRef> getAllIndexBoxes() {
@@ -21,11 +21,11 @@ public class ManageConfigurationsModAtt {
 		this.allIndexBoxes = allIndexBoxes;
 	}
 
-	public List<LearningStrategyModAttr> getAllLearningStrategies() {
+	public List<LearningStrategyAttrRef> getAllLearningStrategies() {
 		return allLearningStrategies;
 	}
 
-	public void setAllLearningStrategies(List<LearningStrategyModAttr> allLearningStrategies) {
+	public void setAllLearningStrategies(List<LearningStrategyAttrRef> allLearningStrategies) {
 		this.allLearningStrategies = allLearningStrategies;
 	}
 

@@ -3,6 +3,7 @@ package de.heins.vokabeltraineronline.web.controller;
 public enum ControllerConstants {
 	sessionAppUser//
 	, sessionOldVersionOfSuccessStepName
+	, sessionOldVersionOfLearningStrategyName
 	, controlLogin
 	, controlMenu
 	, controlManageConfigurations
@@ -11,4 +12,5 @@ public enum ControllerConstants {
 	, controlCreateAppUser
 	, controlEditOrCreateSuccessStep
 	, controlDeleteSuccessStep
+	, controlEditOrCreateLearningStrategy
 }

@@ -52,8 +52,8 @@ public class SuccessStepService {
 			throw new RuntimeException("No AppUser found or AppUser not unique by email");
 		}
 	}
-	public SuccessStepAttrRef findForAppUserAndName(SessionAppUser sessionAppUserForm, String name) {
-		AppUser appUser = appUserRepository.findByEmail(sessionAppUserForm.getEmail()).get(0);
+	public SuccessStepAttrRef findForAppUserAndName(SessionAppUser sessionAppUser, String name) {
+		AppUser appUser = appUserRepository.findByEmail(sessionAppUser.getEmail()).get(0);
 		
 		try {
 			List<SuccessStep> resultByAppUserAndName = successStepRepository.findByAppUserAndName(appUser, name);

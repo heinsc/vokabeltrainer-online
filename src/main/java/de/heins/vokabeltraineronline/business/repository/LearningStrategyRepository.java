@@ -12,4 +12,6 @@ import de.heins.vokabeltraineronline.business.entity.AppUser;
 public interface LearningStrategyRepository extends CrudRepository<LearningStrategy, Long>{
 	public List<LearningStrategy> findByAppUser(AppUser appUser);
 
+	public List<LearningStrategy> findByAppUserAndName(AppUser appUser, String oldVersionOfLearningStrategyName);
+
 }

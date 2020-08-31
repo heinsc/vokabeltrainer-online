@@ -1,23 +1,25 @@
 // editOrCreateSuccessStep=Erfolgsstufe bearbeiten
 // ------------------
+// [User]  -[note: The two properties "behaviourIfWrong" and "maxNumberOfWrongAnswersPerSession" could be outsourced into a seperate "user learning profile"-class, but since it was a one-to-one relationship, this was too complicated. {bg:wheat}]
 
-[AppUser|email:String;passQuestionWithAnswer:hiddenString]
+
+[User|email:String;password:hiddenString;maxNumberOfWrongAnswersPerSession:int]
 [IndexBox|name:string]
-[LearningStrategy|name:String;maxNumberOfWrongAnswersPerSession:int]
+[LearningStrategy|name:String]
 [QuestionWithAnswer|question:string;answer:string;nextAppearance:Date]
 [SuccessStep|name:string;nextAppearanceInDays:int]
 
 [<<enum>>BehaviourIfPoolOfWrongAnswersIsFull| FILL_POOL_IMMEADLY;EMPTY_POOL_UNTIL_ALL_QUESTIONS_CORRECT]
 [<<enum>>BehaviourIfWrong|STAY_SUCCESSSTEP_NEXTDAY_TOMORROW;STAY_SUCCESSSTEP_NEXTDAY_SUCCESSSTEP_DURATION;PREVIOUS_SUCCESSSTEP_NEXTDAY_TOMORROW;PREVIOUS_SUCCESSSTEP_NEXTDAY_DURATION]
 
-[LearningStrategy] -> [BehaviourIfPoolOfWrongAnswersIsFull]
+[User] -> [BehaviourIfPoolOfWrongAnswersIsFull]
 [SuccessStep]++-1>[BehaviourIfWrong]
 [QuestionWithAnswer]-[note: special behaviour on answer{bg:wheat}]
 
-[IndexBox]->[AppUser]
-[LearningStrategy]->[AppUser]
-[QuestionWithAnswer]->[AppUser]
-[SuccessStep]->[AppUser]
+[IndexBox]->[User]
+[LearningStrategy]->[User]
+[QuestionWithAnswer]->[User]
+[SuccessStep]->[User]
 
 [IndexBox]<>-questionWithAnswers / 0..*>[QuestionWithAnswer]
 
@@ -25,3 +27,4 @@
 
 [QuestionWithAnswer]->[LearningStrategy]
 [QuestionWithAnswer]-actualSuccessStep / 0..1>[SuccessStep]
+ 

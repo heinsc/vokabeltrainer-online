@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
 public class AppUser {
@@ -19,16 +18,32 @@ public class AppUser {
 	private String password;
     
     private Date lastLogin;
+    
+	/*
+	 * Remarks on the two properties behaviourIfPoolWithWrongAnswersIsFull and
+	 * maxNumberOfWrongAnswersPerSession They could be outsourced into a separate
+	 * class "LearningProfile". But the object model grew to complicated then. But,
+	 * on user frontend side, these two properties are managed separately in
+	 * "createOrEditLearningProfile" while the other attributes are managed in
+	 * "manageAccount"
+	 */
+	private BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull;
+
+	private int maxNumberOfWrongAnswersPerSession;
     public AppUser() {
     }
     public AppUser(//
     		Long id2, String email2//
     		, String password2//
+    		, int maxNumberOfWrongAnswersPerSession//
+    		, BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull//
     		, Date lastLogin2//
     	) {
     	this.id=id2;
 		this.email=email2;
 		this.password=password2;
+		this.maxNumberOfWrongAnswersPerSession=maxNumberOfWrongAnswersPerSession;
+		this.behaviourIfPoolWithWrongAnswersIsFull=behaviourIfPoolWithWrongAnswersIsFull;
 		this.lastLogin=lastLogin2;
 	}
 
@@ -62,6 +77,18 @@ public class AppUser {
 
 	public void setLastLogin(Date lastLogin) {
 		this.lastLogin = lastLogin;
+	}
+	public BehaviourIfPoolWithWrongAnswersIsFull getBehaviourIfPoolWithWrongAnswersIsFull() {
+		return behaviourIfPoolWithWrongAnswersIsFull;
+	}
+	public int getMaxNumberOfWrongAnswersPerSession() {
+		return maxNumberOfWrongAnswersPerSession;
+	}
+	public void setBehaviourIfPoolWithWrongAnswersIsFull(BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull) {
+		this.behaviourIfPoolWithWrongAnswersIsFull = behaviourIfPoolWithWrongAnswersIsFull;
+	}
+	public void setMaxNumberOfWrongAnswersPerSession(int maxNumberOfWrongAnswersPerSession) {
+		this.maxNumberOfWrongAnswersPerSession = maxNumberOfWrongAnswersPerSession;
 	}
 
 

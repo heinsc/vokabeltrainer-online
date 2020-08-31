@@ -28,6 +28,7 @@
 	        <td th:text="${learningStrategy.name}">Onions</td>
 	      </tr>
 	    </table>
+		<button type="submit" name="createLearningStrategy" th:utext="#{manageConfigurationsPage.createLearningStrategy}" ></button>
 	
 	    <h2 th:utext="#{manageConfigurationsPage.successSteps}">Success Steps</h2>
 		<table>
@@ -42,14 +43,14 @@
 	      		<table>
 	      			<tr>
 		      			<td>
-				      		<a href="editAppUserPage.html"
+				      		<a href="editOrCreateSuccessStepPage.html"
 									th:href="@{/controlLinkEditSuccessStep(name=${successStep.name})}"
 									th:utext="#{manageConfigurationsPage.edit}">
 										edit
 									</a>
 						</td>
 		      			<td>
-				      		<a href="editAppUserPage.html"
+				      		<a href="deleteSuccessStepPage.html"
 									th:href="@{/controlLinkDeleteSuccessStep(name=${successStep.name})}"
 									th:utext="#{manageConfigurationsPage.delete}">
 										delete
@@ -63,12 +64,10 @@
 	        <td th:utext="#{${'manageConfigurationsPage.'}+${successStep.behaviourIfWrong}}">Onions</td>
 	      </tr>
 	    </table>
-	    <p>
-			<button type="submit" name="createSuccessStep" th:utext="#{manageConfigurationsPage.createSuccessStep}" ></button>
-			<br/>
-			<button type="submit" name="backToMenu" th:utext="#{manageConfigurationsPage.menu}" ></button>
-			<button type="submit" name="logout" th:utext="#{manageConfigurationsPage.logout}" ></button>
-		</p>
+		<button type="submit" name="createSuccessStep" th:utext="#{manageConfigurationsPage.createSuccessStep}" ></button>
+		<br/>
+		<button type="submit" name="backToMenu" th:utext="#{manageConfigurationsPage.menu}" ></button>
+		<button type="submit" name="logout" th:utext="#{manageConfigurationsPage.logout}" ></button>
 	</form>
 </body>
 

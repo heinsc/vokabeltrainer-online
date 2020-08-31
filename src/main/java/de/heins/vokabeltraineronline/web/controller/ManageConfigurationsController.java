@@ -16,7 +16,7 @@ import de.heins.vokabeltraineronline.business.service.LearningStrategyService;
 import de.heins.vokabeltraineronline.business.service.SuccessStepService;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
-import de.heins.vokabeltraineronline.web.entities.attributereference.LearningStrategyModAttr;
+import de.heins.vokabeltraineronline.web.entities.attributereference.LearningStrategyAttrRef;
 import de.heins.vokabeltraineronline.web.entities.attributereference.SuccessStepAttrRef;
 import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.ManageConfigurationsModAtt;
 
@@ -62,13 +62,13 @@ public class ManageConfigurationsController {
 	    }
 	    manageConfigurationsModAtt.setAllIndexBoxes(allIndexBoxes);
 	    
-	    List<LearningStrategyModAttr> allLearningStrategies = learningStrategyService.findAllForAppUser(sessionAppUserForm);
+	    List<LearningStrategyAttrRef> allLearningStrategies = learningStrategyService.findAllForAppUser(sessionAppUserForm);
 	    {
 	    	// only for testing, remove later
-		    LearningStrategyModAttr learningStrategyForm = new LearningStrategyModAttr();
+		    LearningStrategyAttrRef learningStrategyForm = new LearningStrategyAttrRef();
 		    learningStrategyForm.setName("firstLearningStrategy");
 		    allLearningStrategies.add(learningStrategyForm);
-		    learningStrategyForm = new LearningStrategyModAttr();
+		    learningStrategyForm = new LearningStrategyAttrRef();
 		    learningStrategyForm.setName("secondLearningStrategy");
 		    allLearningStrategies.add(learningStrategyForm);
 	    }
@@ -101,6 +101,17 @@ public class ManageConfigurationsController {
 	    );
 	    	    
 		return "redirect:" + ControllerConstants.controlEditOrCreateSuccessStep.name();
+	}
+	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"createLearningStrategy"})
+	public String createLearningStrategy(//
+			StandardSessionFacade session//
+	) throws Exception {
+	    session.setAttribute(//
+	    		ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
+	    		, ""//
+	    );
+	    	    
+		return "redirect:" + ControllerConstants.controlEditOrCreateLearningStrategy.name();
 	}
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"backToMenu"})
 	public String backToMenu() {
