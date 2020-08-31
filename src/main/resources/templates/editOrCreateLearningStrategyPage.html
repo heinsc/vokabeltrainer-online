@@ -15,6 +15,14 @@
 	<h1 th:utext="#{editOrCreateLearningStrategyPage.header}">Edit Or Create SuccessStep</h1>
  	<form action="#" th:action="@{/controlActionEditOrCreateLearningStrategy}"
 			th:object="${editOrCreateLearningStrategyModAtt}" method="post">
+		<div th:if="*{mandatoryViolated}">
+			<p th:utext="#{editOrCreateLearningStrategyPage.mandatoryViolated}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div th:if="*{learningStrategyWithThisNameAlreadyExists}">
+			<p th:utext="#{editOrCreateLearningStrategyPage.learningStrategyWithThisNameAlreadyExists}" class="error">Please fill all
+				fields!</p>
+		</div>
 		<div th:text="#{editOrCreateLearningStrategyPage.name}">Name:</div>
 		<input type="text" th:field="*{learningStrategy.name}" />
 		<h2 th:utext="#{editOrCreateLearningStrategyPage.selectableSuccessSteps}">Selectable Success Steps</h2>

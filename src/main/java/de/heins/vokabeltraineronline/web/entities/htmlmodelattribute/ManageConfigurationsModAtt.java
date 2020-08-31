@@ -7,8 +7,6 @@ import de.heins.vokabeltraineronline.web.entities.attributereference.LearningStr
 import de.heins.vokabeltraineronline.web.entities.attributereference.SuccessStepAttrRef;
 
 public class ManageConfigurationsModAtt {
-	private String testOutput;
-	
 	private List<IndexBoxAttrRef> allIndexBoxes;
 	private List<LearningStrategyAttrRef> allLearningStrategies;
 	private List<SuccessStepAttrRef> allSuccessSteps;
@@ -35,13 +33,5 @@ public class ManageConfigurationsModAtt {
 
 	public void setAllSuccessSteps(List<SuccessStepAttrRef> allSuccessSteps) {
 		this.allSuccessSteps = allSuccessSteps;
-	}
-
-	public String getTestOutput() {
-		return testOutput;
-	}
-
-	public void setTestOutput(String testOutput) {
-		this.testOutput = testOutput;
 	}
 }

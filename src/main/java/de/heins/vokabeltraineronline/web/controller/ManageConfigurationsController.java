@@ -49,7 +49,6 @@ public class ManageConfigurationsController {
 		);
 		ManageConfigurationsModAtt manageConfigurationsModAtt = new ManageConfigurationsModAtt();
 
-		manageConfigurationsModAtt.setTestOutput("bla");
 	    List<IndexBoxAttrRef> allIndexBoxes = indexBoxService.findAllForAppUser(sessionAppUserForm);
 	    // only for testing, remove later
 	    {
@@ -63,15 +62,6 @@ public class ManageConfigurationsController {
 	    manageConfigurationsModAtt.setAllIndexBoxes(allIndexBoxes);
 	    
 	    List<LearningStrategyAttrRef> allLearningStrategies = learningStrategyService.findAllForAppUser(sessionAppUserForm);
-	    {
-	    	// only for testing, remove later
-		    LearningStrategyAttrRef learningStrategyForm = new LearningStrategyAttrRef();
-		    learningStrategyForm.setName("firstLearningStrategy");
-		    allLearningStrategies.add(learningStrategyForm);
-		    learningStrategyForm = new LearningStrategyAttrRef();
-		    learningStrategyForm.setName("secondLearningStrategy");
-		    allLearningStrategies.add(learningStrategyForm);
-	    }
 	    manageConfigurationsModAtt.setAllLearningStrategies(allLearningStrategies);
 		
 		List<SuccessStepAttrRef> allSuccessSteps = successStepService.findAllForAppUser(sessionAppUserForm);

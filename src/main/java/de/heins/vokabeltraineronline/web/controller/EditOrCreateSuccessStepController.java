@@ -64,10 +64,19 @@ public class EditOrCreateSuccessStepController {
 			@ModelAttribute(name = "editOrCreateSuccessStepModAtt")
 			EditOrCreateSuccessStepModAttr editOrCreateSuccessModAtt//
 			, StandardSessionFacade session//
+			, Model model//
 	) {
 		SessionAppUser sessionAppUserForm = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
+		editOrCreateSuccessModAtt.setMandatoryViolated(false);
+		editOrCreateSuccessModAtt.setSuccessStepWithThisNameAlreadyExists(false);
+		//keine Ahnung, warum die selectableBehaviours weg sind... Ich füge sie an dieser Stelle einfach wieder ein.
+		editOrCreateSuccessModAtt.setSelectableBehaviours(successStepService.getAllBehavioursIfWrongAsStringArray());
+		if (Strings.isEmpty(editOrCreateSuccessModAtt.getSuccessStep().getName())) {
+			editOrCreateSuccessModAtt.setMandatoryViolated(true);
+			return Constants.editOrCreateSuccessStepPage.name();
+		}
 		String oldVersionOfSuccessStepName = (String) session.getAttribute(//
 				ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
 				);
@@ -82,7 +91,7 @@ public class EditOrCreateSuccessStepController {
 					, editOrCreateSuccessModAtt.getSuccessStep().getName()//
 			);
 			if (SuccessStepService.EMPTY_SUCCESS_STEP != fromDataBase) {
-				// handle duplicate new success step
+				editOrCreateSuccessModAtt.setSuccessStepWithThisNameAlreadyExists(true);
 				return Constants.editOrCreateSuccessStepPage.name();
 			}
 		}
