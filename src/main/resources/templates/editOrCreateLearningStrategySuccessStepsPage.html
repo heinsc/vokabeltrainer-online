@@ -12,19 +12,9 @@
 <body>
 
     <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
-	<h1 th:utext="#{editOrCreateLearningStrategyPage.header}">Edit Or Create SuccessStep</h1>
+	<h1 th:utext="#{editOrCreateLearningStrategyPage.header}">Edit Or Create LearningStrategy</h1>
  	<form action="#" th:action="@{/controlActionEditOrCreateLearningStrategy}"
 			th:object="${editOrCreateLearningStrategyModAtt}" method="post">
-		<div th:if="*{mandatoryViolated}">
-			<p th:utext="#{editOrCreateLearningStrategyPage.mandatoryViolated}" class="error">Please fill all
-				fields!</p>
-		</div>
-		<div th:if="*{learningStrategyWithThisNameAlreadyExists}">
-			<p th:utext="#{editOrCreateLearningStrategyPage.learningStrategyWithThisNameAlreadyExists}" class="error">Please fill all
-				fields!</p>
-		</div>
-		<div th:text="#{editOrCreateLearningStrategyPage.name}">Name:</div>
-		<input type="text" th:field="*{learningStrategy.name}" />
 		<h2 th:utext="#{editOrCreateLearningStrategyPage.selectableSuccessSteps}">Selectable Success Steps</h2>
 	    <table>
 	    	<tr>
@@ -34,9 +24,9 @@
 	    	<tr  th:each="successStepName : *{selectableSuccessSteps}">
 	    		<td>
 					<a href="editOrCreateLearningStrategyPage.html"
-						th:href="@{/controlLinkAddSuccessStep(name=${successStepName})}"
+						th:href="@{/controlLinkAddSuccessStep(successStepName=${successStepName})}"
 						th:utext="#{editOrCreateLearningStrategyPage.addSuccessStep}">
-							edit
+							addSuccessStep
 					</a>
 				</td>
 	        	<td th:utext="${successStepName}">Onions</td>
@@ -82,6 +72,7 @@
 	        	<td th:utext="${successStepName}">Onions</td>
 	    	</tr>
 	    </table>
+		<button type="submit" name="editName" th:utext="#{editOrCreateLearningStrategyPage.editName}" ></button>
 		<button type="submit" name="submit" th:utext="#{editOrCreateLearningStrategyPage.submit}" ></button>
 		<button type="submit" name="cancel" th:utext="#{editOrCreateLearningStrategyPage.cancel}" ></button>
 	</form>

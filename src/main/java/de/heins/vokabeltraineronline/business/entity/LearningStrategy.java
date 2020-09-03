@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,7 +23,7 @@ public class LearningStrategy {
 
     private String name;
     
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
 	private List<SuccessStep> successSteps;
 
 	@ManyToOne

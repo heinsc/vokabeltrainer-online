@@ -27,7 +27,7 @@ public class IndexBoxService {
 			List<IndexBoxAttrRef> indexBoxForms = new ArrayList<IndexBoxAttrRef>();
 			try {
 				List<IndexBox> indexBoxes = indexBoxRepository.findByAppUser(appUser);
-				indexBoxes.iterator().forEachRemaining(indexBox -> {
+				indexBoxes.forEach(indexBox -> {
 					IndexBoxAttrRef indexBoxForm = new IndexBoxAttrRef();
 					indexBoxForm.setName(indexBox.getName());
 					indexBoxForms.add(indexBoxForm);

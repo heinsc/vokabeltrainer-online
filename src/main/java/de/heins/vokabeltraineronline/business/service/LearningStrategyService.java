@@ -41,11 +41,17 @@ public class LearningStrategyService {
 			List<LearningStrategyAttrRef> learningStrategyForms = new ArrayList<LearningStrategyAttrRef>();
 			try {
 				List<LearningStrategy> learningStrategies = learningStrategyRepository.findByAppUser(appUser);
-				learningStrategies.iterator().forEachRemaining(//
+				learningStrategies.forEach(//
 						learningStrategy -> {
-							LearningStrategyAttrRef learningStrategyForm = new LearningStrategyAttrRef();
-							learningStrategyForm.setName(learningStrategy.getName());
-							learningStrategyForms.add(learningStrategyForm);
+							LearningStrategyAttrRef learningStrategyAttRef = new LearningStrategyAttrRef();
+							learningStrategyAttRef.setName(learningStrategy.getName());
+							learningStrategyForms.add(learningStrategyAttRef);
+							List<SuccessStep> successSteps = learningStrategy.getSuccessSteps();
+							successSteps.forEach(//
+									successStep -> learningStrategyAttRef//
+										.getAssignedSuccessSteps()//
+										.add(successStep.getName())
+							);
 						}
 				);
 			} catch (Exception e) {
@@ -74,6 +80,7 @@ public class LearningStrategyService {
 				learningStrategy.getSuccessSteps().forEach(//
 						currentSuccessStep -> learningStrategyAttrRef.getAssignedSuccessSteps().add(currentSuccessStep.getName())//
 				);
+				return learningStrategyAttrRef;
 			}
 		} catch (Exception e) {
 			// this occurs only when there are no items in the database table,

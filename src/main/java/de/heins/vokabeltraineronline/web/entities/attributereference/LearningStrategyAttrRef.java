@@ -3,7 +3,8 @@ package de.heins.vokabeltraineronline.web.entities.attributereference;
 import java.util.LinkedList;
 import java.util.List;
 
-import de.heins.vokabeltraineronline.business.entity.BehaviourIfPoolWithWrongAnswersIsFull;
+import org.apache.logging.log4j.util.Strings;
+
 
 public class LearningStrategyAttrRef {
 	public LearningStrategyAttrRef() {
@@ -13,6 +14,9 @@ public class LearningStrategyAttrRef {
 
 	private String name;
 	private List<String> assignedSuccessSteps;
+	public String getAssignedStepsCommaSeparated() {
+		return Strings.join(assignedSuccessSteps, ',');
+	};
     public String getName() {
 		return name;
 	}

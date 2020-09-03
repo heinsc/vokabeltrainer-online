@@ -35,7 +35,7 @@ public class SuccessStepService {
 			List<SuccessStepAttrRef> successStepAttrRefs = new ArrayList<SuccessStepAttrRef>();
 			try {
 				List<SuccessStep> successSteps = successStepRepository.findByAppUser(appUser);
-				successSteps.iterator().forEachRemaining(successStep -> {
+				successSteps.forEach(successStep -> {
 					SuccessStepAttrRef successStepAttrRef = new SuccessStepAttrRef();
 					successStepAttrRef.setName(successStep.getName());
 					successStepAttrRef.setNextAppearanceInDays(successStep.getNextAppearanceInDays());
