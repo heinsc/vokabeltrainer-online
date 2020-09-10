@@ -65,6 +65,10 @@ public class EditOrCreateLearningStrategyController {
 				Constants.editOrCreateLearningStrategyModAtt.name()//
 				, editOrCreateLearningStrategyModAtt//
 		);
+		session.setAttribute(//
+				Constants.sessionEditOrCreateLearningStrategy.name()//
+				, editOrCreateLearningStrategyModAtt//
+		);
 		return Constants.editOrCreateLearningStrategyNamePage.name();
 	}
 
@@ -102,8 +106,8 @@ public class EditOrCreateLearningStrategyController {
 	public String showAssignSuccessStepsPage(//
 			StandardSessionFacade session//
 			, Model model
-			, @ModelAttribute("editOrCreateLearningStrategyModAtt")
-			EditOrCreateLearningStrategyModAtt editOrCreateLearningStrategyModAtt//
+			, @ModelAttribute(name = "editOrCreateLearningStrategyModAtt" )
+			EditOrCreateLearningStrategyModAtt editOrCreateLearningStrategyModAtt
 	) {
 		editOrCreateLearningStrategyModAtt.setMandatoryViolated(false);
 		editOrCreateLearningStrategyModAtt.setLearningStrategyWithThisNameAlreadyExists(false);
@@ -113,6 +117,7 @@ public class EditOrCreateLearningStrategyController {
 		String oldVersionOfLearningStrategyName = (String) session.getAttribute(//
 				ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
 		);
+		model.addAttribute(Constants.editOrCreateLearningStrategyModAtt.name(), editOrCreateLearningStrategyModAtt);
 		if (Strings.isEmpty(editOrCreateLearningStrategyModAtt.getLearningStrategy().getName())) {
 			editOrCreateLearningStrategyModAtt.setMandatoryViolated(true);
 			return Constants.editOrCreateLearningStrategyNamePage.name();
@@ -133,27 +138,41 @@ public class EditOrCreateLearningStrategyController {
 			}
 		}
 		
+		EditOrCreateLearningStrategyModAtt sessionEditOrCreateLearningStrategyModAtt
+			= (EditOrCreateLearningStrategyModAtt) session.getAttribute(//
+					Constants.sessionEditOrCreateLearningStrategy.name()//
+			);
+		sessionEditOrCreateLearningStrategyModAtt.getLearningStrategy().setName(//
+				editOrCreateLearningStrategyModAtt.getLearningStrategy().getName()//
+		);
+		editOrCreateLearningStrategyModAtt.getLearningStrategy().getAssignedSuccessSteps().clear();
+		editOrCreateLearningStrategyModAtt.getLearningStrategy().getAssignedSuccessSteps().addAll(//
+				sessionEditOrCreateLearningStrategyModAtt.getLearningStrategy().getAssignedSuccessSteps()//
+		);
 	    initSelectableSteps(sessionAppUser, editOrCreateLearningStrategyModAtt);
 	    // the model attribute must be stored redundantly as session attribute
 	    // because on hyperlink calls there is no access on the model attributes. 
 	    // Then, all changes on the model a lost.
-	    session.setAttribute(//
-	    		Constants.sessionEditOrCreateLearningStrategy.name()//
-	    		, editOrCreateLearningStrategyModAtt//
-	    );
-		model.addAttribute(Constants.editOrCreateLearningStrategyModAtt.name(), editOrCreateLearningStrategyModAtt);
+//	    session.setAttribute(//
+//	    		Constants.sessionEditOrCreateLearningStrategy.name()//
+//	    		, editOrCreateLearningStrategyModAtt//
+//	    );
 		return Constants.editOrCreateLearningStrategySuccessStepsPage.name();
 	}
 	@RequestMapping(value="/controlActionEditOrCreateLearningStrategy", method=RequestMethod.POST, params= {"editName"})
 	public String showNamePage(//
 			StandardSessionFacade session//
 			, Model model
-			, @ModelAttribute("editOrCreateLearningStrategyModAtt")
-			EditOrCreateLearningStrategyModAtt editOrCreateLearningStrategyModAtt//
 	) {
-		editOrCreateLearningStrategyModAtt.setMandatoryViolated(false);
-		editOrCreateLearningStrategyModAtt.setLearningStrategyWithThisNameAlreadyExists(false);
-		model.addAttribute(Constants.editOrCreateLearningStrategyModAtt.name(), editOrCreateLearningStrategyModAtt);
+		
+		EditOrCreateLearningStrategyModAtt sessionEditOrCreateLearningStrategyModAtt//
+		= (EditOrCreateLearningStrategyModAtt) session.getAttribute(//
+				Constants.sessionEditOrCreateLearningStrategy.name()//
+		);
+		sessionEditOrCreateLearningStrategyModAtt.setMandatoryViolated(false);
+		sessionEditOrCreateLearningStrategyModAtt.setLearningStrategyWithThisNameAlreadyExists(false);
+		
+		model.addAttribute(Constants.editOrCreateLearningStrategyModAtt.name(), sessionEditOrCreateLearningStrategyModAtt);
 		return Constants.editOrCreateLearningStrategyNamePage.name();
 	}
 
@@ -178,6 +197,10 @@ public class EditOrCreateLearningStrategyController {
 			.getLearningStrategy()//
 			.getAssignedSuccessSteps()//
 			.add(successStepName);
+		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
+				ControllerConstants.sessionAppUser.name()//
+		);
+		initSelectableSteps(sessionAppUser, editOrCreateLearningStrategyModAtt);
 		model.addAttribute(//
 	    		Constants.editOrCreateLearningStrategyModAtt.name()//
 	    		, editOrCreateLearningStrategyModAtt//

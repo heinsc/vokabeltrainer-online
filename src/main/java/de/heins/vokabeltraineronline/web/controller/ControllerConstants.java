@@ -13,4 +13,5 @@ public enum ControllerConstants {
 	, controlEditOrCreateSuccessStep
 	, controlDeleteSuccessStep
 	, controlEditOrCreateLearningStrategy
+	, controlDeleteLearningStrategy
 }

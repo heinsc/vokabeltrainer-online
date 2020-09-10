@@ -30,7 +30,26 @@
 				<th th:utext=#{manageConfigurationsPage.successSteps}>SUCCESS_STEPS</th>
 			</tr>
 	      <tr th:each="learningStrategy : *{allLearningStrategies}">
-	        <td th:text="${learningStrategy.name}">Onions</td>
+	        <td>
+	        	<table>
+	      			<tr>
+		      			<td>
+				      		<a href="editOrCreateLearninStrategyNamePage.html"
+									th:href="@{/controlLinkEditLearningStrategy(name=${learningStrategy.name})}"
+									th:utext="#{manageConfigurationsPage.edit}">
+										edit
+									</a>
+						</td>
+		      			<td>
+				      		<a href="deleteLearningStrategyPage.html"
+									th:href="@{/controlLinkDeleteLearningStrategy(name=${learningStrategy.name})}"
+									th:utext="#{manageConfigurationsPage.delete}">
+										delete
+									</a>
+						</td>
+					</tr>
+				</table>
+	        </td>
 	        <td th:text="${learningStrategy.name}">Onions</td>
 	        <td th:text="${learningStrategy.getAssignedStepsCommaSeparated()}">Onions</td>
 	      </tr>

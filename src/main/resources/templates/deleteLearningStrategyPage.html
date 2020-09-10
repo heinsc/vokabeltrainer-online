@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Delete AppUser Account</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+
+	<div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+	<h1 th:utext="#{deleteLearningStrategyPage.deleteLearningStrategy}">Delete Learning Strategy</h1>
+	
+	<h2 th:utext="#{deleteLearningStrategyPage.caution}">Caution</h2>
+	<div th:utext="#{deleteLearningStrategyPage.consequences}">Consequences</div>
+
+	<form action="#" th:action="@{/controlActionDeleteLearningStrategy}"
+		th:object="${deleteLearningStrategyModAtt}" method="post">
+		<div th:if="*{mandatoryViolated}">
+			<p th:utext="#{deleteLearningStrategyPage.mandatoryViolated}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div th:if="*{wrongPassword}">
+			<p th:utext="#{deleteLearningStrategyPage.wrongPassword}" class="error">This appUser already exists.</p>
+		</div>
+		<p>
+			<div  th:utext="#{deleteLearningStrategyPage.password}">
+				Password:
+			</div>
+			 <input type="password" th:field="*{password}" />
+		</p>
+		<p>
+ 			<button type="submit" name="delete" th:utext="#{deleteLearningStrategyPage.delete}" >Delete</button>
+ 			<button type="submit" name="cancel" th:utext="#{deleteLearningStrategyPage.cancel}" >Cancel</button>
+		</p>
+	</form>
+</body>
+
+</html>
+

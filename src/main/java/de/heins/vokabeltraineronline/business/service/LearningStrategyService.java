@@ -105,17 +105,33 @@ public class LearningStrategyService {
 					.setName(learningStrategyAttrRef.getName())//
 					.setAppUser(appUser)//
 					.getNewObject();
-				
-				learningStrategy.getSuccessSteps().clear();
-				learningStrategyAttrRef.getAssignedSuccessSteps().forEach(
-						currentSuccessStep -> learningStrategy.getSuccessSteps().add(//
-								successStepRepository.findByAppUserAndName(appUser, currentSuccessStep).get(0)
-						)
+				refreshRecentlyAssignedSuccessSteps(//
+						learningStrategy//
+						, learningStrategyAttrRef//
+						, appUser//
 				);
+				
 		} else {
 			learningStrategy = findByAppUserAndNameList.get(0); //
 			learningStrategy.setName(learningStrategyAttrRef.getName());//
+			refreshRecentlyAssignedSuccessSteps(//
+					learningStrategy//
+					, learningStrategyAttrRef//
+					, appUser//
+			);
 		}
 		learningStrategyRepository.save(learningStrategy);
+	}
+	private void refreshRecentlyAssignedSuccessSteps(//
+			LearningStrategy learningStrategy//
+			, LearningStrategyAttrRef learningStrategyAttrRef//
+			, AppUser appUser//
+	) {
+		learningStrategy.getSuccessSteps().clear();
+		learningStrategyAttrRef.getAssignedSuccessSteps().forEach(
+				currentSuccessStep -> learningStrategy.getSuccessSteps().add(//
+						successStepRepository.findByAppUserAndName(appUser, currentSuccessStep).get(0)
+				)
+		);
 	}
 }

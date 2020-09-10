@@ -81,6 +81,18 @@ public class ManageConfigurationsController {
 	    );
 		return "redirect:" + ControllerConstants.controlDeleteSuccessStep.name();
 	}
+	@RequestMapping({"controlLinkDeleteLearningStrategy"})
+	public String deleteLearningStrategy(//
+            @RequestParam(name = "name", required = false, defaultValue = "")
+            String name//
+			, StandardSessionFacade session//
+	) throws Exception {
+	    session.setAttribute(//
+	    		ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
+	    		, name//
+	    );
+		return "redirect:" + ControllerConstants.controlDeleteLearningStrategy.name();
+	}
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"createSuccessStep"})
 	public String createSuccessStep(//
 			StandardSessionFacade session//
@@ -125,6 +137,18 @@ public class ManageConfigurationsController {
 	    		, name//
 	    );
 		return "redirect:" + ControllerConstants.controlEditOrCreateSuccessStep.name();
+	}
+	@RequestMapping({"controlLinkEditLearningStrategy"})
+	public String editLearningStrategy(//
+	        @RequestParam(name = "name", required = false, defaultValue = "")
+	        String name//
+			, StandardSessionFacade session//
+	) throws Exception {
+	    session.setAttribute(//
+	    		ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
+	    		, name//
+	    );
+		return "redirect:" + ControllerConstants.controlEditOrCreateLearningStrategy.name();
 	}
 
 
