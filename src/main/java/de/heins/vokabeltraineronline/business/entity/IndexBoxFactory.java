@@ -10,6 +10,8 @@ public class IndexBoxFactory
 
     private String name;
     
+    private String subject;
+    
     private AppUser appUser;
     
 	public IndexBoxFactory setId(Long id) {
@@ -26,8 +28,14 @@ public class IndexBoxFactory
 		this.appUser=appUser;
 		return this;
 	}
+
+
+	public IndexBoxFactory setSubject(String subject) {
+		this.subject = subject;
+		return this;
+	}
     public IndexBox getNewObject() {
-    	return new IndexBox(this.id, this.name, this.appUser);
+    	return new IndexBox(this.id, this.name, this.subject, this.appUser);
 	}
 
 }

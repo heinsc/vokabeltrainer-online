@@ -50,15 +50,6 @@ public class ManageConfigurationsController {
 		ManageConfigurationsModAtt manageConfigurationsModAtt = new ManageConfigurationsModAtt();
 
 	    List<IndexBoxAttrRef> allIndexBoxes = indexBoxService.findAllForAppUser(sessionAppUserForm);
-	    // only for testing, remove later
-	    {
-		    IndexBoxAttrRef indexBoxForm = new IndexBoxAttrRef();
-		    indexBoxForm.setName("firstIndexBox");
-		    allIndexBoxes.add(indexBoxForm);
-		    indexBoxForm = new IndexBoxAttrRef();
-		    indexBoxForm.setName("secondIndexBox");
-		    allIndexBoxes.add(indexBoxForm);
-	    }
 	    manageConfigurationsModAtt.setAllIndexBoxes(allIndexBoxes);
 	    
 	    List<LearningStrategyAttrRef> allLearningStrategies = learningStrategyService.findAllForAppUser(sessionAppUserForm);
@@ -149,6 +140,60 @@ public class ManageConfigurationsController {
 	    		, name//
 	    );
 		return "redirect:" + ControllerConstants.controlEditOrCreateLearningStrategy.name();
+	}
+
+	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"createIndexBox"})
+	public String createIndexBox(//
+			StandardSessionFacade session//
+	) throws Exception {
+	    session.setAttribute(//
+	    		ControllerConstants.sessionOldVersionOfIndexBoxName.name()//
+	    		, ""//
+	    );
+	    session.setAttribute(//
+	    		ControllerConstants.sessionOldVersionOfIndexBoxSubject.name()//
+	    		, ""//
+	    );
+	    	    
+		return "redirect:" + ControllerConstants.controlEditOrCreateIndexBox.name();
+	}
+
+	@RequestMapping({"controlLinkEditIndexBox"})
+	public String editIndexBox(//
+	        @RequestParam(name = "name", required = false, defaultValue = "")
+	        String name//
+	       ,  @RequestParam(name = "subject", required = false, defaultValue = "")
+	        String subject//
+			, StandardSessionFacade session//
+	) throws Exception {
+	    session.setAttribute(//
+	    		ControllerConstants.sessionOldVersionOfIndexBoxName.name()//
+	    		, name//
+	    );
+	    session.setAttribute(//
+	    		ControllerConstants.sessionOldVersionOfIndexBoxSubject.name()//
+	    		, subject//
+	    );
+		return "redirect:" + ControllerConstants.controlEditOrCreateIndexBox.name();
+	}
+
+	@RequestMapping({"controlLinkDeleteIndexBox"})
+	public String deleteIndexBox(//
+	        @RequestParam(name = "name", required = false, defaultValue = "")
+	        String name//
+	        , @RequestParam(name = "subject", required = false, defaultValue = "")
+	        String subject//
+			, StandardSessionFacade session//
+	) throws Exception {
+	    session.setAttribute(//
+	    		ControllerConstants.sessionOldVersionOfIndexBoxName.name()//
+	    		, name//
+	    );
+	    session.setAttribute(//
+	    		ControllerConstants.sessionOldVersionOfIndexBoxSubject.name()//
+	    		, subject//
+	    );
+		return "redirect:" + ControllerConstants.controlDeleteIndexBox.name();
 	}
 
 

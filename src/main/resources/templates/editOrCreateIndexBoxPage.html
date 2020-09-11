@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Index Box Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+    <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+
+	<h1 th:utext="#{editOrCreateIndexBoxPage.header}">Edit Or Create IndexBox</h1>
+	<form action="#" th:action="@{/controlActionEditOrCreateIndexBox}"
+			th:object="${editOrCreateIndexBoxModAtt}" method="post">
+		<div th:if="*{mandatoryViolated}">
+			<p th:utext="#{editOrCreateIndexBoxPage.mandatoryViolated}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div th:if="*{indexBoxWithThisNameAndSubjectAlreadyExists}">
+			<p th:utext="#{editOrCreateIndexBoxPage.successStepWithThisNameAndSubjectAlreadyExists}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div th:text="#{editOrCreateIndexBoxPage.name}">NAME:</div>
+		<input type="text" th:field="*{indexBox.name}" />
+		<div th:text="#{editOrCreateIndexBoxPage.subject}">SUBJECT:</div>
+		<input type="text" th:field="*{indexBox.subject}" />
+	    <br/>
+		<button type="submit" name="submit" th:utext="#{editOrCreateIndexBoxPage.submit}" ></button>
+		<button type="submit" name="cancel" th:utext="#{editOrCreateIndexBoxPage.cancel}" ></button>
+	</form>
+</body>
+
+</html>
+

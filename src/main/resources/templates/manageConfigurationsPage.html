@@ -17,10 +17,37 @@
 			th:object="${manageConfigurationsModAtt}" method="post">
 		<h2 th:utext="#{manageConfigurationsPage.indexBoxes}">Index Boxes</h2>
 		<table>
+			<tr>
+				<th th:utext=#{manageConfigurationsPage.action}>ACTION</th>
+				<th th:utext=#{manageConfigurationsPage.name}>NAME</th>
+				<th th:utext=#{manageConfigurationsPage.subject}>SUBJECT</th>
+			</tr>
 	      <tr th:each="indexBox : *{allIndexBoxes}">
+	        <td>
+	        	<table>
+	      			<tr>
+		      			<td>
+				      		<a href="editOrCreateIndexBoxPage.html"
+									th:href="@{/controlLinkEditIndexBox(name=${indexBox.name}, subject=${indexBox.subject})}"
+									th:utext="#{manageConfigurationsPage.edit}">
+										edit
+									</a>
+						</td>
+		      			<td>
+				      		<a href="deleteIndexBoxPage.html"
+									th:href="@{/controlLinkDeleteLearningStrategy(name=${indexBox.name}, subject=${indexBox.subject})}"
+									th:utext="#{manageConfigurationsPage.delete}">
+										delete
+							</a>
+						</td>
+					</tr>
+				</table>
+	        </td>
 	        <td th:text="${indexBox.name}">Onions</td>
+	        <td th:text="${indexBox.subject}">Onions</td>
 	      </tr>
 	    </table>
+		<button type="submit" name="createIndexBox" th:utext="#{manageConfigurationsPage.createIndexBox}" ></button>
 	  
 		<h2 th:utext="#{manageConfigurationsPage.learningStrategies}">Learning Strategies</h2>
 		<table>

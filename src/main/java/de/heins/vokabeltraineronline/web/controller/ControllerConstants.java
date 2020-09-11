@@ -14,4 +14,8 @@ public enum ControllerConstants {
 	, controlDeleteSuccessStep
 	, controlEditOrCreateLearningStrategy
 	, controlDeleteLearningStrategy
+	, sessionOldVersionOfIndexBoxName
+	, sessionOldVersionOfIndexBoxSubject
+	, controlEditOrCreateIndexBox
+	, controlDeleteIndexBox
 }

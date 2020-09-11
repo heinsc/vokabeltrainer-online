@@ -13,4 +13,10 @@ public interface IndexBoxRepository extends CrudRepository<IndexBox, Long>{
 
 	public List<IndexBox> findByAppUser(AppUser appUser);
 
+	public List<IndexBox> findByAppUserAndNameAndSubject(//
+			AppUser appUser//
+			, String name//
+			, String subject//
+	);
+
 }

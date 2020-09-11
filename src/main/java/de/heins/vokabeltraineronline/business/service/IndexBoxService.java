@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import de.heins.vokabeltraineronline.business.repository.IndexBoxRepository;
 import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
 import de.heins.vokabeltraineronline.business.entity.IndexBox;
+import de.heins.vokabeltraineronline.business.entity.IndexBoxFactory;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
@@ -16,10 +17,13 @@ import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAtt
 
 @Service
 public class IndexBoxService {
+	public static final IndexBoxAttrRef EMPTY_INDEX_BOX = new IndexBoxAttrRef();
 	@Autowired
 	private IndexBoxRepository indexBoxRepository;
 	@Autowired
 	private AppUserRepository appUserRepository;
+	@Autowired
+	private IndexBoxFactory indexBoxFactory;
 	public List<IndexBoxAttrRef> findAllForAppUser(SessionAppUser sessionAppUserForm) {
 		List<AppUser> appUsers = appUserRepository.findByEmail(sessionAppUserForm.getEmail());
 		if (appUsers.size() == 1) {
@@ -42,4 +46,66 @@ public class IndexBoxService {
 			throw new RuntimeException("No AppUser found or AppUser not unique by email");
 		}
 	}
+	public IndexBoxAttrRef findForAppUserAndNameAndSubject(//
+			SessionAppUser sessionAppUserForm//
+			, String name//
+			, String subject//
+	) {
+		AppUser appUser = appUserRepository.findByEmail(sessionAppUserForm.getEmail()).get(0);
+		try {
+			List<IndexBox> indexBoxes = indexBoxRepository.findByAppUserAndNameAndSubject(//
+					appUser//
+					, name//
+					, subject//
+			);
+			if (indexBoxes.size()==1) {
+				IndexBox indexBox = indexBoxes.get(0);
+				IndexBoxAttrRef indexBoxAttrRef = new IndexBoxAttrRef();
+				indexBoxAttrRef.setName(indexBox.getName());
+				indexBoxAttrRef.setSubject(indexBox.getSubject());
+				return indexBoxAttrRef;
+				
+			}
+		} catch (Exception e) {
+			// this occurs only when there are no items in the database table,
+			// or the table wasn't created yet.
+			// nothing to do then.
+		}
+		return  EMPTY_INDEX_BOX;
+	}
+	public void update(//
+			SessionAppUser appUserForm//
+			, IndexBoxAttrRef indexBoxAttrRef//
+			, String oldName//
+			, String oldSubject//
+		) {
+		AppUser appUser = appUserRepository.findByEmail(appUserForm.getEmail()).get(0);
+		List<IndexBox> findByAppUserAndNameAndSubjectList = new ArrayList<IndexBox>();
+		try {
+			findByAppUserAndNameAndSubjectList//
+				= indexBoxRepository.findByAppUserAndNameAndSubject(//
+						appUser//
+						, oldName//
+						, oldSubject//
+				);
+		} catch (Exception e) {
+			// this occurs only if there are no items in the database table,
+			// or the table wasn't created yet.
+			// nothing to do then.
+		}
+		IndexBox indexBox;
+		if (findByAppUserAndNameAndSubjectList.isEmpty()) {//
+			indexBox = indexBoxFactory//
+					.setName(indexBoxAttrRef.getName())//
+					.setSubject(indexBoxAttrRef.getSubject())
+					.setAppUser(appUser)//
+					.getNewObject();
+				
+		} else {
+			indexBox = findByAppUserAndNameAndSubjectList.get(0); //
+			indexBox.setName(indexBoxAttrRef.getName());//
+		}
+		indexBoxRepository.save(indexBox);
+	}
+
 }

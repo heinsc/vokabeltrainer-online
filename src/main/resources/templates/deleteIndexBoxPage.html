@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Delete AppUser Account</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+
+	<div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+	<h1 th:utext="#{deleteIndexBoxPage.deleteIndexBox}">Delete Index Box</h1>
+	
+	<h2 th:utext="#{deleteIndexBoxPage.caution}">Caution</h2>
+	<div th:utext="#{deleteIndexBoxPage.consequences}">Consequences</div>
+
+	<form action="#" th:action="@{/controlActionDeleteIndexBox}"
+		th:object="${deleteIndexBoxModAtt}" method="post">
+		<div th:if="*{mandatoryViolated}">
+			<p th:utext="#{deleteIndexBoxPage.mandatoryViolated}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div th:if="*{wrongPassword}">
+			<p th:utext="#{deleteIndexBoxPage.wrongPassword}" class="error">This appUser already exists.</p>
+		</div>
+		<p>
+			<div  th:utext="#{deleteIndexBoxPage.password}">
+				Password:
+			</div>
+			 <input type="password" th:field="*{password}" />
+		</p>
+		<p>
+ 			<button type="submit" name="delete" th:utext="#{deleteIndexBoxPage.delete}" >Delete</button>
+ 			<button type="submit" name="cancel" th:utext="#{deleteIndexBoxPage.cancel}" >Cancel</button>
+		</p>
+	</form>
+</body>
+
+</html>
+
