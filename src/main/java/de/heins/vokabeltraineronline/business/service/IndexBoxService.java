@@ -34,6 +34,7 @@ public class IndexBoxService {
 				indexBoxes.forEach(indexBox -> {
 					IndexBoxAttrRef indexBoxForm = new IndexBoxAttrRef();
 					indexBoxForm.setName(indexBox.getName());
+					indexBoxForm.setSubject(indexBox.getSubject());
 					indexBoxForms.add(indexBoxForm);
 				});
 			} catch (Exception e) {
@@ -104,6 +105,7 @@ public class IndexBoxService {
 		} else {
 			indexBox = findByAppUserAndNameAndSubjectList.get(0); //
 			indexBox.setName(indexBoxAttrRef.getName());//
+			indexBox.setSubject(indexBoxAttrRef.getSubject());//
 		}
 		indexBoxRepository.save(indexBox);
 	}
