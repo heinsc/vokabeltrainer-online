@@ -7,121 +7,177 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" media="all"
 	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+<style>
+.accordion {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover {
+  background-color: #ccc; 
+}
+
+.panel {
+  padding: 0 18px;
+  display: none;
+  background-color: white;
+  overflow: hidden;
+}
+</style>
 </head>
 
 <body>
 
+
 	<h1 th:utext="#{manageConfigurationsPage.manageConfigurations}">Configurations Overview</h1>
     <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+
 	<form action="#" th:action="@{/controlActionManageConfiguration }"
 			th:object="${manageConfigurationsModAtt}" method="post">
-		<h2 th:utext="#{manageConfigurationsPage.indexBoxes}">Index Boxes</h2>
-		<table>
-			<tr>
-				<th th:utext=#{manageConfigurationsPage.action}>ACTION</th>
-				<th th:utext=#{manageConfigurationsPage.name}>NAME</th>
-				<th th:utext=#{manageConfigurationsPage.subject}>SUBJECT</th>
-			</tr>
-	      <tr th:each="indexBox : *{allIndexBoxes}">
-	        <td>
-	        	<table>
-	      			<tr>
-		      			<td>
-				      		<a href="editOrCreateIndexBoxPage.html"
-									th:href="@{/controlLinkEditIndexBox(name=${indexBox.name}, subject=${indexBox.subject})}"
-									th:utext="#{manageConfigurationsPage.edit}">
-										edit
-									</a>
-						</td>
-		      			<td>
-				      		<a href="deleteIndexBoxPage.html"
-									th:href="@{/controlLinkDeleteLearningStrategy(name=${indexBox.name}, subject=${indexBox.subject})}"
-									th:utext="#{manageConfigurationsPage.delete}">
-										delete
-							</a>
-						</td>
-					</tr>
-				</table>
-	        </td>
-	        <td th:text="${indexBox.name}">Onions</td>
-	        <td th:text="${indexBox.subject}">Onions</td>
-	      </tr>
-	    </table>
-		<button type="submit" name="createIndexBox" th:utext="#{manageConfigurationsPage.createIndexBox}" ></button>
-	  
-		<h2 th:utext="#{manageConfigurationsPage.learningStrategies}">Learning Strategies</h2>
-		<table>
-			<tr>
-				<th th:utext=#{manageConfigurationsPage.action}>ACTION</th>
-				<th th:utext=#{manageConfigurationsPage.name}>NAME</th>
-				<th th:utext=#{manageConfigurationsPage.successSteps}>SUCCESS_STEPS</th>
-			</tr>
-	      <tr th:each="learningStrategy : *{allLearningStrategies}">
-	        <td>
-	        	<table>
-	      			<tr>
-		      			<td>
-				      		<a href="editOrCreateLearninStrategyNamePage.html"
-									th:href="@{/controlLinkEditLearningStrategy(name=${learningStrategy.name})}"
-									th:utext="#{manageConfigurationsPage.edit}">
-										edit
-									</a>
-						</td>
-		      			<td>
-				      		<a href="deleteLearningStrategyPage.html"
-									th:href="@{/controlLinkDeleteLearningStrategy(name=${learningStrategy.name})}"
-									th:utext="#{manageConfigurationsPage.delete}">
-										delete
-									</a>
-						</td>
-					</tr>
-				</table>
-	        </td>
-	        <td th:text="${learningStrategy.name}">Onions</td>
-	        <td th:text="${learningStrategy.getAssignedStepsCommaSeparated()}">Onions</td>
-	      </tr>
-	    </table>
-		<button type="submit" name="createLearningStrategy" th:utext="#{manageConfigurationsPage.createLearningStrategy}" ></button>
-	
-	    <h2 th:utext="#{manageConfigurationsPage.successSteps}">Success Steps</h2>
-		<table>
-		  <tr>
-		  	<th th:utext="#{manageConfigurationsPage.action}">ACTION</th>
-		    <th th:utext="#{manageConfigurationsPage.name}">NAME</th>
-		    <th th:utext="#{manageConfigurationsPage.nextAppearanceInDays}">NEXT_APPEARANCE_IN_DAYS</th>
-		    <th th:utext="#{manageConfigurationsPage.behaviourIfWrong}">BEHAVIOUR_IF_WRONG</th>
-		  </tr>
-	      <tr th:each="successStep : *{allSuccessSteps}">
-	      	<td>
-	      		<table>
-	      			<tr>
-		      			<td>
-				      		<a href="editOrCreateSuccessStepPage.html"
-									th:href="@{/controlLinkEditSuccessStep(name=${successStep.name})}"
-									th:utext="#{manageConfigurationsPage.edit}">
-										edit
-									</a>
-						</td>
-		      			<td>
-				      		<a href="deleteSuccessStepPage.html"
-									th:href="@{/controlLinkDeleteSuccessStep(name=${successStep.name})}"
-									th:utext="#{manageConfigurationsPage.delete}">
-										delete
-									</a>
-						</td>
-					</tr>
-				</table>
-	      	</td> 
-	        <td th:utext="${successStep.name}">Onions</td>
-	        <td th:utext="${successStep.nextAppearanceInDays}">Onions</td>
-	        <td th:utext="#{${'manageConfigurationsPage.'}+${successStep.behaviourIfWrong}}">Onions</td>
-	      </tr>
-	    </table>
-		<button type="submit" name="createSuccessStep" th:utext="#{manageConfigurationsPage.createSuccessStep}" ></button>
-		<br/>
+		<h2 class="accordion" th:utext="#{manageConfigurationsPage.learnProfile}">LearnProfile</h2>
+		<div class="panel">
+			<div th:utext="#{manageConfigurationsPage.maxNumberOfWrongAnswersPerSession}">MaxNumberOfWrongAnswersPerSession</div>
+			<div th:utext="*{learnProfile.maxNumberOfWrongAnswersPerSession}">Onions</div>
+			<br/>
+			<div th:utext="#{manageConfigurationsPage.behaviourIfPoolWithWrongAnswersIsFull}">BehaviourIfPoolWithWrongAnswersIsFull</div>
+			<div th:utext="#{${'manageConfigurationsPage.'}+*{learnProfile.behaviourIfPoolWithWrongAnswersIsFull}}">Onions</div>
+			<button type="submit" name="editLearnProfile" th:utext="#{manageConfigurationsPage.edit}" ></button>
+		</div>
+		<h2 class="accordion" th:utext="#{manageConfigurationsPage.indexBoxes}">Index Boxes</h2>
+		<div class="panel">
+			<table>
+				<tr>
+					<th th:utext=#{manageConfigurationsPage.action}>ACTION</th>
+					<th th:utext=#{manageConfigurationsPage.name}>NAME</th>
+					<th th:utext=#{manageConfigurationsPage.subject}>SUBJECT</th>
+				</tr>
+		      <tr th:each="indexBox : *{allIndexBoxes}">
+		        <td>
+		        	<table>
+		      			<tr>
+			      			<td>
+					      		<a href="editOrCreateIndexBoxPage.html"
+										th:href="@{/controlLinkEditIndexBox(name=${indexBox.name}, subject=${indexBox.subject})}"
+										th:utext="#{manageConfigurationsPage.edit}">
+											edit
+										</a>
+							</td>
+			      			<td>
+					      		<a href="deleteIndexBoxPage.html"
+										th:href="@{/controlLinkDeleteLearningStrategy(name=${indexBox.name}, subject=${indexBox.subject})}"
+										th:utext="#{manageConfigurationsPage.delete}">
+											delete
+								</a>
+							</td>
+						</tr>
+					</table>
+		        </td>
+		        <td th:text="${indexBox.name}">Onions</td>
+		        <td th:text="${indexBox.subject}">Onions</td>
+		      </tr>
+		    </table>
+			<button type="submit" name="createIndexBox" th:utext="#{manageConfigurationsPage.createIndexBox}" ></button>
+		</div>  
+		<h2 class="accordion" th:utext="#{manageConfigurationsPage.learningStrategies}">Learning Strategies</h2>
+		<div class="panel">
+			<table>
+				<tr>
+					<th th:utext=#{manageConfigurationsPage.action}>ACTION</th>
+					<th th:utext=#{manageConfigurationsPage.name}>NAME</th>
+					<th th:utext=#{manageConfigurationsPage.successSteps}>SUCCESS_STEPS</th>
+				</tr>
+		      <tr th:each="learningStrategy : *{allLearningStrategies}">
+		        <td>
+		        	<table>
+		      			<tr>
+			      			<td>
+					      		<a href="editOrCreateLearninStrategyNamePage.html"
+										th:href="@{/controlLinkEditLearningStrategy(name=${learningStrategy.name})}"
+										th:utext="#{manageConfigurationsPage.edit}">
+											edit
+										</a>
+							</td>
+			      			<td>
+					      		<a href="deleteLearningStrategyPage.html"
+										th:href="@{/controlLinkDeleteLearningStrategy(name=${learningStrategy.name})}"
+										th:utext="#{manageConfigurationsPage.delete}">
+											delete
+										</a>
+							</td>
+						</tr>
+					</table>
+		        </td>
+		        <td th:text="${learningStrategy.name}">Onions</td>
+		        <td th:text="${learningStrategy.getAssignedStepsCommaSeparated()}">Onions</td>
+		      </tr>
+		    </table>
+			<button type="submit" name="createLearningStrategy" th:utext="#{manageConfigurationsPage.createLearningStrategy}" ></button>
+		</div>
+	    <h2 class="accordion" th:utext="#{manageConfigurationsPage.successSteps}">Success Steps</h2>
+		<div class="panel">
+			<table>
+			  <tr>
+			  	<th th:utext="#{manageConfigurationsPage.action}">ACTION</th>
+			    <th th:utext="#{manageConfigurationsPage.name}">NAME</th>
+			    <th th:utext="#{manageConfigurationsPage.nextAppearanceInDays}">NEXT_APPEARANCE_IN_DAYS</th>
+			    <th th:utext="#{manageConfigurationsPage.behaviourIfWrong}">BEHAVIOUR_IF_WRONG</th>
+			  </tr>
+		      <tr th:each="successStep : *{allSuccessSteps}">
+		      	<td>
+		      		<table>
+		      			<tr>
+			      			<td>
+					      		<a href="editOrCreateSuccessStepPage.html"
+										th:href="@{/controlLinkEditSuccessStep(name=${successStep.name})}"
+										th:utext="#{manageConfigurationsPage.edit}">
+											edit
+										</a>
+							</td>
+			      			<td>
+					      		<a href="deleteSuccessStepPage.html"
+										th:href="@{/controlLinkDeleteSuccessStep(name=${successStep.name})}"
+										th:utext="#{manageConfigurationsPage.delete}">
+											delete
+										</a>
+							</td>
+						</tr>
+					</table>
+		      	</td> 
+		        <td th:utext="${successStep.name}">Onions</td>
+		        <td th:utext="${successStep.nextAppearanceInDays}">Onions</td>
+		        <td th:utext="#{${'manageConfigurationsPage.'}+${successStep.behaviourIfWrong}}">Onions</td>
+		      </tr>
+		    </table>
+			<button type="submit" name="createSuccessStep" th:utext="#{manageConfigurationsPage.createSuccessStep}" ></button>
+			<br/>
+		</div>
 		<button type="submit" name="backToMenu" th:utext="#{manageConfigurationsPage.menu}" ></button>
 		<button type="submit" name="logout" th:utext="#{manageConfigurationsPage.logout}" ></button>
 	</form>
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+</script>
 </body>
 
 </html>

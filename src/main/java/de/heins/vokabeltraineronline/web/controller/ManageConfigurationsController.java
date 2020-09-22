@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.heins.vokabeltraineronline.business.service.IndexBoxService;
+import de.heins.vokabeltraineronline.business.service.LearnProfileService;
 import de.heins.vokabeltraineronline.business.service.LearningStrategyService;
 import de.heins.vokabeltraineronline.business.service.SuccessStepService;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
+import de.heins.vokabeltraineronline.web.entities.attributereference.LearnProfileAttrRef;
 import de.heins.vokabeltraineronline.web.entities.attributereference.LearningStrategyAttrRef;
 import de.heins.vokabeltraineronline.web.entities.attributereference.SuccessStepAttrRef;
 import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.ManageConfigurationsModAtt;
@@ -25,6 +27,8 @@ public class ManageConfigurationsController {
 	private static enum Constants{
 		manageConfigurationsPage, manageConfigurationsModAtt
 	}
+	@Autowired
+	private LearnProfileService learnProfileService;
 	
 	@Autowired
 	private IndexBoxService indexBoxService;
@@ -44,18 +48,21 @@ public class ManageConfigurationsController {
 			Model model//
 			, StandardSessionFacade session//
 	) throws Exception {
-		SessionAppUser sessionAppUserForm = (SessionAppUser)session.getAttribute(//
+		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
 		ManageConfigurationsModAtt manageConfigurationsModAtt = new ManageConfigurationsModAtt();
-
-	    List<IndexBoxAttrRef> allIndexBoxes = indexBoxService.findAllForAppUser(sessionAppUserForm);
+		
+		LearnProfileAttrRef learnProfile = learnProfileService.findLearnProfileByUser(sessionAppUser);
+		manageConfigurationsModAtt.setLearnProfile(learnProfile);
+		
+	    List<IndexBoxAttrRef> allIndexBoxes = indexBoxService.findAllForAppUser(sessionAppUser);
 	    manageConfigurationsModAtt.setAllIndexBoxes(allIndexBoxes);
 	    
-	    List<LearningStrategyAttrRef> allLearningStrategies = learningStrategyService.findAllForAppUser(sessionAppUserForm);
+	    List<LearningStrategyAttrRef> allLearningStrategies = learningStrategyService.findAllForAppUser(sessionAppUser);
 	    manageConfigurationsModAtt.setAllLearningStrategies(allLearningStrategies);
 		
-		List<SuccessStepAttrRef> allSuccessSteps = successStepService.findAllForAppUser(sessionAppUserForm);
+		List<SuccessStepAttrRef> allSuccessSteps = successStepService.findAllForAppUser(sessionAppUser);
 		manageConfigurationsModAtt.setAllSuccessSteps(allSuccessSteps);
 		model.addAttribute(Constants.manageConfigurationsModAtt.name(), manageConfigurationsModAtt);
 		return Constants.manageConfigurationsPage.name();
@@ -194,6 +201,11 @@ public class ManageConfigurationsController {
 	    		, subject//
 	    );
 		return "redirect:" + ControllerConstants.controlDeleteIndexBox.name();
+	}
+
+	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"editLearnProfile"})
+	public String editLearnProfile() throws Exception {
+		return "redirect:" + ControllerConstants.controlEditLearnProfile.name();
 	}
 
 

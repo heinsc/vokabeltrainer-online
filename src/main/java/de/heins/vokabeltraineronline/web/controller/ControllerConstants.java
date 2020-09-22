@@ -18,4 +18,5 @@ public enum ControllerConstants {
 	, sessionOldVersionOfIndexBoxSubject
 	, controlEditOrCreateIndexBox
 	, controlDeleteIndexBox
+	, controlEditLearnProfile
 }

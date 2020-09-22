@@ -1,8 +1,6 @@
 package de.heins.vokabeltraineronline.business.entity;
 
 
-import javax.persistence.ManyToOne;
-
 import org.springframework.stereotype.Component;
 @Component
 public class QuestionWithAnswerFactory {
