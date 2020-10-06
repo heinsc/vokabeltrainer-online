@@ -29,6 +29,12 @@ public class MenuController {
 		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
 
 	}
+	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"manageQuestionsWithAnswers"})
+	public String manageQuestionsWithAnswers() throws Exception {
+		// direct link to ManangeConfigurationsController
+		return "redirect:" + ControllerConstants.controlManageQuestionsWithAnswers.name();
+
+	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"editAppUser"})
 	public String editAppUser() throws Exception {
 		// direct link to ManangeAppUserController

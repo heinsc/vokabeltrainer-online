@@ -19,4 +19,9 @@ public enum ControllerConstants {
 	, controlEditOrCreateIndexBox
 	, controlDeleteIndexBox
 	, controlEditLearnProfile
+	, controlManageQuestionsWithAnswers
+	, sessionOldVersionOfQuestion
+	, controlEditQuestionWithAnswer
+	, controlDeleteQuestionWithAnswer
+	, controlCreateQuestionsWithAnswers
 }

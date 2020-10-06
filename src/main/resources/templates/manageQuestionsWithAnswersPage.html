@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Index Box Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+
+
+	<h1
+		th:utext="#{manageQuestionsWithAnswersPage.manageQuestionsWithAnswers}">ManageQuestionsWithAnswers</h1>
+	<div
+		th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+	<form action="#"
+		th:action="@{/controlActionManageQuestionsWithAnswers}"
+		th:object="${manageQuestionsWithAnswersModAtt}" method="post">
+
+		<h2 th:utext="#{manageQuestionsWithAnswersPage.filter}">Filter</h2>
+		<table>
+			<tr>
+				<th th:utext=#{manageQuestionsWithAnswersPage.filter}>FILTER</th>
+				<th th:utext=#{manageConfigurationsPage.name}>NAME</th>
+				<th th:utext=#{manageConfigurationsPage.subject}>SUBJECT</th>
+			</tr>
+			<tr
+				th:each="indexBox : ${#session.getAttribute('sessionIndexBoxAttrRefList')}">
+				<td><a href="manageQuestionsWithAnswersPage.html"
+					th:href="@{/controlLinkRemoveIndexBoxFromFilter(index=${indexBoxStat.index})}"
+					th:if="${indexBox.filterOn}"> <img alt="remove"
+						src="imgs/checkboxChecked.jpg"
+						th:src="@{/imgs/checkboxChecked.jpg}">
+				</a> <a href="manageQuestionsWithAnswersPage.html"
+					th:href="@{/controlLinkAddIndexBoxToFilter(index=${indexBoxStat.index})}"
+					th:if="${not indexBox.filterOn}"> <img alt="add"
+						src="imgs/checkboxUnChecked.jpg"
+						th:src="@{/imgs/checkboxUnChecked.jpg}">
+				</a></td>
+				<td th:text="${indexBox.name}">Onions</td>
+				<td th:text="${indexBox.subject}">Onions</td>
+			</tr>
+		</table>
+		<h2 th:utext="#{manageQuestionsWithAnswersPage.words}">Filter</h2>
+		<table>
+			<tr>
+				<th th:utext=#{manageQuestionsWithAnswersPage.selected}>SELECTED</th>
+				<th th:utext=#{manageQuestionsWithAnswersPage.action}>ACTION</th>
+				<th th:utext=#{manageQuestionsWithAnswersPage.question}>QUESTION</th>
+				<th th:utext=#{manageQuestionsWithAnswersPage.answer}>ANSWER</th>
+				<th th:utext=#{manageQuestionsWithAnswersPage.indexBox}>INDEX_BOX</th>
+				<th th:utext=#{manageQuestionsWithAnswersPage.subject}>SUBJECT</th>
+				<th th:utext=#{manageQuestionsWithAnswersPage.learningStrategy}>SUBJECT</th>
+				<th th:utext=#{manageQuestionsWithAnswersPage.actualSuccessStep}>ACTUAL_SUCCESSSTEP</th>
+			</tr>
+			<tr th:each="questionWithAnswer : *{questionsWithAnswers}">
+				<td>
+					<a href="manageQuestionsWithAnswersPage.html"
+						th:href="@{/controlLinkRemoveQuestionWithAnswerFromFilter(index=${indexBoxStat.index})}"
+						th:if="${QuestionWithAnswer.filterOn}">
+						<img alt="remove"
+							src="imgs/checkboxChecked.jpg"
+							th:src="@{/imgs/checkboxChecked.jpg}"
+						>
+					</a>
+					<a href="manageQuestionsWithAnswersPage.html"
+						th:href="@{/controlLinkAddQuestionWithAnswerToFilter(index=${indexBoxStat.index})}"
+						th:if="${not QuestionWithAnswer.filterOn}">
+						<img alt="add"
+								src="imgs/checkboxUnChecked.jpg"
+							th:src="@{/imgs/checkboxUnChecked.jpg}">
+					</a>
+				</td>
+				<td>
+						        	<table>
+		      			<tr>
+			      			<td>
+					      		<a href="editOrCreateIndexBoxPage.html"
+										th:href="@{/controlLinkEditIndexBox(name=${indexBox.name}, subject=${indexBox.subject})}"
+										th:utext="#{manageConfigurationsPage.edit}">
+											edit
+										</a>
+							</td>
+			      			<td>
+					      		<a href="deleteIndexBoxPage.html"
+										th:href="@{/controlLinkDeleteLearningStrategy(name=${indexBox.name}, subject=${indexBox.subject})}"
+										th:utext="#{manageConfigurationsPage.delete}">
+											delete
+								</a>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td th:text="${indexBox.name}">Onions</td>
+				<td th:text="${indexBox.subject}">Onions</td>
+			</tr>
+		</table>
+		<button type="submit" name="backToMenu" th:utext="#{manageConfigurationsPage.menu}" ></button>
+		<button type="submit" name="logout" th:utext="#{manageConfigurationsPage.logout}" ></button>
+	</form>
+</body>
+
+</html>
+

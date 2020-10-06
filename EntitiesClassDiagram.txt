@@ -1,10 +1,7 @@
-// editOrCreateSuccessStep=Erfolgsstufe bearbeiten
-// ------------------
-// [User]  -[note: The two properties "behaviourIfWrong" and "maxNumberOfWrongAnswersPerSession" could be outsourced into a seperate "user learning profile"-class, but since it was a one-to-one relationship, this was too complicated. {bg:wheat}]
-
+//https://yuml.me/diagram/scruffy/class/draw
 
 [User|email:String;password:hiddenString;maxNumberOfWrongAnswersPerSession:int]
-[IndexBox|name:string; subject:string]
+[IndexBox|name:string; subject:string; actualInUse:boolean]
 [LearningStrategy|name:String]
 [QuestionWithAnswer|question:string;answer:string;nextAppearance:Date]
 [SuccessStep|name:string;nextAppearanceInDays:int]

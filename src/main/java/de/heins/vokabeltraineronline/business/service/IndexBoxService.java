@@ -2,6 +2,7 @@ package de.heins.vokabeltraineronline.business.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,9 +11,11 @@ import de.heins.vokabeltraineronline.business.repository.IndexBoxRepository;
 import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
 import de.heins.vokabeltraineronline.business.entity.IndexBox;
 import de.heins.vokabeltraineronline.business.entity.IndexBoxFactory;
+import de.heins.vokabeltraineronline.business.entity.QuestionWithAnswer;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
+import de.heins.vokabeltraineronline.web.entities.attributereference.QuestionWithAnswerAttrRef;
 
 
 @Service
@@ -24,8 +27,8 @@ public class IndexBoxService {
 	private AppUserRepository appUserRepository;
 	@Autowired
 	private IndexBoxFactory indexBoxFactory;
-	public List<IndexBoxAttrRef> findAllForAppUser(SessionAppUser sessionAppUserForm) {
-		List<AppUser> appUsers = appUserRepository.findByEmail(sessionAppUserForm.getEmail());
+	public List<IndexBoxAttrRef> findAllForAppUser(SessionAppUser sessionAppUser) {
+		List<AppUser> appUsers = appUserRepository.findByEmail(sessionAppUser.getEmail());
 		if (appUsers.size() == 1) {
 			AppUser appUser = appUsers.get(0);
 			List<IndexBoxAttrRef> indexBoxForms = new ArrayList<IndexBoxAttrRef>();
@@ -35,9 +38,18 @@ public class IndexBoxService {
 					IndexBoxAttrRef indexBoxForm = new IndexBoxAttrRef();
 					indexBoxForm.setName(indexBox.getName());
 					indexBoxForm.setSubject(indexBox.getSubject());
+					Set<QuestionWithAnswer> questionsWithAnsers = indexBox.getQuestionsWithAnsers();
+					questionsWithAnsers.forEach(currentQwA -> {
+						QuestionWithAnswerAttrRef questionWithAnswerAttrRef = new QuestionWithAnswerAttrRef();
+						questionWithAnswerAttrRef.setQuestion(currentQwA.getQuestion());
+						questionWithAnswerAttrRef.setAnswer(currentQwA.getAnswer());
+						indexBoxForm.getQuestionsWithAnswers().add(questionWithAnswerAttrRef);
+					});
+					indexBoxForm.setFilterOn(true);
 					indexBoxForms.add(indexBoxForm);
 				});
 			} catch (Exception e) {
+				System.out.println("Teststop");
 				// this occurs only when there are no items in the database table,
 				// or the table wasn't created yet.
 				// nothing to do then.

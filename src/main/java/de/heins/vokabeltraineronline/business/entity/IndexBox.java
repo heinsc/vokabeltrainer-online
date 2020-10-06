@@ -22,6 +22,7 @@ public class IndexBox  {
     
     private String name;
     private String subject;
+    private boolean actualInUse;
     
     @ManyToMany
 	private Set<QuestionWithAnswer> questionWithAnswers;
@@ -41,6 +42,7 @@ public class IndexBox  {
     	this.id=id2;
 		this.name=name2;
 		this.subject=subject2;
+		this.actualInUse=false;
 		this.appUser=appUser2;
 		
 		this.questionWithAnswers=new HashSet<QuestionWithAnswer>();
@@ -68,6 +70,9 @@ public class IndexBox  {
 		this.appUser = appUser;
 	}
 
+	public Set<QuestionWithAnswer> getQuestionsWithAnsers() {
+		return this.questionWithAnswers;
+	}
 	public void addQuestionWithAnswer(QuestionWithAnswer questionWithAnswer) {
 		this.questionWithAnswers.add(questionWithAnswer);
 	}
@@ -80,6 +85,12 @@ public class IndexBox  {
 	}
 	public void setSubject(String subject) {
 		this.subject = subject;
+	}
+	public boolean isActualInUse() {
+		return actualInUse;
+	}
+	public void setActualInUse(boolean actualInUse) {
+		this.actualInUse = actualInUse;
 	}
 
 }

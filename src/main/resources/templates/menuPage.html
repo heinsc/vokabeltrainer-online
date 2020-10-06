@@ -15,6 +15,8 @@
     <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
 	<br/>
 	<form action="#" th:action="@{/controlActionMenu }" method="post">
+		<button type="submit" name="manageQuestionsWithAnswers" th:utext="#{menuPage.manageQuestionsWithAnswers}" >Manage Words</button>
+		<br/>
 		<button type="submit" name="manageConfigurations" th:utext="#{menuPage.manageConfigurations}" >Manage Configurations</button>
 		<br/>
 		<button type="submit" name="editAppUser" th:utext="#{menuPage.editAppUser}" >Edit AppUser</button>
