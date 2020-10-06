@@ -33,7 +33,7 @@ public class DeleteSuccessStepController {
 		super();
 	}
 
-	@RequestMapping({ "/controlDeleteSuccessStep" })
+	@RequestMapping({ "/controlPageDeleteSuccessStep" })
 	public String showDeleteSuccessStepPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -55,7 +55,7 @@ public class DeleteSuccessStepController {
 	}
 	@RequestMapping(value = "/controlActionDeleteSuccessStep", method = RequestMethod.POST, params = {"cancel"})
 	public String cancel() {
-		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 	}
 	@RequestMapping(value = "/controlActionDeleteSuccessStep", method = RequestMethod.POST, params = {"delete"})
 	public String delete(//
@@ -73,7 +73,7 @@ public class DeleteSuccessStepController {
 			try {
 				appUserService.getSessionAppUserForLogin(appUserAttrRef);
 				// TODO eigentliches Delete...
-				return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+				return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 			} catch (WrongPasswordException e) {
 				deleteSuccessStep.setWrongPassword(true);
 			}

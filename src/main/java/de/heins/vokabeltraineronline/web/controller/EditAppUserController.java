@@ -29,7 +29,7 @@ public class EditAppUserController {
 		super();
 	}
 
-	@RequestMapping({ "/controlEditAppUser" })
+	@RequestMapping({ "/controlPageEditAppUser" })
 	public String showEditAppUserPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -70,7 +70,7 @@ public class EditAppUserController {
 						? appUser.getEmail()//
 						: sessionAppUser.getEmail()//
 				);
-				return "redirect:" + ControllerConstants.controlMenu.name();
+				return "redirect:" + ControllerConstants.controlPageMenu.name();
 			} catch (AppUserAlreadyExistsException e) {//
 				editAppUser.setAppUserAlreadyExists(true);
 			} catch (WrongPasswordException e) {
@@ -86,7 +86,7 @@ public class EditAppUserController {
 			EditAppUserModAtt editAppUser//
 			, HttpSession session
 	) {
-		return "redirect:" + ControllerConstants.controlMenu.name();
+		return "redirect:" + ControllerConstants.controlPageMenu.name();
 	}
 	
 	private boolean checkPasswords(EditAppUserModAtt editAppUserModAtt) {

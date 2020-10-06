@@ -25,7 +25,7 @@ public class LoginController {
 		super();
 	}
 
-	@RequestMapping({ "/", "/login", "/controlLogin" })
+	@RequestMapping({ "/", "/login", "/controlPageLogin" })
 	public String showLoginPage(Model model) throws Exception {
 		LoginModAtt loginModelAttribute = new LoginModAtt();
 		model.addAttribute(Constants.loginModAtt.name(), loginModelAttribute);
@@ -52,7 +52,7 @@ public class LoginController {
 					ControllerConstants.sessionAppUser.name()//
 					, sessionAppUserForLogin//
 			);
-			return "redirect:" + ControllerConstants.controlMenu.name();
+			return "redirect:" + ControllerConstants.controlPageMenu.name();
 		} catch (WrongPasswordException e) {
 			// wrong appUser credentials
 			loginModelAttribute.setLoginError(true);
@@ -62,7 +62,7 @@ public class LoginController {
 	@RequestMapping(value = "/controlActionLogin", params = {"createAppUser"}, method = RequestMethod.POST)
 	public String createAppUser() {
 		//direct go to CreateAppUserController
-		return "redirect:" + ControllerConstants.controlCreateAppUser.name();
+		return "redirect:" + ControllerConstants.controlPageCreateAppUser.name();
 	}
 
 }

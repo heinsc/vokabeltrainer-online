@@ -15,7 +15,7 @@ public class MenuController {
 		super();
 	}
 
-	@RequestMapping("/controlMenu")
+	@RequestMapping("/controlPageMenu")
 	public String showMenuPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -26,7 +26,7 @@ public class MenuController {
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"manageConfigurations"})
 	public String manageConfigurations() throws Exception {
 		// direct link to ManangeConfigurationsController
-		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"manageQuestionsWithAnswers"})
@@ -38,19 +38,19 @@ public class MenuController {
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"editAppUser"})
 	public String editAppUser() throws Exception {
 		// direct link to ManangeAppUserController
-		return "redirect:" + ControllerConstants.controlEditAppUser.name();
+		return "redirect:" + ControllerConstants.controlPageEditAppUser.name();
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"deleteAppUser"})
 	public String deleteAppUser() throws Exception {
 		//direct Link to DeleteAppUserController
-		return "redirect:" + ControllerConstants.controlDeleteAppUser.name();
+		return "redirect:" + ControllerConstants.controlPageDeleteAppUser.name();
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"logout"})
 	public String logout() throws Exception {
 		//direct Link to DeleteAppUserController
-		return "redirect:" + ControllerConstants.controlLogin.name();
+		return "redirect:" + ControllerConstants.controlPageLogin.name();
 	}
 
 

@@ -26,7 +26,7 @@ public class CreateAppUserController {
 		super();
 	}
 
-	@RequestMapping({ "/controlCreateAppUser" })
+	@RequestMapping({ "/controlPageCreateAppUser" })
 	public String showCreateAppUserPage(Model model) throws Exception {
 		model.addAttribute(Constants.createAppUserModAtt.name(), new CreateAppUserModAtt());
 		return Constants.createAppUserPage.name();
@@ -34,7 +34,7 @@ public class CreateAppUserController {
 	}
 	@RequestMapping(value = "/controlActionCreateAppUser" , method = RequestMethod.POST, params= {"cancel"})
 	public String cancel() throws Exception {
-		return "redirect:" + ControllerConstants.controlLogin.name();
+		return "redirect:" + ControllerConstants.controlPageLogin.name();
 	}
 
 	@RequestMapping(value = "/controlActionCreateAppUser", method = RequestMethod.POST, params= {"submit"})
@@ -50,7 +50,7 @@ public class CreateAppUserController {
 						ControllerConstants.sessionAppUser.name()//
 						, sessionAppUser//
 				);
-				return "redirect:"+ControllerConstants.controlMenu.name();
+				return "redirect:"+ControllerConstants.controlPageMenu.name();
 			} catch (AppUserAlreadyExistsException e) {
 				createAppUser.setAppUserAlreadyExists(true);
 			}

@@ -34,7 +34,7 @@ public class DeleteLearningStrategyController {
 		super();
 	}
 
-	@RequestMapping({ "/controlDeleteLearningStrategy" })
+	@RequestMapping({ "/controlPageDeleteLearningStrategy" })
 	public String showDeleteLearningStrategyPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -56,7 +56,7 @@ public class DeleteLearningStrategyController {
 	}
 	@RequestMapping(value = "/controlActionDeleteLearningStrategy", method = RequestMethod.POST, params = {"cancel"})
 	public String cancel() {
-		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 	}
 	@RequestMapping(value = "/controlActionDeleteLearningStrategy", method = RequestMethod.POST, params = {"delete"})
 	public String delete(//
@@ -74,7 +74,7 @@ public class DeleteLearningStrategyController {
 			try {
 				appUserService.getSessionAppUserForLogin(appUserAttrRef);
 				// TODO eigentliches Delete...
-				return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+				return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 			} catch (WrongPasswordException e) {
 				learningStrategyModAtt.setWrongPassword(true);
 			}

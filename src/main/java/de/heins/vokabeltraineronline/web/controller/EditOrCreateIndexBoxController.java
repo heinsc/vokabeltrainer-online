@@ -113,11 +113,11 @@ public class EditOrCreateIndexBoxController {
 				, oldVersionOfIndexBoxName//
 				, oldVersionOfIndexBoxSubject
 		);
-		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 	}
 	@RequestMapping(value="/controlActionEditOrCreateIndexBox", method=RequestMethod.POST, params= {"cancel"})
 	public String cancel() {
-		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 		
 	}
 

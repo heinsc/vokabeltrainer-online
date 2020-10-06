@@ -4,16 +4,16 @@ public enum ControllerConstants {
 	sessionAppUser//
 	, sessionOldVersionOfSuccessStepName
 	, sessionOldVersionOfLearningStrategyName
-	, controlLogin
-	, controlMenu
-	, controlManageConfigurations
-	, controlEditAppUser
-	, controlDeleteAppUser
-	, controlCreateAppUser
-	, controlEditOrCreateSuccessStep
-	, controlDeleteSuccessStep
-	, controlEditOrCreateLearningStrategy
-	, controlDeleteLearningStrategy
+	, controlPageLogin
+	, controlPageMenu
+	, controlPageManageConfigurations
+	, controlPageEditAppUser
+	, controlPageDeleteAppUser
+	, controlPageCreateAppUser
+	, controlPageEditOrCreateSuccessStep
+	, controlPageDeleteSuccessStep
+	, controlPageEditOrCreateLearningStrategy
+	, controlPageDeleteLearningStrategy
 	, sessionOldVersionOfIndexBoxName
 	, sessionOldVersionOfIndexBoxSubject
 	, controlEditOrCreateIndexBox

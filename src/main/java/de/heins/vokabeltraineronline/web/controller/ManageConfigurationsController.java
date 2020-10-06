@@ -43,7 +43,7 @@ public class ManageConfigurationsController {
 		super();
 	}
 
-	@RequestMapping({ "/controlManageConfigurations" })
+	@RequestMapping({ "/controlPageManageConfigurations" })
 	public String showManageConfigurationsPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -77,7 +77,7 @@ public class ManageConfigurationsController {
 	    		ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
 	    		, name//
 	    );
-		return "redirect:" + ControllerConstants.controlDeleteSuccessStep.name();
+		return "redirect:" + ControllerConstants.controlPageDeleteSuccessStep.name();
 	}
 	@RequestMapping({"controlLinkDeleteLearningStrategy"})
 	public String deleteLearningStrategy(//
@@ -89,7 +89,7 @@ public class ManageConfigurationsController {
 	    		ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
 	    		, name//
 	    );
-		return "redirect:" + ControllerConstants.controlDeleteLearningStrategy.name();
+		return "redirect:" + ControllerConstants.controlPageDeleteLearningStrategy.name();
 	}
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"createSuccessStep"})
 	public String createSuccessStep(//
@@ -100,7 +100,7 @@ public class ManageConfigurationsController {
 	    		, ""//
 	    );
 	    	    
-		return "redirect:" + ControllerConstants.controlEditOrCreateSuccessStep.name();
+		return "redirect:" + ControllerConstants.controlPageEditOrCreateSuccessStep.name();
 	}
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"createLearningStrategy"})
 	public String createLearningStrategy(//
@@ -111,17 +111,17 @@ public class ManageConfigurationsController {
 	    		, ""//
 	    );
 	    	    
-		return "redirect:" + ControllerConstants.controlEditOrCreateLearningStrategy.name();
+		return "redirect:" + ControllerConstants.controlPageEditOrCreateLearningStrategy.name();
 	}
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"backToMenu"})
 	public String backToMenu() {
 		//direct go to mainMenu
-		return "redirect:" +ControllerConstants.controlMenu.name();
+		return "redirect:" +ControllerConstants.controlPageMenu.name();
 	}
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"logout"})
 	public String logout() {
 		//direct go to login 
-		return "redirect:" + ControllerConstants.controlLogin.name();
+		return "redirect:" + ControllerConstants.controlPageLogin.name();
 	}
 
 	@RequestMapping({"controlLinkEditSuccessStep"})
@@ -134,7 +134,7 @@ public class ManageConfigurationsController {
 	    		ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
 	    		, name//
 	    );
-		return "redirect:" + ControllerConstants.controlEditOrCreateSuccessStep.name();
+		return "redirect:" + ControllerConstants.controlPageEditOrCreateSuccessStep.name();
 	}
 	@RequestMapping({"controlLinkEditLearningStrategy"})
 	public String editLearningStrategy(//
@@ -146,7 +146,7 @@ public class ManageConfigurationsController {
 	    		ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
 	    		, name//
 	    );
-		return "redirect:" + ControllerConstants.controlEditOrCreateLearningStrategy.name();
+		return "redirect:" + ControllerConstants.controlPageEditOrCreateLearningStrategy.name();
 	}
 
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"createIndexBox"})

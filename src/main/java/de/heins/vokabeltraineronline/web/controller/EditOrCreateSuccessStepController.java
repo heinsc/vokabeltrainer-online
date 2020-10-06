@@ -30,7 +30,7 @@ public class EditOrCreateSuccessStepController {
 		super();
 	}
 
-	@RequestMapping({ "/controlEditOrCreateSuccessStep" })
+	@RequestMapping({ "/controlPageEditOrCreateSuccessStep" })
 	public String showEditOrCreateSuccessStepPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -97,12 +97,12 @@ public class EditOrCreateSuccessStepController {
 		}
 		successStepService.update(//
 				sessionAppUserForm, editOrCreateSuccessModAtt.getSuccessStep(), oldVersionOfSuccessStepName);
-		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 	}
 	
 	@RequestMapping(value="/controlActionEditOrCreateSuccessStep", method=RequestMethod.POST, params= {"cancel"})
 	public String cancel() {
-		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 		
 	}
 

@@ -65,11 +65,11 @@ public class EditLearnProfileController {
 				, editLearnProfileModAtt.getLearnProfile().getMaxNumberOfWrongAnswersPerSession()//
 				, editLearnProfileModAtt.getLearnProfile().getBehaviourIfPoolWithWrongAnswersIsFull()//
 		);
-		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 	}
 	@RequestMapping(value="/controlActionEditLearnProfile", method=RequestMethod.POST, params= {"cancel"})
 	public String cancel() {
-		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 		
 	}
 

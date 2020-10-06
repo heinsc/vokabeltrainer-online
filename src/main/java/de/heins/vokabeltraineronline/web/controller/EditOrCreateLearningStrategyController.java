@@ -40,7 +40,7 @@ public class EditOrCreateLearningStrategyController {
 		super();
 	}
 
-	@RequestMapping({ "/controlEditOrCreateLearningStrategy" })
+	@RequestMapping({ "/controlPageEditOrCreateLearningStrategy" })
 	public String showEditOrCreateLearningStrategyPages(//
 			StandardSessionFacade session//
 			, Model model//
@@ -100,7 +100,7 @@ public class EditOrCreateLearningStrategyController {
 				, editOrCreateLearningStrategyModAtt.getLearningStrategy()//
 				, oldVersionOfLearningStrategyName 
 		);
-		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 	}
 	@RequestMapping(value="/controlActionEditOrCreateLearningStrategy", method=RequestMethod.POST, params= {"assignSuccessSteps"})
 	public String showAssignSuccessStepsPage(//
@@ -179,7 +179,7 @@ public class EditOrCreateLearningStrategyController {
 	
 	@RequestMapping(value="/controlActionEditOrCreateLearningStrategy", method=RequestMethod.POST, params= {"cancel"})
 	public String cancel() {
-		return "redirect:" + ControllerConstants.controlManageConfigurations.name();
+		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 		
 	}
 	@RequestMapping({"controlLinkAddSuccessStep"})

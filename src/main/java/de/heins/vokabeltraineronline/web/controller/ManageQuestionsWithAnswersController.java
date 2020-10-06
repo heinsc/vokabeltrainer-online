@@ -131,11 +131,11 @@ public class ManageQuestionsWithAnswersController {
 	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"backToMenu"})
 	public String backToMenu() {
 		//direct go to mainMenu
-		return "redirect:" +ControllerConstants.controlMenu.name();
+		return "redirect:" +ControllerConstants.controlPageMenu.name();
 	}
 	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"logout"})
 	public String logout() {
 		//direct go to login 
-		return "redirect:" + ControllerConstants.controlLogin.name();
+		return "redirect:" + ControllerConstants.controlPageLogin.name();
 	}
 }

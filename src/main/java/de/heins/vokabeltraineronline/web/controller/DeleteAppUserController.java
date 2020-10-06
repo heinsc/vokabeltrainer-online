@@ -28,7 +28,7 @@ public class DeleteAppUserController {
 		super();
 	}
 
-	@RequestMapping({ "/controlDeleteAppUser" })
+	@RequestMapping({ "/controlPageDeleteAppUser" })
 	public String showDeleteAppUserPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -49,7 +49,7 @@ public class DeleteAppUserController {
 	}
 	@RequestMapping(value = "/controlActionDeleteAppUser", method = RequestMethod.POST, params = {"cancel"})
 	public String cancel() {
-		return "redirect:" + ControllerConstants.controlMenu.name();
+		return "redirect:" + ControllerConstants.controlPageMenu.name();
 	}
 	@RequestMapping(value = "/controlActionDeleteAppUser", method = RequestMethod.POST, params = {"delete"})
 	public String delete(//
@@ -64,7 +64,7 @@ public class DeleteAppUserController {
 			AppUserAttrRef appUserForm = deleteAppUser.getAppUser();
 			try {
 				appUserService.deleteAppUser(sessionAppUserForm.getId(), sessionAppUserForm.getEmail(), appUserForm.getPassword());
-				return "redirect:" + ControllerConstants.controlLogin.name();
+				return "redirect:" + ControllerConstants.controlPageLogin.name();
 			} catch (WrongPasswordException e) {
 				deleteAppUser.setWrongPassword(true);
 			}
