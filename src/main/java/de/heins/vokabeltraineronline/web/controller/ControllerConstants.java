@@ -4,6 +4,9 @@ public enum ControllerConstants {
 	sessionAppUser//
 	, sessionOldVersionOfSuccessStepName
 	, sessionOldVersionOfLearningStrategyName
+	, sessionOldVersionOfIndexBoxName
+	, sessionOldVersionOfIndexBoxSubject
+	, sessionOldVersionOfQuestion
 	, controlPageLogin
 	, controlPageMenu
 	, controlPageManageConfigurations
@@ -14,14 +17,11 @@ public enum ControllerConstants {
 	, controlPageDeleteSuccessStep
 	, controlPageEditOrCreateLearningStrategy
 	, controlPageDeleteLearningStrategy
-	, sessionOldVersionOfIndexBoxName
-	, sessionOldVersionOfIndexBoxSubject
-	, controlEditOrCreateIndexBox
-	, controlDeleteIndexBox
-	, controlEditLearnProfile
-	, controlManageQuestionsWithAnswers
-	, sessionOldVersionOfQuestion
-	, controlEditQuestionWithAnswer
-	, controlDeleteQuestionWithAnswer
-	, controlCreateQuestionsWithAnswers
+	, controlPageEditOrCreateIndexBox
+	, controlPageDeleteIndexBox
+	, controlPageEditLearnProfile
+	, controlPageManageQuestionsWithAnswers
+	, controlPageEditQuestionWithAnswer
+	, controlPageDeleteQuestionWithAnswer
+	, controlPageCreateQuestionsWithAnswers
 }

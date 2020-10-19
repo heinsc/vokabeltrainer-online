@@ -28,7 +28,7 @@ public class EditOrCreateIndexBoxController {
 		super();
 	}
 
-	@RequestMapping({ "/controlEditOrCreateIndexBox" })
+	@RequestMapping({ "/controlPageEditOrCreateIndexBox" })
 	public String showEditOrCreateIndexBoxPage(//
 			StandardSessionFacade session//
 			, Model model//

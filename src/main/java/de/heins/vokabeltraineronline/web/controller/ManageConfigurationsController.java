@@ -162,7 +162,7 @@ public class ManageConfigurationsController {
 	    		, ""//
 	    );
 	    	    
-		return "redirect:" + ControllerConstants.controlEditOrCreateIndexBox.name();
+		return "redirect:" + ControllerConstants.controlPageEditOrCreateIndexBox.name();
 	}
 
 	@RequestMapping({"controlLinkEditIndexBox"})
@@ -181,7 +181,7 @@ public class ManageConfigurationsController {
 	    		ControllerConstants.sessionOldVersionOfIndexBoxSubject.name()//
 	    		, subject//
 	    );
-		return "redirect:" + ControllerConstants.controlEditOrCreateIndexBox.name();
+		return "redirect:" + ControllerConstants.controlPageEditOrCreateIndexBox.name();
 	}
 
 	@RequestMapping({"controlLinkDeleteIndexBox"})
@@ -200,12 +200,12 @@ public class ManageConfigurationsController {
 	    		ControllerConstants.sessionOldVersionOfIndexBoxSubject.name()//
 	    		, subject//
 	    );
-		return "redirect:" + ControllerConstants.controlDeleteIndexBox.name();
+		return "redirect:" + ControllerConstants.controlPageDeleteIndexBox.name();
 	}
 
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"editLearnProfile"})
 	public String editLearnProfile() throws Exception {
-		return "redirect:" + ControllerConstants.controlEditLearnProfile.name();
+		return "redirect:" + ControllerConstants.controlPageEditLearnProfile.name();
 	}
 
 

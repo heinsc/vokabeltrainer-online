@@ -29,7 +29,7 @@ public class EditLearnProfileController {
 		super();
 	}
 
-	@RequestMapping({ "/controlEditLearnProfile" })
+	@RequestMapping({ "/controlPageEditLearnProfile" })
 	public String showEditLearnProfilePage(//
 			StandardSessionFacade session//
 			, Model model//

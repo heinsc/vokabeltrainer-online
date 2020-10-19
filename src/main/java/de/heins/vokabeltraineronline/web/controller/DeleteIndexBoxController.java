@@ -34,7 +34,7 @@ public class DeleteIndexBoxController {
 		super();
 	}
 
-	@RequestMapping({ "/controlDeleteIndexBox" })
+	@RequestMapping({ "/controlPageDeleteIndexBox" })
 	public String showDeleteIndexBoxPage(//
 			Model model//
 			, StandardSessionFacade session//

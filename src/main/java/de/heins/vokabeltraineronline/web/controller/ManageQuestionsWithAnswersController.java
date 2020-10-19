@@ -33,7 +33,7 @@ public class ManageQuestionsWithAnswersController {
 		super();
 	}
 
-	@RequestMapping({ "/controlManageQuestionsWithAnswers" })
+	@RequestMapping({ "/controlPageManageQuestionsWithAnswers" })
 	public String showManageQuestionsWithAnswersPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -72,7 +72,7 @@ public class ManageQuestionsWithAnswersController {
 	    		ControllerConstants.sessionOldVersionOfQuestion.name()//
 	    		, question//
 	    );
-	    return "redirect:" + ControllerConstants.controlManageQuestionsWithAnswers;
+	    return "redirect:" + ControllerConstants.controlPageManageQuestionsWithAnswers;
 //		TODO return "redirect:" + ControllerConstants.controlDeleteQuestion.name();
 	}
 	@RequestMapping({"controlLinkAddIndexBoxToFilter"})
@@ -121,12 +121,12 @@ public class ManageQuestionsWithAnswersController {
 	) throws Exception {
 		session.setAttribute(ControllerConstants.sessionOldVersionOfQuestion.name(), question);
 		
-		return "redirect:" + ControllerConstants.controlEditQuestionWithAnswer.name();
+		return "redirect:" + ControllerConstants.controlPageEditQuestionWithAnswer.name();
 	}
 	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"createQuestionsWithAnswers"})
 	public String createQuestionsWithAnswers(//
 	) throws Exception {
-		return "redirect:" + ControllerConstants.controlCreateQuestionsWithAnswers.name();
+		return "redirect:" + ControllerConstants.controlPageCreateQuestionsWithAnswers.name();
 	}
 	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"backToMenu"})
 	public String backToMenu() {

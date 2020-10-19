@@ -32,7 +32,7 @@ public class MenuController {
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"manageQuestionsWithAnswers"})
 	public String manageQuestionsWithAnswers() throws Exception {
 		// direct link to ManangeConfigurationsController
-		return "redirect:" + ControllerConstants.controlManageQuestionsWithAnswers.name();
+		return "redirect:" + ControllerConstants.controlPageManageQuestionsWithAnswers.name();
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"editAppUser"})
