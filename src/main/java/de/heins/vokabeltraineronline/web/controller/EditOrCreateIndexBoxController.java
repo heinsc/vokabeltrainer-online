@@ -72,12 +72,8 @@ public class EditOrCreateIndexBoxController {
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
-		String oldVersionOfIndexBoxName = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfIndexBoxName.name()//
-		);
-		String oldVersionOfIndexBoxSubject = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfIndexBoxSubject.name()//
-		);
+		editOrCreateIndexBoxModAtt.setMandatoryViolated(false);
+		editOrCreateIndexBoxModAtt.setIndexBoxWithThisNameAndSubjectAlreadyExists(false);
 		if (//
 				Strings.isEmpty(editOrCreateIndexBoxModAtt.getIndexBox().getName())//
 				&& Strings.isEmpty(editOrCreateIndexBoxModAtt.getIndexBox().getSubject())//
@@ -85,6 +81,12 @@ public class EditOrCreateIndexBoxController {
 			editOrCreateIndexBoxModAtt.setMandatoryViolated(true);
 			return Constants.editOrCreateIndexBoxPage.name();
 		}
+		String oldVersionOfIndexBoxName = (String) session.getAttribute(//
+				ControllerConstants.sessionOldVersionOfIndexBoxName.name()//
+		);
+		String oldVersionOfIndexBoxSubject = (String) session.getAttribute(//
+				ControllerConstants.sessionOldVersionOfIndexBoxSubject.name()//
+		);
 		if (//
 				(//
 						Strings.isEmpty(oldVersionOfIndexBoxName)//

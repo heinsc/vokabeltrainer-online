@@ -92,9 +92,12 @@ public class EditOrCreateLearningStrategyController {
 		String oldVersionOfLearningStrategyName = (String) session.getAttribute(//
 				ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
 		);
+		// if you miss the check for duplicates here (like in de.heins.vokabeltraineronline.web.controller.EditOrCreateSuccessStepController.submit(EditOrCreateSuccessStepModAttr, StandardSessionFacade, Model)
+		// the check for duplicates already happens in 
+		// de.heins.vokabeltraineronline.web.controller.EditOrCreateLearningStrategyController.showAssignSuccessStepsPage(StandardSessionFacade, Model, EditOrCreateLearningStrategyModAtt)
 		EditOrCreateLearningStrategyModAtt editOrCreateLearningStrategyModAtt//
 			= (EditOrCreateLearningStrategyModAtt) session.getAttribute(Constants.sessionEditOrCreateLearningStrategy.name()//
-);
+		);
 		learningStrategyService.update(//
 				sessionAppUser//
 				, editOrCreateLearningStrategyModAtt.getLearningStrategy()//

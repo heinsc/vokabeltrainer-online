@@ -96,7 +96,10 @@ public class EditOrCreateSuccessStepController {
 			}
 		}
 		successStepService.update(//
-				sessionAppUserForm, editOrCreateSuccessModAtt.getSuccessStep(), oldVersionOfSuccessStepName);
+				sessionAppUserForm//
+				, editOrCreateSuccessModAtt.getSuccessStep()//
+				, oldVersionOfSuccessStepName//
+		);
 		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 	}
 	

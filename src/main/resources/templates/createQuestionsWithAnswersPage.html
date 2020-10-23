@@ -27,19 +27,26 @@
 			<p th:utext="#{createQuestionsWithAnswersPage.noIndexBoxExists}" class="error">Please fill all
 				fields!</p>
 		</div>
-		<label th:utext="#{createQuestionsWithAnswersPage.indexBox}"></label>
-		<select th:field="*{questionWithAnswer.indexBoxDescription}">
-		    <option th:each="currentIndexBox : *{indexBoxesDescriptions}" th:value="${currentIndexBox}" th:text="${currentIndexBox}">
-		    </option>
-		</select>
-		<label th:utext="#{createQuestionsWithAnswersPage.learningStrategy}"></label>
-		<select th:field="*{questionWithAnswer.learningStrategyDescription}">
-		    <option th:each="currentlearningStrategy : *{learningStrategiesDescriptions}" th:value="${currentlearningStrategy}" th:text="${currentlearningStrategy}">
-		    </option>
-		</select>
+		<div>
+			<label th:utext="#{createQuestionsWithAnswersPage.indexBox}"></label>
+			<select th:field="*{questionWithAnswer.indexBoxDescription}">
+			    <option th:each="currentIndexBox : *{indexBoxesDescriptions}" th:value="${currentIndexBox}" th:text="${currentIndexBox}">
+			    </option>
+			</select>
+			<label th:utext="#{createQuestionsWithAnswersPage.learningStrategy}"></label>
+			<select th:field="*{questionWithAnswer.learningStrategyDescription}">
+				<option th:utext="#{createQuestionsWithAnswersPage.emptyLearningStrategy}"  th:value="#{createQuestionsWithAnswersPage.emptyLearningStrategy}">
+			    <option th:each="currentlearningStrategy : *{learningStrategiesDescriptions}" th:value="${currentlearningStrategy}" th:text="${currentlearningStrategy}">
+			    </option>
+			</select>
+		</div>
+		<div>
 		
-		<div th:utext="#{createQuestionsWithAnswersPage.question}"></div>
-		<div th:utext="#{createQuestionsWithAnswersPage.answer}"></div>
+		<label th:utext="#{createQuestionsWithAnswersPage.question}"></label>
+		<input type="text" th:field="*{questionWithAnswer.question}" />
+		<label th:utext="#{createQuestionsWithAnswersPage.answer}"></label>
+		<input type="text" th:field="*{questionWithAnswer.answer}" />
+		</div>
 		<div th:if="*{not noIndexBoxExists}">
 			<button type="submit" name="submit" th:utext="#{createQuestionsWithAnswersPage.submit}" ></button>
 			<button type="submit" name="next" th:utext="#{createQuestionsWithAnswersPage.next}" ></button>

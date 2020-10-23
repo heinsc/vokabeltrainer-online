@@ -5,6 +5,8 @@ public class QuestionWithAnswerAttrRef {
 	private String answer;
 	private String indexBoxDescription;
 	private String learningStrategyDescription;
+	private String actualSuccessStepDescription;
+	private boolean filterOn;
 	public String getQuestion() {
 		return question;
 	}
@@ -28,5 +30,17 @@ public class QuestionWithAnswerAttrRef {
 	}
 	public void setLearningStrategyDescription(String learningStrategyDescription) {
 		this.learningStrategyDescription = learningStrategyDescription;
+	}
+	public boolean isFilterOn() {
+		return filterOn;
+	}
+	public void setFilterOn(boolean filterOn) {
+		this.filterOn = filterOn;
+	}
+	public String getActualSuccessStepDescription() {
+		return actualSuccessStepDescription;
+	}
+	public void setActualSuccessStepDescription(String actualSuccessStepDescription) {
+		this.actualSuccessStepDescription = actualSuccessStepDescription;
 	}
 }

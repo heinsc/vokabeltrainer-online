@@ -72,7 +72,11 @@ public class SuccessStepService {
 		}
 		return EMPTY_SUCCESS_STEP;
 	}
-	public void update(SessionAppUser appUserForm, SuccessStepAttrRef successStepAttrRef, String oldName) {
+	public void update(//
+			SessionAppUser appUserForm//
+			, SuccessStepAttrRef successStepAttrRef//
+			, String oldName//
+	) {
 		AppUser appUser = appUserRepository.findByEmail(appUserForm.getEmail()).get(0);
 		List<SuccessStep> findByAppUserAndNameList = new ArrayList<SuccessStep>();
 		try {

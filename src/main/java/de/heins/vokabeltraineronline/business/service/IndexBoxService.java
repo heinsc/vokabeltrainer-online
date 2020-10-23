@@ -43,6 +43,19 @@ public class IndexBoxService {
 						QuestionWithAnswerAttrRef questionWithAnswerAttrRef = new QuestionWithAnswerAttrRef();
 						questionWithAnswerAttrRef.setQuestion(currentQwA.getQuestion());
 						questionWithAnswerAttrRef.setAnswer(currentQwA.getAnswer());
+						questionWithAnswerAttrRef.setIndexBoxDescription(//
+								indexBox.getName()//
+								+ QuestionWithAnswerService.INDEXBOX_DESCRIPTION_SPLITTER//
+								+ indexBox.getSubject()//
+						);
+						String learningStrategyDescription = currentQwA.getLearningStrategy() != null//
+								? currentQwA.getLearningStrategy().getName()//
+								: "";
+						questionWithAnswerAttrRef.setLearningStrategyDescription(learningStrategyDescription);
+						String successStepDescription = currentQwA.getActualSuccessStep() != null//
+								? currentQwA.getActualSuccessStep().getName()//
+								: "not yet started or already finished";
+						questionWithAnswerAttrRef.setActualSuccessStepDescription(successStepDescription);
 						indexBoxForm.getQuestionsWithAnswers().add(questionWithAnswerAttrRef);
 					});
 					indexBoxForm.setFilterOn(true);

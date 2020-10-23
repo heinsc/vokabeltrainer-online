@@ -19,4 +19,6 @@ public interface QuestionWithAnswerRepository extends CrudRepository<QuestionWit
 //	Set<QuestionWithAnswer> findAllByAppUserWithNextAppearanceBeforeToday(@Param("today") Date today,
 //			@Param("appUser") AppUser appUser);
 	public Set<QuestionWithAnswer> findByNextAppearanceLessThanEqualAndAppUser(Date today, AppUser appUser);
+
+	public List<QuestionWithAnswer> findByAppUserAndQuestion(AppUser appUser, String question);
 }

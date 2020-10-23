@@ -52,50 +52,52 @@
 				<th th:utext=#{manageQuestionsWithAnswersPage.question}>QUESTION</th>
 				<th th:utext=#{manageQuestionsWithAnswersPage.answer}>ANSWER</th>
 				<th th:utext=#{manageQuestionsWithAnswersPage.indexBox}>INDEX_BOX</th>
-				<th th:utext=#{manageQuestionsWithAnswersPage.subject}>SUBJECT</th>
-				<th th:utext=#{manageQuestionsWithAnswersPage.learningStrategy}>SUBJECT</th>
+				<th th:utext=#{manageQuestionsWithAnswersPage.learningStrategy}>LEARNING_STRATEGY</th>
 				<th th:utext=#{manageQuestionsWithAnswersPage.actualSuccessStep}>ACTUAL_SUCCESSSTEP</th>
 			</tr>
 			<tr th:each="questionWithAnswer : *{questionsWithAnswers}">
 				<td>
 					<a href="manageQuestionsWithAnswersPage.html"
-						th:href="@{/controlLinkRemoveQuestionWithAnswerFromFilter(index=${indexBoxStat.index})}"
-						th:if="${QuestionWithAnswer.filterOn}">
+						th:href="@{/controlLinkRemoveQuestionWithAnswerFromFilter(index=${questionWithAnswerStat.index})}"
+						th:if="${questionWithAnswer.filterOn}">
 						<img alt="remove"
 							src="imgs/checkboxChecked.jpg"
 							th:src="@{/imgs/checkboxChecked.jpg}"
 						>
 					</a>
 					<a href="manageQuestionsWithAnswersPage.html"
-						th:href="@{/controlLinkAddQuestionWithAnswerToFilter(index=${indexBoxStat.index})}"
-						th:if="${not QuestionWithAnswer.filterOn}">
+						th:href="@{/controlLinkAddQuestionWithAnswerToFilter(index=${questionWithAnswerStat.index})}"
+						th:if="${not questionWithAnswer.filterOn}">
 						<img alt="add"
 								src="imgs/checkboxUnChecked.jpg"
 							th:src="@{/imgs/checkboxUnChecked.jpg}">
 					</a>
 				</td>
 				<td>
-						        	<table>
+					<table>
 		      			<tr>
 			      			<td>
-					      		<a href="editOrCreateIndexBoxPage.html"
-										th:href="@{/controlLinkEditIndexBox(name=${indexBox.name}, subject=${indexBox.subject})}"
-										th:utext="#{manageConfigurationsPage.edit}">
+					      		<a href="editQuestionWithAnswerPage.html"
+										th:href="@{/controlLinkEditQuestionWithAnswer(question=${questionWithAnswer.question})}"
+										th:utext="#{manageQuestionsWithAnswersPage.edit}">
 											edit
 										</a>
 							</td>
 			      			<td>
-					      		<a href="deleteIndexBoxPage.html"
-										th:href="@{/controlLinkDeleteLearningStrategy(name=${indexBox.name}, subject=${indexBox.subject})}"
-										th:utext="#{manageConfigurationsPage.delete}">
+					      		<a href="deleteQuestionWithAnswer.html"
+										th:href="@{/controlLinkDeleteQuestionWithAnswer(question=${questionWithAnswer.question})}"
+										th:utext="#{manageQuestionsWithAnswersPage.delete}">
 											delete
 								</a>
 							</td>
 						</tr>
 					</table>
 				</td>
-				<td th:text="${indexBox.name}">Onions</td>
-				<td th:text="${indexBox.subject}">Onions</td>
+				<td th:text="${questionWithAnswer.question}">Onions</td>
+				<td th:text="${questionWithAnswer.answer}">Onions</td>
+				<td th:text="${questionWithAnswer.indexBoxDescription}">Onions</td>
+				<td th:text="${questionWithAnswer.learningStrategyDescription}">Onions</td>
+				<td th:text="${questionWithAnswer.actualSuccessStepDescription}">Onions</td>
 			</tr>
 		</table>
 		
