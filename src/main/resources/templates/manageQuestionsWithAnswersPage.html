@@ -53,7 +53,7 @@
 				<th th:utext=#{manageQuestionsWithAnswersPage.answer}>ANSWER</th>
 				<th th:utext=#{manageQuestionsWithAnswersPage.indexBox}>INDEX_BOX</th>
 				<th th:utext=#{manageQuestionsWithAnswersPage.learningStrategy}>LEARNING_STRATEGY</th>
-				<th th:utext=#{manageQuestionsWithAnswersPage.actualSuccessStep}>ACTUAL_SUCCESSSTEP</th>
+				<th th:utext=#{manageQuestionsWithAnswersPage.learningProgress}>ACTUAL_SUCCESSSTEP</th>
 			</tr>
 			<tr th:each="questionWithAnswer : *{questionsWithAnswers}">
 				<td>
@@ -97,7 +97,7 @@
 				<td th:text="${questionWithAnswer.answer}">Onions</td>
 				<td th:text="${questionWithAnswer.indexBoxDescription}">Onions</td>
 				<td th:text="${questionWithAnswer.learningStrategyDescription}">Onions</td>
-				<td th:text="${questionWithAnswer.actualSuccessStepDescription}">Onions</td>
+				<td th:text="${questionWithAnswer.learningProgress}">Onions</td>
 			</tr>
 		</table>
 		

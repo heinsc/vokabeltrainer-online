@@ -1,6 +1,8 @@
 package de.heins.vokabeltraineronline.business.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -11,7 +13,9 @@ import de.heins.vokabeltraineronline.business.repository.IndexBoxRepository;
 import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
 import de.heins.vokabeltraineronline.business.entity.IndexBox;
 import de.heins.vokabeltraineronline.business.entity.IndexBoxFactory;
+import de.heins.vokabeltraineronline.business.entity.LearningStrategy;
 import de.heins.vokabeltraineronline.business.entity.QuestionWithAnswer;
+import de.heins.vokabeltraineronline.business.entity.SuccessStep;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
@@ -21,6 +25,10 @@ import de.heins.vokabeltraineronline.web.entities.attributereference.QuestionWit
 @Service
 public class IndexBoxService {
 	public static final IndexBoxAttrRef EMPTY_INDEX_BOX = new IndexBoxAttrRef();
+	private static final Date LAST_SUCCESSSTEP_MADE_DATE = Calendar.getInstance().getTime();
+	static {
+		LAST_SUCCESSSTEP_MADE_DATE.setTime(253402297199999L);
+	}
 	@Autowired
 	private IndexBoxRepository indexBoxRepository;
 	@Autowired
@@ -52,10 +60,8 @@ public class IndexBoxService {
 								? currentQwA.getLearningStrategy().getName()//
 								: "";
 						questionWithAnswerAttrRef.setLearningStrategyDescription(learningStrategyDescription);
-						String successStepDescription = currentQwA.getActualSuccessStep() != null//
-								? currentQwA.getActualSuccessStep().getName()//
-								: "not yet started or already finished";
-						questionWithAnswerAttrRef.setActualSuccessStepDescription(successStepDescription);
+						String learningProgress = calculateProgress(currentQwA);
+						questionWithAnswerAttrRef.setLearningProgress(learningProgress);
 						indexBoxForm.getQuestionsWithAnswers().add(questionWithAnswerAttrRef);
 					});
 					indexBoxForm.setFilterOn(true);
@@ -71,6 +77,33 @@ public class IndexBoxService {
 		} else {
 			throw new RuntimeException("No AppUser found or AppUser not unique by email");
 		}
+	}
+	private String calculateProgress(QuestionWithAnswer questionWithAnswer) {
+		SuccessStep actualSuccessStep = questionWithAnswer.getActualSuccessStep();
+		LearningStrategy learningStrategy = questionWithAnswer.getLearningStrategy();
+		List<SuccessStep> successSteps = learningStrategy.getSuccessSteps();
+		int totalDaysOfLearningStrategy=0;
+		int sumUntilActualSuccessStep=0;
+		if (questionWithAnswer.getActualSuccessStep() == null) {
+			if (questionWithAnswer.getNextAppearance().equals(LAST_SUCCESSSTEP_MADE_DATE)) {
+				return "100 %";
+			} else {
+				return "0 %";
+			}
+		}
+		boolean actualSuccessStepFound = false;
+		for (SuccessStep currentSuccessStep : successSteps) {
+			totalDaysOfLearningStrategy = totalDaysOfLearningStrategy + currentSuccessStep.getNextAppearanceInDays();
+			if (currentSuccessStep.equals(actualSuccessStep)) {
+				actualSuccessStepFound = true;
+			}
+			if (!actualSuccessStepFound) {
+				sumUntilActualSuccessStep = sumUntilActualSuccessStep + currentSuccessStep.getNextAppearanceInDays();
+			}				
+				
+		}
+		int resultAsFloat = (int) Math.round(100 * (float)sumUntilActualSuccessStep / totalDaysOfLearningStrategy);
+		return resultAsFloat+"%";
 	}
 	public IndexBoxAttrRef findForAppUserAndNameAndSubject(//
 			SessionAppUser sessionAppUserForm//

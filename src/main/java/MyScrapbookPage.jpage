@@ -1,0 +1,18 @@
+java.util.Calendar aDate = java.util.Calendar.getInstance();
+aDate.set(java.util.Calendar.YEAR, 9999);
+aDate.set(java.util.Calendar.MONTH, java.util.Calendar.DECEMBER);
+aDate.set(java.util.Calendar.DAY_OF_MONTH, 31);
+aDate.set(java.util.Calendar.HOUR_OF_DAY, 23);
+aDate.set(java.util.Calendar.MINUTE, 59);
+aDate.set(java.util.Calendar.SECOND, 59);
+aDate.set(java.util.Calendar.MILLISECOND, 999);
+System.out.println(aDate.getTimeInMillis());
+
+
+int sumUntilActualSuccessStep=4;
+int totalDaysOfLearningStrategy=7;
+float zwischenergebnis = 100 * (float)sumUntilActualSuccessStep / totalDaysOfLearningStrategy;
+System.out.println(zwischenergebnis);
+int resultAsFloat = (int) Math.round(zwischenergebnis);
+System.out.println(resultAsFloat+"%");
+

@@ -5,7 +5,7 @@ public class QuestionWithAnswerAttrRef {
 	private String answer;
 	private String indexBoxDescription;
 	private String learningStrategyDescription;
-	private String actualSuccessStepDescription;
+	private String learningProgress;
 	private boolean filterOn;
 	public String getQuestion() {
 		return question;
@@ -37,10 +37,10 @@ public class QuestionWithAnswerAttrRef {
 	public void setFilterOn(boolean filterOn) {
 		this.filterOn = filterOn;
 	}
-	public String getActualSuccessStepDescription() {
-		return actualSuccessStepDescription;
+	public String getLearningProgress() {
+		return learningProgress;
 	}
-	public void setActualSuccessStepDescription(String actualSuccessStepDescription) {
-		this.actualSuccessStepDescription = actualSuccessStepDescription;
+	public void setLearningProgress(String actualSuccessStepDescription) {
+		this.learningProgress = actualSuccessStepDescription;
 	}
 }
