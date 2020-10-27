@@ -11,6 +11,8 @@ public class CreateQuestionsWithAnswersModAtt {
 	private List<String> indexBoxesDescriptions; 
 	private List<String> learningStrategiesDescriptions;
 	private QuestionWithAnswerAttrRef questionWithAnswer;
+	private int selectedIndexBoxIndex;
+	private int selectedLearningStrategyIndex;
 	public Boolean getMandatoryViolated() {
 		return mandatoryViolated;
 	}
@@ -46,6 +48,18 @@ public class CreateQuestionsWithAnswersModAtt {
 	}
 	public void setLearningStrategiesDescriptions(List<String> learningStrategiesDiscriptions) {
 		this.learningStrategiesDescriptions = learningStrategiesDiscriptions;
+	}
+	public int getSelectedIndexBoxIndex() {
+		return selectedIndexBoxIndex;
+	}
+	public void setSelectedIndexBoxIndex(int selectedIndexBoxIndex) {
+		this.selectedIndexBoxIndex = selectedIndexBoxIndex;
+	}
+	public int getSelectedLearningStrategyIndex() {
+		return selectedLearningStrategyIndex;
+	}
+	public void setSelectedLearningStrategyIndex(int selectedLearningStrategyDescription) {
+		this.selectedLearningStrategyIndex = selectedLearningStrategyDescription;
 	}
 
 

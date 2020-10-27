@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Vokabeltrainer Online New Account</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+   <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+
+	<h1 th:utext="#{learnFilterIndexBoxesPage.learnPreparation}">FILTER INDEX BOXES</h1>
+	<h2 th:utext="#{learnFilterIndexBoxesPage.filter}">FILTER INDEX BOXES</h2>
+
+	<form action="#" th:action="@{/controlActionLearnFilterIndexBoxes}"
+		th:object="${learnFilterIndexBoxesModAtt}" method="post">
+		<div th:if="*{mandatoryViolated}">
+			<p th:utext="#{learnFilterIndexBoxesPage.mandatoryViolated}" class="error">You have to select at least one index box!</p>
+		</div>
+		<table>
+			<tr>
+				<th th:utext=#{learnFilterIndexBoxesPage.filter}>FILTER</th>
+				<th th:utext=#{learnFilterIndexBoxesPage.name}>NAME</th>
+				<th th:utext=#{learnFilterIndexBoxesPage.subject}>SUBJECT</th>
+			</tr>
+			<tr
+				th:each="indexBox : ${#session.getAttribute('sessionIndexBoxAttrRefList')}">
+				<td><a href="manageQuestionsWithAnswersPage.html"
+					th:href="@{/controlLinkRemoveIndexBoxFromFilterOnLearningPage(index=${indexBoxStat.index})}"
+					th:if="${indexBox.filterOn}"> <img alt="remove"
+						src="imgs/checkboxChecked.jpg"
+						th:src="@{/imgs/checkboxChecked.jpg}">
+				</a> <a href="manageQuestionsWithAnswersPage.html"
+					th:href="@{/controlLinkAddIndexBoxToFilterOnLearningPage(index=${indexBoxStat.index})}"
+					th:if="${not indexBox.filterOn}"> <img alt="add"
+						src="imgs/checkboxUnChecked.jpg"
+						th:src="@{/imgs/checkboxUnChecked.jpg}">
+				</a></td>
+				<td th:text="${indexBox.name}">Onions</td>
+				<td th:text="${indexBox.subject}">Onions</td>
+			</tr>
+		</table>
+		<p>
+			<button type="submit" name="cancel" th:utext="#{learnFilterIndexBoxesPage.cancel}">Cancel</button>
+		</p>
+		<p>
+			<button type="submit" name="logout" th:utext="#{learnFilterIndexBoxesPage.logout}">LOGOUT</button>
+		</p>
+	</form>
+</body>
+
+</html>
+

@@ -29,14 +29,22 @@
 		</div>
 		<div>
 			<label th:utext="#{createQuestionsWithAnswersPage.indexBox}"></label>
-			<select th:field="*{questionWithAnswer.indexBoxDescription}">
-			    <option th:each="currentIndexBox : *{indexBoxesDescriptions}" th:value="${currentIndexBox}" th:text="${currentIndexBox}">
+			<select th:field="*{questionWithAnswer.indexBoxDescription}" >
+			    <option
+			    	th:each="currentIndexBox : *{indexBoxesDescriptions}"
+			    	th:selected="*{selectedIndexBoxIndex} == currentIndexBox.index"
+			    	th:value="${currentIndexBox}"
+			    	th:text="${currentIndexBox}">
 			    </option>
 			</select>
 			<label th:utext="#{createQuestionsWithAnswersPage.learningStrategy}"></label>
 			<select th:field="*{questionWithAnswer.learningStrategyDescription}">
 				<option th:utext="#{createQuestionsWithAnswersPage.emptyLearningStrategy}"  th:value="#{createQuestionsWithAnswersPage.emptyLearningStrategy}">
-			    <option th:each="currentlearningStrategy : *{learningStrategiesDescriptions}" th:value="${currentlearningStrategy}" th:text="${currentlearningStrategy}">
+			    <option
+			    	th:each="currentlearningStrategy : *{learningStrategiesDescriptions}"
+			    	th:value="${currentlearningStrategy}"
+			    	th:text="${currentlearningStrategy}"
+			    	th:selected="currentlearningStrategy.index == *{selectedLearningStrategyIndex}">
 			    </option>
 			</select>
 		</div>

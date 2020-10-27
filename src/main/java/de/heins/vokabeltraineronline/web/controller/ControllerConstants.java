@@ -24,4 +24,5 @@ public enum ControllerConstants {
 	, controlPageEditQuestionWithAnswer
 	, controlPageDeleteQuestionWithAnswer
 	, controlPageCreateQuestionsWithAnswers
+	, controlPageLearnFilterIndexBoxes
 }

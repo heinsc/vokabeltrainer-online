@@ -49,13 +49,53 @@ public class CreateQuestionsWithAnswersController {
 	) throws Exception {
 		CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt = new CreateQuestionsWithAnswersModAtt();
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
+
+		refreshIndexBoxDescriptions(//
+				createQuestionsWithAnswersModAtt//
+				, sessionAppUser//
+		);
+		refreshLearningStrategyDescriptions(//
+				createQuestionsWithAnswersModAtt//
+				, sessionAppUser//
+		);
+		
+		model.addAttribute(Constants.createQuestionsWithAnswersModAtt.name(), createQuestionsWithAnswersModAtt);
+		
+		return Constants.createQuestionsWithAnswersPage.name();
+	}
+
+	private void refreshLearningStrategyDescriptions(//
+			CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt//
+			, SessionAppUser sessionAppUser//
+	) {
+		List<LearningStrategyAttrRef> learningStrategies = learningStrategyService.findAllForAppUser(sessionAppUser);
+		List<String> localLearningStrategiesDescriptions = learningStrategies.stream().map(
+				currentLearningStrategy -> currentLearningStrategy.getName()
+		).collect(Collectors.toList());
+		createQuestionsWithAnswersModAtt.setLearningStrategiesDescriptions(localLearningStrategiesDescriptions);
+		QuestionWithAnswerAttrRef questionWithAnswer = createQuestionsWithAnswersModAtt//
+		.getQuestionWithAnswer();
+		if (questionWithAnswer != null) {
+			createQuestionsWithAnswersModAtt.setSelectedLearningStrategyIndex(//
+					localLearningStrategiesDescriptions.indexOf(//
+							questionWithAnswer//
+									.getLearningStrategyDescription()//
+					));
+		} else {
+			createQuestionsWithAnswersModAtt.setSelectedLearningStrategyIndex(-1);
+		}
+	}
+
+	private void refreshIndexBoxDescriptions(//
+			CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt//
+			, SessionAppUser sessionAppUser//
+	) {
 		List<IndexBoxAttrRef> indexBoxes = indexBoxService.findAllForAppUser(sessionAppUser);
 		createQuestionsWithAnswersModAtt.setNoIndexBoxExists(indexBoxes.size() == 0);
-
-		// the structure of indexBoxDescription is important for adding or editing 
-		// QuestionsWithAnswerService#update
 		List<String> localIndexBoxDescriptions = indexBoxes.stream().map(
 				currentIndexBox -> 
+					// the structure of indexBoxDescription is important for adding or editing 
+					// QuestionsWithAnswerService#update
 					currentIndexBox.getName()//
 					+ QuestionWithAnswerService.INDEXBOX_DESCRIPTION_SPLITTER//
 					+ currentIndexBox.getSubject()
@@ -63,18 +103,19 @@ public class CreateQuestionsWithAnswersController {
 		createQuestionsWithAnswersModAtt.setIndexBoxesDescriptions(
 				localIndexBoxDescriptions
 		);
-		List<LearningStrategyAttrRef> learningStrategies = learningStrategyService.findAllForAppUser(sessionAppUser);
-		List<String> localLearningStrategiesDescriptions = learningStrategies.stream().map(
-				currentLearningStrategy -> currentLearningStrategy.getName()
-		).collect(Collectors.toList());
-		createQuestionsWithAnswersModAtt.setLearningStrategiesDescriptions(localLearningStrategiesDescriptions);
-		createQuestionsWithAnswersModAtt.setIndexBoxesDescriptions(
-				localIndexBoxDescriptions
-		);
-		
-		model.addAttribute(Constants.createQuestionsWithAnswersModAtt.name(), createQuestionsWithAnswersModAtt);
-		
-		return Constants.createQuestionsWithAnswersPage.name();
+		QuestionWithAnswerAttrRef questionWithAnswer = createQuestionsWithAnswersModAtt//
+		.getQuestionWithAnswer();
+		if (questionWithAnswer != null) {
+			createQuestionsWithAnswersModAtt.setSelectedIndexBoxIndex(//
+					localIndexBoxDescriptions.indexOf(//
+						questionWithAnswer//
+						.getIndexBoxDescription()//
+				)//
+			);
+		} else {
+			createQuestionsWithAnswersModAtt.setSelectedIndexBoxIndex(-1);
+		}
+
 	}
 
 	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"cancel"})
@@ -88,6 +129,15 @@ public class CreateQuestionsWithAnswersController {
 			, @ModelAttribute(name = "createQuestionsWithAnswersModAtt")
 			CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt
 	) {
+		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
+		refreshIndexBoxDescriptions(//
+				createQuestionsWithAnswersModAtt//
+				, sessionAppUser//
+		);
+		refreshLearningStrategyDescriptions(//
+				createQuestionsWithAnswersModAtt//
+				, sessionAppUser//
+		);
 		String returnValue = trySaveQuestionWithAnswer(session, createQuestionsWithAnswersModAtt);
 		if (!Strings.isEmpty(returnValue)) {
 			return returnValue;
@@ -116,7 +166,7 @@ public class CreateQuestionsWithAnswersController {
 			CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt) {
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
 		createQuestionsWithAnswersModAtt.setMandatoryViolated(false);
-		createQuestionsWithAnswersModAtt.setQuestionAlreadyExists(true);
+		createQuestionsWithAnswersModAtt.setQuestionAlreadyExists(false);
 		if (Strings.isEmpty(createQuestionsWithAnswersModAtt.getQuestionWithAnswer().getQuestion())) {
 			createQuestionsWithAnswersModAtt.setMandatoryViolated(true);
 			return Constants.createQuestionsWithAnswersPage.name();
