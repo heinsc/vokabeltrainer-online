@@ -19,7 +19,6 @@ import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.LearnFilter
 public class LearnFilterIndexBoxesController {
 	private static enum Constants {
 		learnFilterIndexBoxesPage
-		, sessionIndexBoxAttrRefList
 	}
 	@Autowired
 	private IndexBoxService indexBoxService;
@@ -38,8 +37,15 @@ public class LearnFilterIndexBoxesController {
 		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt = new LearnFilterIndexBoxesModAtt();
 		model.addAttribute("learnFilterIndexBoxesModAtt", learnFilterIndexBoxesModAtt);
 		List<IndexBoxAttrRef> indexBoxAttrRefList = indexBoxService.findAllForAppUser(sessionAppUser);
-		session.setAttribute(Constants.sessionIndexBoxAttrRefList.name(), indexBoxAttrRefList);
+		session.setAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name(), indexBoxAttrRefList);
 		return Constants.learnFilterIndexBoxesPage.name();
+
+	}
+	@RequestMapping(value = "/controlActionLearnFilterIndexBoxes", method = RequestMethod.POST, params = {"learn"})
+	public String learn(
+			StandardSessionFacade session
+	) throws Exception {
+		return "redirect:" + ControllerConstants.controlPageLearnDoLearn.name();
 
 	}
 	@RequestMapping(value = "/controlActionLearnFilterIndexBoxes", method = RequestMethod.POST, params = {"cancel"})
@@ -61,7 +67,9 @@ public class LearnFilterIndexBoxesController {
 	) throws Exception {
 		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt = new LearnFilterIndexBoxesModAtt();
 		model.addAttribute("learnFilterIndexBoxesModAtt", learnFilterIndexBoxesModAtt);
-		List<IndexBoxAttrRef> indexBoxAttrRefList = (List<IndexBoxAttrRef>) session.getAttribute(Constants.sessionIndexBoxAttrRefList.name());
+		List<IndexBoxAttrRef> indexBoxAttrRefList = (List<IndexBoxAttrRef>) session.getAttribute(//
+				ControllerConstants.sessionIndexBoxAttrRefList.name()//
+		);
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
 		indexBox.setFilterOn(true);
 		
@@ -77,11 +85,9 @@ public class LearnFilterIndexBoxesController {
 	) throws Exception {
 		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt = new LearnFilterIndexBoxesModAtt();
 		model.addAttribute("learnFilterIndexBoxesModAtt", learnFilterIndexBoxesModAtt);
-		List<IndexBoxAttrRef> indexBoxAttrRefList = (List<IndexBoxAttrRef>) session.getAttribute(Constants.sessionIndexBoxAttrRefList.name());
+		List<IndexBoxAttrRef> indexBoxAttrRefList = (List<IndexBoxAttrRef>) session.getAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
 		indexBox.setFilterOn(false);
-		//noch mal gucken, ob das wirklich nötig ist.
-		session.setAttribute(Constants.sessionIndexBoxAttrRefList.name(), indexBoxAttrRefList);
 		
 		return Constants.learnFilterIndexBoxesPage.name();
 	}

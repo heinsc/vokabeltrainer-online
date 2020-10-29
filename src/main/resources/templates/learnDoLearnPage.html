@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Vokabeltrainer Online New Account</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+   <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+
+	<h1 th:utext="#{learnDoLearnPage.learnWords}">LEARNING THE WORDS</h1>
+
+	<form action="#" th:action="@{/controlActionLearnDoLearn}"
+		th:object="${learnDoLearnModAtt}" method="post">
+		<label th:utext="#{learnDoLearnPage.question}">QUESTION</label>
+		<p th:text="*{questionWithAnswerAttrRef.question}" />
+		<label th:utext="#{learnDoLearnPage.answer}">ANSWER</label>
+		<input type="text" th:text="*{questionWithAnswerAttrRef.answerByUser}" />
+		<p>
+			<button type="submit" name="chooseOtherIndexBoxes" th:utext="#{learnDoLearnPage.cancel}">BACK TO FILTER INDEX BOX</button>
+		</p>
+		<p>
+			<button type="submit" name="cancel" th:utext="#{learnDoLearnPage.mainMenu}">BACK TO MAIN MENU</button>
+		</p>
+		<p>
+			<button type="submit" name="logout" th:utext="#{learnDoLearnPage.logout}">LOGOUT</button>
+		</p>
+	</form>
+</body>
+
+</html>
+

@@ -1,6 +1,7 @@
 package de.heins.vokabeltraineronline.business.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -113,6 +114,23 @@ public class QuestionWithAnswerService {
 			// nothing to do then.
 		}
 		return EMPTY_QUESTION_WITH_ANSWER;
+	}
+	/**
+	 * 
+	 * @param currentQuestionWithAnswerAttrRef
+	 * @param sessionAppUser
+	 * @return true if the date of nextAppearance is in the past.
+	 */
+	public boolean hasToBeAskedNow(//
+			QuestionWithAnswerAttrRef questionWithAnswerAttrRef//
+			, SessionAppUser sessionAppUser//
+	) {
+		List<AppUser> findByEmail = appUserRepository.findByEmail(sessionAppUser.getEmail());
+		AppUser user = findByEmail.get(0);
+		List<QuestionWithAnswer> findByAppUserAndQuestion = questionWithAnswerRepository.findByAppUserAndQuestion(user, questionWithAnswerAttrRef.getQuestion());
+		QuestionWithAnswer questionWithAnswer = findByAppUserAndQuestion.get(0);
+		Calendar now = Calendar.getInstance();
+		return now.getTime().after(questionWithAnswer.getNextAppearance());
 	}
 
 }

@@ -1,0 +1,18 @@
+//https://yuml.me/diagram/scruffy/class/draw
+
+(start)-<statusOfPoolWithWrongAnswers>
+<statusOfPoolWithWrongAnswers>poolIsEmpty->(unsetIndicatortofillEmptyPoolFirst)-><statusOfStockOfAll>
+<statusOfStockOfAll>stockIsEmpty->(leave)->(end)
+<statusOfStockOfAll>stockIsNotEmpty->(takeFromStock)->(end)
+<statusOfPoolWithWrongAnswers>poolIsNotEmpty-<statusOfPoolWithWrongAnswersIsNotEmpty>
+<statusOfPoolWithWrongAnswersIsNotEmpty>poolIsFull->|PoolWithWrongAnswersIsFullStart|
+|PoolWithWrongAnswersIsFullStart|- <PropertyWhenPoolIsFull>
+<PropertyWhenPoolIsFull>emptyPoolFirst->(setIncicatorToFillEmptyPoolFirst)->|PoolWithWrongAnswersIsFullEnd|
+<PropertyWhenPoolIsFull>[otherwise]->|PoolWithWrongAnswersIsFullEnd|
+|PoolWithWrongAnswersIsFullStart|->(takeFromPool)->|PoolWithWrongAnswersIsFullEnd|
+|PoolWithWrongAnswersIsFullEnd|->(end)
+<statusOfPoolWithWrongAnswersIsNotEmpty>poolIsNotFull-><statusOfIndicator>
+<statusOfIndicator>emptyPoolFirst->(takeFromPool)
+<statusOfIndicator>dontEmptyPoolFirst-><statusOfStock>
+<statusOfStock>stockIsEmpty->(takeFromPool)
+<statusOfStock>stockIsNotEmpty->(takeFromStock)
