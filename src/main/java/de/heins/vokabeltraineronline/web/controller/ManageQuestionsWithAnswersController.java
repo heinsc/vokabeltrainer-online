@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.heins.vokabeltraineronline.business.service.IndexBoxService;
+import de.heins.vokabeltraineronline.web.entities.IndexBoxes;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
 import de.heins.vokabeltraineronline.web.entities.attributereference.QuestionWithAnswerAttrRef;
@@ -82,7 +83,7 @@ public class ManageQuestionsWithAnswersController {
             , Model model
 			, StandardSessionFacade session//
 	) throws Exception {
-		List<IndexBoxAttrRef> indexBoxAttrRefList = (List<IndexBoxAttrRef>) session.getAttribute(Constants.sessionIndexBoxAttrRefList.name());
+		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(Constants.sessionIndexBoxAttrRefList.name());
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
 		indexBox.setFilterOn(true);
 		Set<QuestionWithAnswerAttrRef> questionsWithAnswers = findQuestionsWithAnswersList(indexBoxAttrRefList);
@@ -101,7 +102,7 @@ public class ManageQuestionsWithAnswersController {
             , Model model
 			, StandardSessionFacade session//
 	) throws Exception {
-		List<IndexBoxAttrRef> indexBoxAttrRefList = (List<IndexBoxAttrRef>) session.getAttribute(Constants.sessionIndexBoxAttrRefList.name());
+		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(Constants.sessionIndexBoxAttrRefList.name());
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
 		indexBox.setFilterOn(false);
 		Set<QuestionWithAnswerAttrRef> questionsWithAnswers = findQuestionsWithAnswersList(indexBoxAttrRefList);

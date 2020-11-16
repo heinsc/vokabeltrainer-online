@@ -17,6 +17,7 @@ import de.heins.vokabeltraineronline.business.entity.LearningStrategy;
 import de.heins.vokabeltraineronline.business.entity.QuestionWithAnswer;
 import de.heins.vokabeltraineronline.business.entity.SuccessStep;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
+import de.heins.vokabeltraineronline.web.entities.IndexBoxes;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
 import de.heins.vokabeltraineronline.web.entities.attributereference.QuestionWithAnswerAttrRef;
@@ -25,7 +26,7 @@ import de.heins.vokabeltraineronline.web.entities.attributereference.QuestionWit
 @Service
 public class IndexBoxService {
 	public static final IndexBoxAttrRef EMPTY_INDEX_BOX = new IndexBoxAttrRef();
-	private static final Date LAST_SUCCESSSTEP_MADE_DATE = Calendar.getInstance().getTime();
+	public static final Date LAST_SUCCESSSTEP_MADE_DATE = Calendar.getInstance().getTime();
 	static {
 		LAST_SUCCESSSTEP_MADE_DATE.setTime(253402297199999L);
 	}
@@ -35,11 +36,11 @@ public class IndexBoxService {
 	private AppUserRepository appUserRepository;
 	@Autowired
 	private IndexBoxFactory indexBoxFactory;
-	public List<IndexBoxAttrRef> findAllForAppUser(SessionAppUser sessionAppUser) {
+	public IndexBoxes findAllForAppUser(SessionAppUser sessionAppUser) {
 		List<AppUser> appUsers = appUserRepository.findByEmail(sessionAppUser.getEmail());
 		if (appUsers.size() == 1) {
 			AppUser appUser = appUsers.get(0);
-			List<IndexBoxAttrRef> indexBoxForms = new ArrayList<IndexBoxAttrRef>();
+			IndexBoxes indexBoxForms = new IndexBoxes();
 			try {
 				List<IndexBox> indexBoxes = indexBoxRepository.findByAppUser(appUser);
 				indexBoxes.forEach(indexBox -> {

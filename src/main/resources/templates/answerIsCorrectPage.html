@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Answer Is Correct</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+   <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+
+	<h1 th:utext="#{answerIsCorrectPage.answerIsCorrect}">ANSWER IS CORRECT</h1>
+
+	<form action="#" th:action="@{/controlActionAnswerIsCorrect}" method="post">
+		<p>
+			<button type="submit" name="nextQuestion" th:utext="#{answerIsCorrectPage.nextQuestion}">CHECK ANSWER</button>
+		</p>
+		<p>
+			<button type="submit" name="logout" th:utext="#{answerIsCorrectPage.logout}">LOGOUT</button>
+		</p>
+	</form>
+</body>
+
+</html>
+

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Vokabeltrainer Online New Account</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+   <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+
+	<h1 th:utext="#{declareCorrectDespiteErrors.typos}">YOU HAVE TYPOS</h1>
+
+	<label th:utext="#{declareCorrectDespiteErrorsPage.question}">QUESTION</label>
+	<div th:text="${#session.getAttribute('sessionQuestionWithAnswerAttrRef').question}"></div>
+	<label th:utext="#{declareCorrectDespiteErrorsPage.answer}">ANSWER</label>
+	<div th:text="${session.sessionQuestionWithAnswerAttrRef.answer}"></div>
+	<label th:utext="#{declareCorrectDespiteErrorsPage.yourAnswer}">BUT YOUR ANSWER WAS</label>
+	<div th:text="${session.sessionYourAnswer}"></div>
+	<form action="#" th:action="@{/controlActionDeclareCorrectDespiteErrors}" method="post">
+		<h1 th:utext="#{declareCorrectDespiteErrors.declareCorrectDespiteTheErrors}">DECLARE CORRECT?</h1>
+		<p>
+			<button type="submit" name="declareCorrect" th:utext="#{declareCorrectDespiteErrors.yes}">YES ANSWER IS CORRECT</button>
+		</p>
+		<p>
+			<button type="submit" name="declareIncorrect" th:utext="#{declareCorrectDespiteErrors.no}">NO ANSWER IS NOT CORRECT</button>
+		</p>
+		<p>
+			<button type="submit" name="logout" th:utext="#{learnDoLearnPage.logout}">LOGOUT</button>
+		</p>
+	</form>
+</body>
+
+</html>
+

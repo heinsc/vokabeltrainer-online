@@ -17,9 +17,12 @@
 	<form action="#" th:action="@{/controlActionLearnDoLearn}"
 		th:object="${learnDoLearnModAtt}" method="post">
 		<label th:utext="#{learnDoLearnPage.question}">QUESTION</label>
-		<p th:text="*{questionWithAnswerAttrRef.question}" />
+		<div th:text="*{questionWithAnswerAttrRef.question}"></div>
 		<label th:utext="#{learnDoLearnPage.answer}">ANSWER</label>
-		<input type="text" th:text="*{questionWithAnswerAttrRef.answerByUser}" />
+		<input type="text" th:field="*{answerByUser}"/>
+		<p>
+			<button type="submit" name="checkAnswer" th:utext="#{learnDoLearnPage.checkAnswer}">CHECK ANSWER</button>
+		</p>
 		<p>
 			<button type="submit" name="chooseOtherIndexBoxes" th:utext="#{learnDoLearnPage.cancel}">BACK TO FILTER INDEX BOX</button>
 		</p>

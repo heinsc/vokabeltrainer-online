@@ -9,6 +9,10 @@ public class QuestionWithAnswerAttrRef {
 	private String indexBoxDescription;
 	private String learningStrategyDescription;
 	/*
+	 * the actualSuccessStep is only used in declareCorrectDespiteErrorsPage and answerTypo
+	 */
+	private String actualSuccessStepDescription;
+	/*
 	 * the learningProgress is only used in manageQuestionsWithAnswersPage
 	 */
 	private String learningProgress;
@@ -17,10 +21,6 @@ public class QuestionWithAnswerAttrRef {
 	 * for deleting or moving several items at once.
 	 */
 	private boolean filterOn;
-	/*
-	 * the answer by user is only used in LearnDoLearn
-	 */
-	private String answerByUser;
 	public String getQuestion() {
 		return question;
 	}
@@ -57,10 +57,10 @@ public class QuestionWithAnswerAttrRef {
 	public void setLearningProgress(String actualSuccessStepDescription) {
 		this.learningProgress = actualSuccessStepDescription;
 	}
-	public String getAnswerByUser() {
-		return answerByUser;
+	public String getActualSuccessStepDescription() {
+		return actualSuccessStepDescription;
 	}
-	public void setAnswerByUser(String answerByUser) {
-		this.answerByUser = answerByUser;
+	public void setActualSuccessStepDescription(String actualSuccessStepDescription) {
+		this.actualSuccessStepDescription = actualSuccessStepDescription;
 	}
 }

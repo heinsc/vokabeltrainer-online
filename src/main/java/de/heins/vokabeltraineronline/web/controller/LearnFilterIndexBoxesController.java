@@ -1,7 +1,5 @@
 package de.heins.vokabeltraineronline.web.controller;
 
-import java.util.List;
-
 import org.apache.catalina.session.StandardSessionFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.heins.vokabeltraineronline.business.service.IndexBoxService;
+import de.heins.vokabeltraineronline.web.entities.IndexBoxes;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
 import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.LearnFilterIndexBoxesModAtt;
@@ -36,7 +35,7 @@ public class LearnFilterIndexBoxesController {
 		);
 		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt = new LearnFilterIndexBoxesModAtt();
 		model.addAttribute("learnFilterIndexBoxesModAtt", learnFilterIndexBoxesModAtt);
-		List<IndexBoxAttrRef> indexBoxAttrRefList = indexBoxService.findAllForAppUser(sessionAppUser);
+		IndexBoxes indexBoxAttrRefList = indexBoxService.findAllForAppUser(sessionAppUser);
 		session.setAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name(), indexBoxAttrRefList);
 		return Constants.learnFilterIndexBoxesPage.name();
 
@@ -45,6 +44,8 @@ public class LearnFilterIndexBoxesController {
 	public String learn(
 			StandardSessionFacade session
 	) throws Exception {
+		session.setAttribute(ControllerConstants.sessionPoolWithWrongAnswers.name(), null);
+		session.setAttribute(ControllerConstants.sessionStockOfAllQuestionsWithAnswers.name(), null);
 		return "redirect:" + ControllerConstants.controlPageLearnDoLearn.name();
 
 	}
@@ -67,7 +68,7 @@ public class LearnFilterIndexBoxesController {
 	) throws Exception {
 		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt = new LearnFilterIndexBoxesModAtt();
 		model.addAttribute("learnFilterIndexBoxesModAtt", learnFilterIndexBoxesModAtt);
-		List<IndexBoxAttrRef> indexBoxAttrRefList = (List<IndexBoxAttrRef>) session.getAttribute(//
+		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(//
 				ControllerConstants.sessionIndexBoxAttrRefList.name()//
 		);
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
@@ -85,7 +86,7 @@ public class LearnFilterIndexBoxesController {
 	) throws Exception {
 		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt = new LearnFilterIndexBoxesModAtt();
 		model.addAttribute("learnFilterIndexBoxesModAtt", learnFilterIndexBoxesModAtt);
-		List<IndexBoxAttrRef> indexBoxAttrRefList = (List<IndexBoxAttrRef>) session.getAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
+		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
 		indexBox.setFilterOn(false);
 		

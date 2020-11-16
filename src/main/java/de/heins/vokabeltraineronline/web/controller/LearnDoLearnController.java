@@ -1,6 +1,5 @@
 package de.heins.vokabeltraineronline.web.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -8,19 +7,25 @@ import org.apache.catalina.session.StandardSessionFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import de.heins.vokabeltraineronline.business.entity.BehaviourIfPoolWithWrongAnswersIsFull;
 import de.heins.vokabeltraineronline.business.service.LearnProfileService;
 import de.heins.vokabeltraineronline.business.service.QuestionWithAnswerService;
+import de.heins.vokabeltraineronline.web.entities.IndexBoxes;
+import de.heins.vokabeltraineronline.web.entities.PoolWithWrongAnswers;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
+import de.heins.vokabeltraineronline.web.entities.StockOfAllQuestionsWithAnswers;
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
 import de.heins.vokabeltraineronline.web.entities.attributereference.LearnProfileAttrRef;
 import de.heins.vokabeltraineronline.web.entities.attributereference.QuestionWithAnswerAttrRef;
 import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.LearnDoLearnModAtt;
 
 @Controller
+@SessionAttributes("learnDoLearnModAtt")
 public class LearnDoLearnController {
 	private static final String INDICATOR_TO_MAKE_POOL_EMPTY = "indicatorToMakePoolEmpty";
 	private static enum Constants {
@@ -51,7 +56,7 @@ public class LearnDoLearnController {
 			if  (stockOfAllQuestionsWithAnswers.isEmpty()) {
 				return "redirect:" + ControllerConstants.controlPageLearnFilterIndexBoxes.name();
 			} else {
-				questionWithAnswerAttrRef = takeFromStock(stockOfAllQuestionsWithAnswers, poolWithWrongAnwers);
+				questionWithAnswerAttrRef = stockOfAllQuestionsWithAnswers.get(0);
 			}
 		} else {
 			LearnProfileAttrRef learnProfile = learnProfileService.findLearnProfileByUser(sessionAppUser);
@@ -68,7 +73,7 @@ public class LearnDoLearnController {
 					if  (stockOfAllQuestionsWithAnswers.isEmpty()) {
 						questionWithAnswerAttrRef = poolWithWrongAnwers.get(0);
 					} else {
-						questionWithAnswerAttrRef = takeFromStock(stockOfAllQuestionsWithAnswers, poolWithWrongAnwers);
+						questionWithAnswerAttrRef = stockOfAllQuestionsWithAnswers.get(0);
 					}
 				}
 			}
@@ -80,22 +85,13 @@ public class LearnDoLearnController {
 
 	}
 
-	private QuestionWithAnswerAttrRef takeFromStock(//
-			List<QuestionWithAnswerAttrRef> stockOfAllQuestionsWithAnswers//
-			, List<QuestionWithAnswerAttrRef> poolWithWrongAnwers//
-		) {
-		QuestionWithAnswerAttrRef questionWithAnswerAttrRef = stockOfAllQuestionsWithAnswers.remove(0);
-		poolWithWrongAnwers.add(questionWithAnswerAttrRef);
-		return questionWithAnswerAttrRef;
-	}
-
-	private List<QuestionWithAnswerAttrRef> manageSessionPoolOfWrongAnswers(StandardSessionFacade session) {
+	private PoolWithWrongAnswers manageSessionPoolOfWrongAnswers(StandardSessionFacade session) {
 		Object tempPool = session.getAttribute(ControllerConstants.sessionPoolWithWrongAnswers.name());
-		List<QuestionWithAnswerAttrRef> pool;
+		PoolWithWrongAnswers pool;
 		if (null != tempPool) {
-			pool = (List<QuestionWithAnswerAttrRef>) tempPool;
+			pool = (PoolWithWrongAnswers) tempPool;
 		} else {
-			pool = new ArrayList<QuestionWithAnswerAttrRef>();
+			pool = new PoolWithWrongAnswers();
 			session.setAttribute(ControllerConstants.sessionPoolWithWrongAnswers.name(), pool);
 		}
 		return pool;
@@ -104,9 +100,9 @@ public class LearnDoLearnController {
 	private List<QuestionWithAnswerAttrRef> manageStockOfAllQuestions(//
 			StandardSessionFacade session//
 	) {
-		List<QuestionWithAnswerAttrRef>  stockOfAllQuestionsWithAnswers
-			= (List<QuestionWithAnswerAttrRef>)session.getAttribute(//
-					"stockOfAllQuestionsWithAnswers"//
+		StockOfAllQuestionsWithAnswers  stockOfAllQuestionsWithAnswers
+			= (StockOfAllQuestionsWithAnswers)session.getAttribute(//
+					ControllerConstants.sessionStockOfAllQuestionsWithAnswers.name()//
 		);
 		if (//
 				stockOfAllQuestionsWithAnswers == null
@@ -115,8 +111,8 @@ public class LearnDoLearnController {
 			SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 					ControllerConstants.sessionAppUser.name()//
 			);
-			List<IndexBoxAttrRef> indexBoxAttrRefList = (List<IndexBoxAttrRef>) session.getAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
-			stockOfAllQuestionsWithAnswers = new ArrayList<QuestionWithAnswerAttrRef>();
+			IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
+			stockOfAllQuestionsWithAnswers = new StockOfAllQuestionsWithAnswers();
 			for (IndexBoxAttrRef currentIndexBoxAttrRef : indexBoxAttrRefList) {
 				if (currentIndexBoxAttrRef.isFilterOn()) {
 					Set<QuestionWithAnswerAttrRef> questionsWithAnswersOfCurrentIndexBox = currentIndexBoxAttrRef
@@ -130,12 +126,82 @@ public class LearnDoLearnController {
 				}
 			}
  			session.setAttribute(//
-					"stockOfAllQuestionsWithAnswers"//
+					ControllerConstants.sessionStockOfAllQuestionsWithAnswers.name()//
 					, stockOfAllQuestionsWithAnswers//
 		);
 		}
 		return stockOfAllQuestionsWithAnswers;
 	}
+	
+	@RequestMapping(value = "/controlActionLearnDoLearn", method = RequestMethod.POST, params = {"checkAnswer"})
+	public String checkAnswer(//
+			@ModelAttribute(name = "learnDoLearnModAtt")
+			LearnDoLearnModAtt learnDoLearnModAtt//
+			, StandardSessionFacade session//
+	) throws Exception {
+		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
+				ControllerConstants.sessionAppUser.name()//
+		);
+		QuestionWithAnswerAttrRef questionWithAnswerAttrRef = learnDoLearnModAtt.getQuestionWithAnswerAttrRef();
+		PoolWithWrongAnswers pool
+		= (PoolWithWrongAnswers) session.getAttribute(//
+				ControllerConstants.sessionPoolWithWrongAnswers.name()//
+		);
+		StockOfAllQuestionsWithAnswers stock
+		= (StockOfAllQuestionsWithAnswers) session.getAttribute(//
+				ControllerConstants.sessionStockOfAllQuestionsWithAnswers.name()//
+		);
+		if (//
+				questionWithAnswerAttrRef.getAnswer()//
+				.equals(learnDoLearnModAtt.getAnswerByUser())//
+		) {
+			// Zu diesem Zeitpunkt befindet sich die Frage entweder im Pool (der bereits falsch beantworteten Fragen)
+			// oder im Stock (der noch nicht abgefragten fragen. Finde also die Frage in einer der beiden Listen, um
+			// sie dort zu entfernen.
+			questionWithAnswerService.markAsAnsweredCorrectAndSave(//
+					questionWithAnswerAttrRef//
+					, sessionAppUser//
+					, pool//
+					, stock//
+			);
+			return "redirect:" + ControllerConstants.controlPageAnswerIsCorrect.name();
+		} else {
+			if (//
+					isEqualWithoutSpecialCharacters(//
+							questionWithAnswerAttrRef.getAnswer()//
+							, learnDoLearnModAtt.getAnswerByUser()//
+					)
+			) {
+				session.setAttribute(//
+						ControllerConstants.sessionQuestionWithAnswerAttrRef.name()//
+						, questionWithAnswerAttrRef//
+				);
+				session.setAttribute(ControllerConstants.sessionYourAnswer.name(), learnDoLearnModAtt.getAnswerByUser());
+				return "redirect:" + ControllerConstants.controlPageDeclareCorrectDespiteErrors.name();
+			}
+			//TODO hier noch weitere if-Abfragen (ist Antwort völlig falsch, oder im Rahmen
+			// von regex evtl. doch noch richtig? In Abhängigkeit davon andere redirects.
+		}
+		// Wenn bis hier kein Ausstieg (return), ist die Antwort so falsch, dass sie wie falsch behandelt werden
+		// muss.
+		questionWithAnswerService.markAsAnsweredIncorrectlyAndSave(//
+				questionWithAnswerAttrRef//
+				, sessionAppUser//
+				, stock//
+				, pool//
+		);
+		return "redirect:" + ControllerConstants.controlPageLearnDoLearn.name();
+
+	}
+	private boolean isEqualWithoutSpecialCharacters(//
+			String answer//
+			, String answerByUser//
+	) {
+		String answerOnlyWordCharacter = answer.replaceAll("[^\\p{L}\\p{Nd}]+", "");
+		String answerByUserOnlyWordCharacter = answerByUser.replaceAll("[^\\p{L}\\p{Nd}]+", "");
+		return answerOnlyWordCharacter.equals(answerByUserOnlyWordCharacter);
+	}
+
 	@RequestMapping(value = "/controlActionLearnDoLearn", method = RequestMethod.POST, params = {"cancel"})
 	public String cancel() throws Exception {
 		return "redirect:" + ControllerConstants.controlPageMenu.name();
@@ -148,7 +214,7 @@ public class LearnDoLearnController {
 	}
 	@RequestMapping(value = "/controlActionLearnDoLearn", method = RequestMethod.POST, params = {"logout"})
 	public String logout() throws Exception {
-		return "redirect:" + ControllerConstants.controlPageLearnFilterIndexBoxes.name();
+		return "redirect:" + ControllerConstants.controlPageLogin.name();
 
 	}
 

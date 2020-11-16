@@ -4,11 +4,14 @@ public enum ControllerConstants {
 	sessionAppUser//
 	, sessionIndexBoxAttrRefList
 	, sessionPoolWithWrongAnswers
+	, sessionStockOfAllQuestionsWithAnswers
 	, sessionOldVersionOfSuccessStepName
 	, sessionOldVersionOfLearningStrategyName
 	, sessionOldVersionOfIndexBoxName
 	, sessionOldVersionOfIndexBoxSubject
 	, sessionOldVersionOfQuestion
+	, sessionQuestionWithAnswerAttrRef
+	, sessionYourAnswer
 	, controlPageLogin
 	, controlPageMenu
 	, controlPageManageConfigurations
@@ -28,4 +31,5 @@ public enum ControllerConstants {
 	, controlPageCreateQuestionsWithAnswers
 	, controlPageLearnFilterIndexBoxes
 	, controlPageLearnDoLearn
-}
+	, controlPageAnswerIsCorrect
+	, controlPageDeclareCorrectDespiteErrors}
