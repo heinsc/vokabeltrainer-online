@@ -19,6 +19,8 @@ public class AppUser {
     
     private Date lastLogin;
     
+    private FaultTolerance faultTolerance;
+    
 	/*
 	 * Remarks on the two properties behaviourIfPoolWithWrongAnswersIsFull and
 	 * maxNumberOfWrongAnswersPerSession They could be outsourced into a separate
@@ -35,6 +37,7 @@ public class AppUser {
     public AppUser(//
     		Long id2, String email2//
     		, String password2//
+    		, FaultTolerance faultTolerance
     		, int maxNumberOfWrongAnswersPerSession//
     		, BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull//
     		, Date lastLogin2//
@@ -42,6 +45,7 @@ public class AppUser {
     	this.id=id2;
 		this.email=email2;
 		this.password=password2;
+		this.faultTolerance=faultTolerance;
 		this.maxNumberOfWrongAnswersPerSession=maxNumberOfWrongAnswersPerSession;
 		this.behaviourIfPoolWithWrongAnswersIsFull=behaviourIfPoolWithWrongAnswersIsFull;
 		this.lastLogin=lastLogin2;
@@ -89,6 +93,12 @@ public class AppUser {
 	}
 	public void setMaxNumberOfWrongAnswersPerSession(int maxNumberOfWrongAnswersPerSession) {
 		this.maxNumberOfWrongAnswersPerSession = maxNumberOfWrongAnswersPerSession;
+	}
+	public FaultTolerance getFaultTolerance() {
+		return faultTolerance;
+	}
+	public void setFaultTolerance(FaultTolerance faultTolerance) {
+		this.faultTolerance = faultTolerance;
 	}
 
 

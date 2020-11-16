@@ -10,6 +10,7 @@ public class AppUserFactory {
 	private String email;
 	private String password;
 	private Date lastLogin;
+	private FaultTolerance faultTolerance;
 	private BehaviourIfPoolWithWrongAnswersIsFull behaviourIfPoolWithWrongAnswersIsFull;
 	private int maxNumberOfWrongAnswersPerSession;
 
@@ -38,6 +39,7 @@ public class AppUserFactory {
 				this.id//
 				, this.email//
 				, this.password//
+				, this.faultTolerance//
 				, this.maxNumberOfWrongAnswersPerSession//
 				, this.behaviourIfPoolWithWrongAnswersIsFull//
 				, this.lastLogin//
@@ -51,6 +53,11 @@ public class AppUserFactory {
 
 	public AppUserFactory setMaxNumberOfWrongAnswersPerSession(int maxNumberOfWrongAnswersPerSession) {
 		this.maxNumberOfWrongAnswersPerSession = maxNumberOfWrongAnswersPerSession;
+		return this;
+	}
+
+	public AppUserFactory setFaultTolerance(FaultTolerance faultTolerance) {
+		this.faultTolerance = faultTolerance;
 		return this;
 	}
 

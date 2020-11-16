@@ -12,6 +12,7 @@ import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
 import de.heins.vokabeltraineronline.business.entity.AppUserFactory;
 import de.heins.vokabeltraineronline.business.entity.BehaviourIfPoolWithWrongAnswersIsFull;
+import de.heins.vokabeltraineronline.business.entity.FaultTolerance;
 import de.heins.vokabeltraineronline.web.controller.AppUserAlreadyExistsException;
 import de.heins.vokabeltraineronline.web.controller.WrongPasswordException;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
@@ -32,6 +33,7 @@ public class AppUserService {
 			.setBehaviourIfPoolWithWrongAnswersIsFull(//
 					BehaviourIfPoolWithWrongAnswersIsFull.FILL_POOL_IMMEADLY//
 			).setMaxNumberOfWrongAnswersPerSession(5)
+			.setFaultTolerance(FaultTolerance.EVERY_TENTH_CHARACTER_MAY_BE_FALSE)
 			.setLastLogin(Calendar.getInstance().getTime())//
 			.getNewObject();
 		appUserRepository.save(appUser);

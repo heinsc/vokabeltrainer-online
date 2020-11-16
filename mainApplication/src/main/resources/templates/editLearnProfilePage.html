@@ -16,13 +16,19 @@
 	<form action="#" th:action="@{/controlActionEditLearnProfile}"
 			th:object="${editLearnProfileModAtt}" method="post">
 			
-		<div th:text="#{manageConfigurationsPage.maxNumberOfWrongAnswersPerSession}">NAME:</div>
+		<div th:text="#{manageConfigurationsPage.maxNumberOfWrongAnswersPerSession}">MAX NUMBERS OF WRONG ANSWERS:</div>
 		<input type="text" th:field="*{learnProfile.maxNumberOfWrongAnswersPerSession}" placeholder="0-99" pattern="\d{,2}"/>
     	<select th:field="*{learnProfile.behaviourIfPoolWithWrongAnswersIsFull}"  id="dropOperator">
 	    	<option	
 	    		th:each="selectableBehaviour : *{selectableBehavioursIfPoolWithWrongAnswersIsFull}"
 	    		th:value="*{learnProfile.behaviourIfPoolWithWrongAnswersIsFull}"
 	    		th:utext="#{${'manageConfigurationsPage.'}+${selectableBehaviour}}"/>
+	    </select>
+    	<select th:field="*{learnProfile.faultTolerance}"  id="dropOperator">
+	    	<option	
+	    		th:each="selectableFaultTolerance : *{selectableFaultTolerances}"
+	    		th:value="*{learnProfile.faultTolerance}"
+	    		th:utext="#{${'manageConfigurationsPage.'}+${selectableFaultTolerance}}"/>
 	    </select>
 
 		<button type="submit" name="submit" th:utext="#{editOrCreateIndexBoxPage.submit}" ></button>

@@ -64,6 +64,7 @@ public class EditLearnProfileController {
 				sessionAppUser//
 				, editLearnProfileModAtt.getLearnProfile().getMaxNumberOfWrongAnswersPerSession()//
 				, editLearnProfileModAtt.getLearnProfile().getBehaviourIfPoolWithWrongAnswersIsFull()//
+				, editLearnProfileModAtt.getLearnProfile().getFaultTolerance()//
 		);
 		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
 	}
