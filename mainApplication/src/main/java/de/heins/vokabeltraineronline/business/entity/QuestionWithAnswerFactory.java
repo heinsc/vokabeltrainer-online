@@ -11,6 +11,8 @@ public class QuestionWithAnswerFactory {
 	private String answer;
 	
 	private AppUser appUser;
+	
+	private IndexBox indexBox;
     
 	private LearningStrategy learningStrategy;
 
@@ -33,6 +35,10 @@ public class QuestionWithAnswerFactory {
 		this.appUser=appUser;
 		return this;
 	}
+	public QuestionWithAnswerFactory setIndexBox(IndexBox indexBox) {
+		this.indexBox = indexBox;
+		return this;
+	}
 	public QuestionWithAnswerFactory setLearningStrategy(LearningStrategy learningStrategy) {
 		this.learningStrategy = learningStrategy;
 		return this;
@@ -40,6 +46,7 @@ public class QuestionWithAnswerFactory {
     public QuestionWithAnswer getNewObject() {
     	return new QuestionWithAnswer(//
     			this.id//
+    			, this.indexBox//
     			, this.learningStrategy//
     			, this.question
     			, this.answer//

@@ -1,14 +1,10 @@
 package de.heins.vokabeltraineronline.business.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -24,8 +20,6 @@ public class IndexBox  {
     private String subject;
     private boolean actualInUse;
     
-    @ManyToMany
-	private Set<QuestionWithAnswer> questionWithAnswers;
 
 	@JoinColumn(name = "appUser")
 	@ManyToOne
@@ -44,8 +38,6 @@ public class IndexBox  {
 		this.subject=subject2;
 		this.actualInUse=false;
 		this.appUser=appUser2;
-		
-		this.questionWithAnswers=new HashSet<QuestionWithAnswer>();
 	}
 
 	public Long getId() {
@@ -70,16 +62,6 @@ public class IndexBox  {
 		this.appUser = appUser;
 	}
 
-	public Set<QuestionWithAnswer> getQuestionsWithAnsers() {
-		return this.questionWithAnswers;
-	}
-	public void addQuestionWithAnswer(QuestionWithAnswer questionWithAnswer) {
-		this.questionWithAnswers.add(questionWithAnswer);
-	}
-	
-	public void removeQuestionWithAnswer(QuestionWithAnswer questionWithAnswer) {
-		this.questionWithAnswers.remove(questionWithAnswer);
-	}
 	public String getSubject() {
 		return subject;
 	}

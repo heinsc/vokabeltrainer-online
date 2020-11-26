@@ -1,6 +1,6 @@
 package de.heins.vokabeltrainerbackup.business.repository;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -12,6 +12,6 @@ import de.heins.vokabeltrainerbackup.business.entity.SuccessStep;
 public interface SuccessStepRepository extends CrudRepository<SuccessStep, Long>{
 
 	@Query(value = "SELECT MAX(id) FROM SuccessStep")
-	public List<Long> getMaxId();
+	public Optional<Long> getMaxId();
 
 }

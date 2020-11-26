@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.heins.vokabeltraineronline.business.repository.IndexBoxRepository;
-import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
+import de.heins.vokabeltraineronline.business.entity.AppUser;
 import de.heins.vokabeltraineronline.business.entity.IndexBox;
 import de.heins.vokabeltraineronline.business.entity.IndexBoxFactory;
 import de.heins.vokabeltraineronline.business.entity.LearningStrategy;
 import de.heins.vokabeltraineronline.business.entity.QuestionWithAnswer;
 import de.heins.vokabeltraineronline.business.entity.SuccessStep;
-import de.heins.vokabeltraineronline.business.entity.AppUser;
+import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
+import de.heins.vokabeltraineronline.business.repository.IndexBoxRepository;
+import de.heins.vokabeltraineronline.business.repository.QuestionWithAnswerRepository;
 import de.heins.vokabeltraineronline.web.entities.IndexBoxes;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
@@ -33,6 +33,8 @@ public class IndexBoxService {
 	@Autowired
 	private IndexBoxRepository indexBoxRepository;
 	@Autowired
+	private QuestionWithAnswerRepository questionWithAnswerRepository;
+	@Autowired
 	private AppUserRepository appUserRepository;
 	@Autowired
 	private IndexBoxFactory indexBoxFactory;
@@ -47,7 +49,7 @@ public class IndexBoxService {
 					IndexBoxAttrRef indexBoxForm = new IndexBoxAttrRef();
 					indexBoxForm.setName(indexBox.getName());
 					indexBoxForm.setSubject(indexBox.getSubject());
-					Set<QuestionWithAnswer> questionsWithAnsers = indexBox.getQuestionsWithAnsers();
+					List<QuestionWithAnswer> questionsWithAnsers = questionWithAnswerRepository.findByAppUserAndIndexBox(appUser, indexBox); 
 					questionsWithAnsers.forEach(currentQwA -> {
 						QuestionWithAnswerAttrRef questionWithAnswerAttrRef = new QuestionWithAnswerAttrRef();
 						questionWithAnswerAttrRef.setQuestion(currentQwA.getQuestion());

@@ -52,7 +52,7 @@ public class VokabeltrainerRestoreBackupAppUserHandler
 	}
 
 	@Override
-	protected List<Long> getMaxId() {
+	protected Optional<Long> getMaxId() {
 		return sourceRepository.getMaxId();
 	}
 

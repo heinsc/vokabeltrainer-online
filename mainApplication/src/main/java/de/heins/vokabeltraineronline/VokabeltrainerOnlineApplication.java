@@ -13,9 +13,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class VokabeltrainerOnlineApplication {
 
 	public static void main(String[] args) {
-		if (amIAllowedToStart("RestoreFromBackup", "Backup", "DropBackup")) {
+		if (amIAllowedToStart("RestoreFromBackup", "Backup", "DropBackup", "ActualRunning")) {
 			setLastAction("ActualRunning");
 			SpringApplication.run(VokabeltrainerOnlineApplication.class, args);
+		} else {
+			System.out.println("Not allowed to start.");
 		}
 	}
 

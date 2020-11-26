@@ -63,15 +63,12 @@ public class QuestionWithAnswerService {
 			LearningStrategy learningStrategy = findUniqeLearningStrategyByName(questionWithAnswerAttrRef, appUser);
 			questionWithAnswer = questionWithAnswerFactory//
 					.setQuestion(questionWithAnswerAttrRef.getQuestion())//
-					.setAnswer(questionWithAnswerAttrRef.getAnswer())
+					.setAnswer(questionWithAnswerAttrRef.getAnswer())//
+					.setIndexBox(indexBox)//
 					.setLearningStrategy(learningStrategy)//
 					.setAppUser(appUser)//
 					.getNewObject();
-			//specialty: the indexBox is not part of the questionWithAnswer.
-			// the indexBox must be changed and saved separately.
-			indexBox.addQuestionWithAnswer(questionWithAnswer);
 			questionWithAnswerRepository.save(questionWithAnswer);
-			indexBoxRepository.save(indexBox);
 		} else {//update existing questionWithAnswer
 			questionWithAnswer = findByAppUserAndQuestion.get(0);
 			questionWithAnswer.setQuestion(questionWithAnswerAttrRef.getQuestion());

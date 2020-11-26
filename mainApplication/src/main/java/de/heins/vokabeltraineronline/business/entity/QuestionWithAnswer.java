@@ -11,12 +11,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.sun.istack.NotNull;
 @Entity
 @Table(uniqueConstraints={@UniqueConstraint(columnNames={"appUser", "question"})})
 public class QuestionWithAnswer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+   
+    @ManyToOne()
+    @NotNull()
+	private IndexBox indexBox;
+
     @ManyToOne
 	private LearningStrategy learningStrategy;
 
@@ -42,12 +49,14 @@ public class QuestionWithAnswer {
     }
     public QuestionWithAnswer(//
     		Long id2//
+    		, IndexBox indexBox2//
     		, LearningStrategy learningStrategy//
     		, String question2//
     		, String answer2//
     		, AppUser appUser2//
     	) {
     	this.id=id2;
+    	this.indexBox=indexBox2;
     	this.learningStrategy=learningStrategy;
 		this.question=question2;
 		this.answer=answer2;
@@ -61,6 +70,12 @@ public class QuestionWithAnswer {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	public IndexBox getIndexBox() {
+		return indexBox;
+	}
+	public void setIndexBox(IndexBox indexBox) {
+		this.indexBox = indexBox;
 	}
 	public String getQuestion() {
 		return question;

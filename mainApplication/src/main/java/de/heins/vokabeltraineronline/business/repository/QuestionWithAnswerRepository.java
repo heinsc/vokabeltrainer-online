@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import de.heins.vokabeltraineronline.business.entity.QuestionWithAnswer;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
+import de.heins.vokabeltraineronline.business.entity.IndexBox;
 
 @Repository
 public interface QuestionWithAnswerRepository extends CrudRepository<QuestionWithAnswer, Long> {
@@ -21,4 +22,6 @@ public interface QuestionWithAnswerRepository extends CrudRepository<QuestionWit
 	public Set<QuestionWithAnswer> findByNextAppearanceLessThanEqualAndAppUser(Date today, AppUser appUser);
 
 	public List<QuestionWithAnswer> findByAppUserAndQuestion(AppUser appUser, String question);
+	
+	public List<QuestionWithAnswer> findByAppUserAndIndexBox(AppUser appUser, IndexBox indexBox);
 }

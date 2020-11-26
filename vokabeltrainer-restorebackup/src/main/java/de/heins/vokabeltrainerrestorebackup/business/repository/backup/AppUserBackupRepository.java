@@ -1,6 +1,6 @@
 package de.heins.vokabeltrainerrestorebackup.business.repository.backup;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -12,6 +12,6 @@ import de.heins.vokabeltrainerrestorebackup.business.entity.backup.AppUserBackup
 public interface AppUserBackupRepository extends CrudRepository<AppUserBackup, Long>{
 
 	@Query(value = "SELECT MAX(id) FROM AppUserBackup")
-	public List<Long> getMaxId();
+	public Optional<Long> getMaxId();
 
 }
