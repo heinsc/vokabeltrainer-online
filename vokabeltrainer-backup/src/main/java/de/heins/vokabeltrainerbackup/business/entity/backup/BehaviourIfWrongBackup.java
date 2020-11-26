@@ -1,0 +1,9 @@
+package de.heins.vokabeltrainerbackup.business.entity.backup;
+
+public enum BehaviourIfWrongBackup {
+	STAY_SUCCESSSTEP_NEXTDAY_TOMORROW //
+	, STAY_SUCCESSSTEP_NEXTDAY_SUCCESSSTEP_DURATION //
+	, PREVIOUS_SUCCESSTEP_NEXTDAY_TOMORROW //
+	, PREVIOUS_SUCCESSSTEP_NEXTDAY_SUCCESSSTEP_DURATION
+
+}

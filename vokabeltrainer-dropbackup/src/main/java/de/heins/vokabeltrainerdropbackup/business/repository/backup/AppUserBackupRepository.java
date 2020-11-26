@@ -1,0 +1,13 @@
+package de.heins.vokabeltrainerdropbackup.business.repository.backup;
+
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+
+import de.heins.vokabeltrainerdropbackup.business.entity.backup.AppUserBackup;
+
+@Repository
+public interface AppUserBackupRepository extends CrudRepository<AppUserBackup, Long>{
+	
+
+}
