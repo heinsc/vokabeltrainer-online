@@ -55,7 +55,9 @@ public class VokabeltrainerDropBackupApplication implements CommandLineRunner {
 			learningStrategyBackupRepository.delete(learningStrategyBackup);
 			successStepBackupRepository.delete(successStepBackupDummy);
 			appUserBackupRepository.delete(appUserBackupDummy);
-			setLastAction("DropBackup");
+			if(amIAllowedToStart("DropBackup", "RestoreFromBackup")){
+				setLastAction("DropBackup");
+			}
 		} else {
 			String exceptionText = "Not allowed to start. Look in the file to see what's next allowed to start!";
 			throw new RuntimeException(exceptionText);
