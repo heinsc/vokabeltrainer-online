@@ -11,6 +11,7 @@ public class SuccessStepFactory {
 	private int nextAppearanceInDays;
 	
 	private BehaviourIfWrong behaviourIfWrong;
+	private FaultTolerance faultTolerance;
 	private AppUser appUser;
     public SuccessStepFactory() {
     }
@@ -38,12 +39,18 @@ public class SuccessStepFactory {
 	}
     public SuccessStep getNewObject() {
     	return new SuccessStep(//
-    			this.id//
-    			, this.name//
-    			, this.nextAppearanceInDays//
-    			, this.behaviourIfWrong//
-    			, this.appUser//
+    			id//
+    			, name//
+    			, faultTolerance//
+    			, nextAppearanceInDays//
+    			, behaviourIfWrong//
+    			, appUser//
     	);
+	}
+
+	public SuccessStepFactory setFaultTolerance(FaultTolerance faultTolerance) {
+		this.faultTolerance=faultTolerance;
+		return this;
 	}
 
 

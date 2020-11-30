@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import de.heins.vokabeltrainerrestorebackup.business.entity.AppUser;
 import de.heins.vokabeltrainerrestorebackup.business.entity.BehaviourIfWrong;
+import de.heins.vokabeltrainerrestorebackup.business.entity.FaultTolerance;
 import de.heins.vokabeltrainerrestorebackup.business.entity.SuccessStep;
 import de.heins.vokabeltrainerrestorebackup.business.entity.backup.SuccessStepBackup;
 import de.heins.vokabeltrainerrestorebackup.business.repository.SuccessStepRepository;
@@ -37,6 +38,7 @@ public class VokabeltrainerRestoreBackupSuccessStepHandler
 		SuccessStep targetEntity = new SuccessStep(//
 						null//
 						, sourceEntity.getName()//
+						, FaultTolerance.valueOf(sourceEntity.getFaultToleranceBackup().name())//
 						, sourceEntity.getNextAppearanceInDays()//
 						, BehaviourIfWrong.valueOf(//
 								sourceEntity.getBehaviourIfWrongBackup().name()//

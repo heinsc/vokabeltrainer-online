@@ -4,6 +4,7 @@ package de.heins.vokabeltraineronline.web.entities.attributereference;
 public class SuccessStepAttrRef {
 	private String name;
 	private int nextAppearanceInDays;
+	private String faultTolerance;
 	
 	private String behaviourIfWrong;
 	public int getNextAppearanceInDays() {
@@ -12,6 +13,14 @@ public class SuccessStepAttrRef {
 
 	public void setNextAppearanceInDays(int nextAppearanceInDays) {
 		this.nextAppearanceInDays = nextAppearanceInDays;
+	}
+
+	public String getFaultTolerance() {
+		return faultTolerance;
+	}
+
+	public void setFaultTolerance(String faultTolerance) {
+		this.faultTolerance = faultTolerance;
 	}
 
 	public String getBehaviourIfWrong() {

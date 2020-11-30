@@ -44,7 +44,7 @@ public class VokabeltrainerDropMaindatabaseApplication implements CommandLineRun
 	}
 	@Override
 	public void run(String... args) {
-		if (amIAllowedToStart("Backup", "DropMainDataBase")) {
+		if (amIAllowedToStart("Backup")) {
 			AppUser appUserDummy = saveDummyAppUserInstance();
 			SuccessStep successStepDummy = saveDummySuccessStepInstance(appUserDummy);
 			LearningStrategy learningStrategy = saveDummyLearningStrategyInstance(appUserDummy);
@@ -123,7 +123,6 @@ public class VokabeltrainerDropMaindatabaseApplication implements CommandLineRun
 				1L//
 				, "a@aa.aa"//
 				, "Pin12345"//
-				, FaultTolerance.NO_TOLERANCE//
 				, 5//
 				, BehaviourIfPoolWithWrongAnswersIsFull.EMPTY_POOL_UNTIL_ALL_QUESTIONS_CORRECT//
 				, Calendar.getInstance().getTime()//
@@ -138,6 +137,7 @@ public class VokabeltrainerDropMaindatabaseApplication implements CommandLineRun
 		SuccessStep dummyEntry = new SuccessStep(//
 				2L//
 				, "Erste Erfolgsstufe"//
+				, FaultTolerance.NO_TOLERANCE//
 				, 5//
 				, BehaviourIfWrong.PREVIOUS_SUCCESSSTEP_NEXTDAY_SUCCESSSTEP_DURATION//
 				, appUserDummy//

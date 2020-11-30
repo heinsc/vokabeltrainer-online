@@ -190,7 +190,7 @@ public class LearnDoLearnController {
 				, stock//
 				, pool//
 		);
-		return "redirect:" + ControllerConstants.controlPageLearnDoLearn.name();
+		return "redirect:" + ControllerConstants.controlPageAnswerIsIncorrect.name();
 
 	}
 	private boolean isEqualWithoutSpecialCharacters(//

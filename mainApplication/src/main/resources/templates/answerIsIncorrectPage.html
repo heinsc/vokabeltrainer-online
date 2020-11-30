@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Answer is incorrect</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+   <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+
+	<h1 th:utext="#{answerIsIncorrectPage.wrong}">YOU ANSWER IS WRONG</h1>
+
+	<label th:utext="#{answerIsIncorrectPage.question}">QUESTION</label>
+	<div th:text="${#session.getAttribute('learnDoLearnModAtt').questionWithAnswerAttrRef.question}"></div>
+	<label th:utext="#{answerIsIncorrectPage.answer}">ANSWER</label>
+	<div th:text="${#session.getAttribute('learnDoLearnModAtt').questionWithAnswerAttrRef.answer}"></div>
+	<label th:utext="#{answerIsIncorrectPage.yourAnswer}">BUT YOUR ANSWER WAS</label>
+	<div th:text="${#session.getAttribute('learnDoLearnModAtt').answerByUser}"></div>
+	<form action="#" th:action="@{/controlActionAnswerIsIncorrect}" method="post">
+		<p>
+			<button type="submit" name="submit" th:utext="#{answerIsIncorrectPage.ok}">OK</button>
+		</p>
+		<p>
+			<button type="submit" name="logout" th:utext="#{learnDoLearnPage.logout}">LOGOUT</button>
+		</p>
+	</form>
+</body>
+
+</html>
+

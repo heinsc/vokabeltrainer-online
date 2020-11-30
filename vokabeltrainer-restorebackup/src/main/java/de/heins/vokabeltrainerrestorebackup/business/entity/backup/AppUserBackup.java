@@ -19,8 +19,6 @@ public class AppUserBackup {
     
     private Date lastLogin;
     
-    private FaultToleranceBackup faultToleranceBackup;
-    
 	/*
 	 * Remarks on the two properties behaviourIfPoolWithWrongAnswersIsFullBackup and
 	 * maxNumberOfWrongAnswersPerSession They could be outsourced into a separate
@@ -37,7 +35,6 @@ public class AppUserBackup {
     public AppUserBackup(//
     		Long id2, String email2//
     		, String password2//
-    		, FaultToleranceBackup faultToleranceBackup
     		, int maxNumberOfWrongAnswersPerSession//
     		, BehaviourIfPoolWithWrongAnswersIsFullBackup behaviourIfPoolWithWrongAnswersIsFullBackup//
     		, Date lastLogin2//
@@ -45,7 +42,6 @@ public class AppUserBackup {
     	this.id=id2;
 		this.email=email2;
 		this.password=password2;
-		this.faultToleranceBackup=faultToleranceBackup;
 		this.maxNumberOfWrongAnswersPerSession=maxNumberOfWrongAnswersPerSession;
 		this.behaviourIfPoolWithWrongAnswersIsFullBackup=behaviourIfPoolWithWrongAnswersIsFullBackup;
 		this.lastLogin=lastLogin2;
@@ -94,12 +90,5 @@ public class AppUserBackup {
 	public void setMaxNumberOfWrongAnswersPerSession(int maxNumberOfWrongAnswersPerSession) {
 		this.maxNumberOfWrongAnswersPerSession = maxNumberOfWrongAnswersPerSession;
 	}
-	public FaultToleranceBackup getFaultToleranceBackup() {
-		return faultToleranceBackup;
-	}
-	public void setFaultToleranceBackup(FaultToleranceBackup faultToleranceBackup) {
-		this.faultToleranceBackup = faultToleranceBackup;
-	}
-
 
 }

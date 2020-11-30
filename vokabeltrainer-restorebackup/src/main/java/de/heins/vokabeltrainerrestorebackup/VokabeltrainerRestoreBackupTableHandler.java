@@ -10,7 +10,7 @@ public abstract class VokabeltrainerRestoreBackupTableHandler<SourceEntity, Targ
 		Optional<Long> maxIdOptional = this.getMaxId();
 		if (maxIdOptional.isPresent()) {
 			Long maxId = maxIdOptional.get();
-			for (long currentId = 0; currentId < maxId; currentId++) {
+			for (long currentId = 0; currentId <= maxId; currentId++) {
 				Optional<SourceEntity> foundByIdResultList = this.findById(currentId);
 				if (foundByIdResultList.isPresent()) {
 					TargetEntity targetEntity = transferAndSaveSingleEntry(//

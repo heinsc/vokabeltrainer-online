@@ -25,18 +25,22 @@ public class SuccessStepBackup {
 	@ManyToOne
 	@JoinColumn(name="appUserBackup")
 	private AppUserBackup appUserBackup;
+
+	private FaultToleranceBackup faultToleranceBackup;
 	
     public SuccessStepBackup() {
     }
     public SuccessStepBackup(//
     		Long id2//
     		, String name2//
+    		, FaultToleranceBackup faultToleranceBackup//
     		, int nextAppearanceInDays2//
     		, BehaviourIfWrongBackup behaviourIfWrongBackup//
     		, AppUserBackup appUserBackup//
     	) {
     	this.id=id2;
 		this.name=name2;
+		this.faultToleranceBackup=faultToleranceBackup;
 		this.nextAppearanceInDays=nextAppearanceInDays2;
 		this.behaviourIfWrongBackup=behaviourIfWrongBackup;
 		this.appUserBackup=appUserBackup;
@@ -73,6 +77,12 @@ public class SuccessStepBackup {
 	}
 	public void setAppUserBackup(AppUserBackup appUserBackup) {
 		this.appUserBackup = appUserBackup;
+	}
+	public FaultToleranceBackup getFaultToleranceBackup() {
+		return faultToleranceBackup;
+	}
+	public void setFaultToleranceBackup(FaultToleranceBackup faultToleranceBackup) {
+		this.faultToleranceBackup = faultToleranceBackup;
 	}
 
 

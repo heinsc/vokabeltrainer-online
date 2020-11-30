@@ -32,4 +32,5 @@ public enum ControllerConstants {
 	, controlPageLearnFilterIndexBoxes
 	, controlPageLearnDoLearn
 	, controlPageAnswerIsCorrect
-	, controlPageDeclareCorrectDespiteErrors}
+	, controlPageDeclareCorrectDespiteErrors
+	, controlPageAnswerIsIncorrect}

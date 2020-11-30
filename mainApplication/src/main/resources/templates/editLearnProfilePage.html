@@ -24,12 +24,6 @@
 	    		th:value="*{learnProfile.behaviourIfPoolWithWrongAnswersIsFull}"
 	    		th:utext="#{${'manageConfigurationsPage.'}+${selectableBehaviour}}"/>
 	    </select>
-    	<select th:field="*{learnProfile.faultTolerance}"  id="dropOperator">
-	    	<option	
-	    		th:each="selectableFaultTolerance : *{selectableFaultTolerances}"
-	    		th:value="*{learnProfile.faultTolerance}"
-	    		th:utext="#{${'manageConfigurationsPage.'}+${selectableFaultTolerance}}"/>
-	    </select>
 
 		<button type="submit" name="submit" th:utext="#{editOrCreateIndexBoxPage.submit}" ></button>
 		<button type="submit" name="cancel" th:utext="#{editOrCreateIndexBoxPage.cancel}" ></button>

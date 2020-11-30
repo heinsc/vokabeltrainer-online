@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
 import de.heins.vokabeltraineronline.business.entity.BehaviourIfPoolWithWrongAnswersIsFull;
-import de.heins.vokabeltraineronline.business.entity.FaultTolerance;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
 import de.heins.vokabeltraineronline.web.entities.attributereference.LearnProfileAttrRef;
 
@@ -28,12 +27,10 @@ public class LearnProfileService {
 			SessionAppUser sessionAppUser//
 			, int maxNumberOfWrongAnswersPerSession//
 			, String behaviourIfPoolWithWrongAnswersIsFull//
-			, String faultTolerance
 	) {
 		AppUser appUser = appUserRepository.findByEmail(sessionAppUser.getEmail()).get(0);
 		appUser.setBehaviourIfPoolWithWrongAnswersIsFull(BehaviourIfPoolWithWrongAnswersIsFull.valueOf(behaviourIfPoolWithWrongAnswersIsFull));
 		appUser.setMaxNumberOfWrongAnswersPerSession(maxNumberOfWrongAnswersPerSession);
-		appUser.setFaultTolerance(FaultTolerance.valueOf(faultTolerance));
 		appUserRepository.save(appUser);
 		
 	}
@@ -42,7 +39,6 @@ public class LearnProfileService {
 		LearnProfileAttrRef learnProfileAttrRef = new LearnProfileAttrRef();
 		learnProfileAttrRef.setMaxNumberOfWrongAnswersPerSession(appUser.getMaxNumberOfWrongAnswersPerSession());
 		learnProfileAttrRef.setBehaviourIfPoolWithWrongAnswersIsFull(appUser.getBehaviourIfPoolWithWrongAnswersIsFull().name());
-		learnProfileAttrRef.setFaultTolerance(appUser.getFaultTolerance().name());
 		return learnProfileAttrRef;
 		
 	}

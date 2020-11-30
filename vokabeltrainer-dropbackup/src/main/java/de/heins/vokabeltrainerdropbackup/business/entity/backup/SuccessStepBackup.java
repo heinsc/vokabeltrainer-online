@@ -9,6 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+
 @Entity
 @Table(uniqueConstraints={@UniqueConstraint(columnNames={"name", "appUserBackup"})})
 public class SuccessStepBackup {
@@ -21,22 +22,26 @@ public class SuccessStepBackup {
 	private int nextAppearanceInDays;
 	
 	private BehaviourIfWrongBackup behaviourIfWrongBackup;
+	
+	private FaultToleranceBackup faultToleranceBackup;
 
 	@ManyToOne
 	@JoinColumn(name="appUserBackup")
 	private AppUserBackup appUserBackup;
-	
+
     public SuccessStepBackup() {
     }
     public SuccessStepBackup(//
     		Long id2//
     		, String name2//
+    		, FaultToleranceBackup faultToleranceBackup//
     		, int nextAppearanceInDays2//
     		, BehaviourIfWrongBackup behaviourIfWrongBackup//
     		, AppUserBackup appUserBackup//
     	) {
     	this.id=id2;
 		this.name=name2;
+		this.faultToleranceBackup=faultToleranceBackup;
 		this.nextAppearanceInDays=nextAppearanceInDays2;
 		this.behaviourIfWrongBackup=behaviourIfWrongBackup;
 		this.appUserBackup=appUserBackup;
@@ -73,6 +78,12 @@ public class SuccessStepBackup {
 	}
 	public void setAppUserBackup(AppUserBackup appUserBackup) {
 		this.appUserBackup = appUserBackup;
+	}
+	public FaultToleranceBackup getFaultToleranceBackup() {
+		return faultToleranceBackup;
+	}
+	public void setFaultToleranceBackup(FaultToleranceBackup faultToleranceBackup) {
+		this.faultToleranceBackup = faultToleranceBackup;
 	}
 
 

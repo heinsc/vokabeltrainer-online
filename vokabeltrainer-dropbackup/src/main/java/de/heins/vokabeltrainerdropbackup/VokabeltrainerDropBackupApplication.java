@@ -44,7 +44,7 @@ public class VokabeltrainerDropBackupApplication implements CommandLineRunner {
 	}
 	@Override
 	public void run(String... args) {
-		if (amIAllowedToStart("DropBackup", "RestoreFromBackup", "ActualRunning")) {
+		if (amIAllowedToStart("RestoreFromBackup", "ActualRunning, Backup")) {
 			AppUserBackup appUserBackupDummy = saveDummyAppUserBackupInstance();
 			SuccessStepBackup successStepBackupDummy = saveDummySuccessStepBackupInstance(appUserBackupDummy);
 			LearningStrategyBackup learningStrategyBackup = saveDummyLearningStrategyBackupInstance(appUserBackupDummy);
@@ -55,8 +55,12 @@ public class VokabeltrainerDropBackupApplication implements CommandLineRunner {
 			learningStrategyBackupRepository.delete(learningStrategyBackup);
 			successStepBackupRepository.delete(successStepBackupDummy);
 			appUserBackupRepository.delete(appUserBackupDummy);
-			if(amIAllowedToStart("DropBackup", "RestoreFromBackup")){
+			if(amIAllowedToStart("RestoreFromBackup")){
 				setLastAction("DropBackup");
+			} else {
+				if (amIAllowedToStart("ActualRunning, Backup")) {
+					setLastAction("ActualRunning, DropBackup");
+				}
 			}
 		} else {
 			String exceptionText = "Not allowed to start. Look in the file to see what's next allowed to start!";
@@ -125,7 +129,6 @@ public class VokabeltrainerDropBackupApplication implements CommandLineRunner {
 				1L//
 				, "a@aa.aa"//
 				, "Pin12345"//
-				, FaultToleranceBackup.NO_TOLERANCE//
 				, 5//
 				, BehaviourIfPoolWithWrongAnswersIsFullBackup.EMPTY_POOL_UNTIL_ALL_QUESTIONS_CORRECT//
 				, Calendar.getInstance().getTime()//
@@ -140,6 +143,7 @@ public class VokabeltrainerDropBackupApplication implements CommandLineRunner {
 		SuccessStepBackup dummyEntry = new SuccessStepBackup(//
 				2L//
 				, "Erste Erfolgsstufe"//
+				, FaultToleranceBackup.NO_TOLERANCE//
 				, 5//
 				, BehaviourIfWrongBackup.PREVIOUS_SUCCESSSTEP_NEXTDAY_SUCCESSSTEP_DURATION//
 				, appUserBackupDummy//

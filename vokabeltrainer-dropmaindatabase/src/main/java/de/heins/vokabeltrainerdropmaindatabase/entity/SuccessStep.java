@@ -21,6 +21,8 @@ public class SuccessStep {
 	private int nextAppearanceInDays;
 	
 	private BehaviourIfWrong behaviourIfWrong;
+	
+	private FaultTolerance faultTolerance;
 
 	@ManyToOne
 	@JoinColumn(name="appUser")
@@ -31,12 +33,14 @@ public class SuccessStep {
     public SuccessStep(//
     		Long id2//
     		, String name2//
+    		, FaultTolerance faultTolerance//
     		, int nextAppearanceInDays2//
     		, BehaviourIfWrong behaviourIfWrong//
     		, AppUser appUser//
     	) {
     	this.id=id2;
 		this.name=name2;
+		this.faultTolerance=faultTolerance;
 		this.nextAppearanceInDays=nextAppearanceInDays2;
 		this.behaviourIfWrong=behaviourIfWrong;
 		this.appUser=appUser;
@@ -73,6 +77,12 @@ public class SuccessStep {
 	}
 	public void setAppUser(AppUser appUser) {
 		this.appUser = appUser;
+	}
+	public FaultTolerance getFaultTolerance() {
+		return faultTolerance;
+	}
+	public void setFaultTolerance(FaultTolerance faultTolerance) {
+		this.faultTolerance = faultTolerance;
 	}
 
 

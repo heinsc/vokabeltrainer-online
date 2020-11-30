@@ -32,15 +32,22 @@ public class VokabeltrainerBackupApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) {
-		if (amIAllowedToStart("DropBackup",  "Backup", "RestoreFromBackup", "ActualRunning")) {
+		if (amIAllowedToStart("DropBackup", "ActualRunning, DropBackup")) {
 			appUserTableHandler.handleTable();
 			successStepTableHandler.handleTable();
 			learningStrategyTableHandler.handleTable();
 			indexBoxTableHandler.handleTable();
 			questionWithAnswerTableHandler.handleTable();
-			if (amIAllowedToStart("DropBackup",  "Backup", "RestoreFromBackup")) {
+			if (amIAllowedToStart("DropBackup")) {
 				setLastAction("Backup");
+			} else {
+				if (amIAllowedToStart("ActualRunning, DropBackup")) {
+					setLastAction("ActualRunning, Backup");
+				}
 			}
+		} else {
+			String exceptionText = "Not allowed to start. Look in the file to see what's next allowed to start!";
+			throw new RuntimeException(exceptionText);
 		}
 	}
 

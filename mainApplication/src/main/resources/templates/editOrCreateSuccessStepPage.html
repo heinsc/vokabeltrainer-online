@@ -34,6 +34,13 @@
 	    		th:value="${selectableBehaviour}"
 	    		th:utext="#{${'manageConfigurationsPage.'}+${selectableBehaviour}}"/>
 	    </select>
+		<div th:text="#{editOrCreateSuccessStepPage.faultTolerance}">FALULT TOLERANCE:</div>
+    	<select th:field="*{successStep.faultTolerance}"  id="dropOperator">
+	    	<option	
+	    		th:each="selectableFaultTolerance : *{selectableFaultTolerances}"
+	    		th:value="${selectableFaultTolerance}"
+	    		th:utext="#{${'editOrCreateSuccessStepPage.'}+${selectableFaultTolerance}}"/>
+	    </select>
 	    <br/>
 		<button type="submit" name="submit" th:utext="#{editOrCreateSuccessStepPage.submit}" ></button>
 		<button type="submit" name="cancel" th:utext="#{editOrCreateSuccessStepPage.cancel}" ></button>

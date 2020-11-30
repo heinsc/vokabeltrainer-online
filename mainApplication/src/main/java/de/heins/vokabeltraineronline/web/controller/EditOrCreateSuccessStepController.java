@@ -57,6 +57,7 @@ public class EditOrCreateSuccessStepController {
 		}
 	    editOrCreateSuccessStep.setSuccessStep(successStep);
 	    editOrCreateSuccessStep.setSelectableBehaviours(successStepService.getAllBehavioursIfWrongAsStringArray());
+	    editOrCreateSuccessStep.setSelectableFaultTolerances(successStepService.getAllFaultTolerancesAsStringArray());
 		return Constants.editOrCreateSuccessStepPage.name();
 	}
 	@RequestMapping(value="/controlActionEditOrCreateSuccessStep", method=RequestMethod.POST, params= {"submit"})

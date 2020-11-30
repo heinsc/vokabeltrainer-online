@@ -9,6 +9,7 @@ public class EditOrCreateSuccessStepModAttr {
 	private boolean successStepWithThisNameAlreadyExists;
 	private SuccessStepAttrRef successStep;
 	private List<String> selectableBehaviours;
+	private List<String> selectableFaultTolerances;
 	
 	public boolean isMandatoryViolated() {
 		return mandatoryViolated;
@@ -27,6 +28,12 @@ public class EditOrCreateSuccessStepModAttr {
 	}
 	public void setSelectableBehaviours(List<String> selectableBehaviours) {
 		this.selectableBehaviours = selectableBehaviours;
+	}
+	public List<String> getSelectableFaultTolerances() {
+		return selectableFaultTolerances;
+	}
+	public void setSelectableFaultTolerances(List<String> selectableFaultTolerances) {
+		this.selectableFaultTolerances = selectableFaultTolerances;
 	}
 	public boolean isSuccessStepWithThisNameAlreadyExists() {
 		return successStepWithThisNameAlreadyExists;

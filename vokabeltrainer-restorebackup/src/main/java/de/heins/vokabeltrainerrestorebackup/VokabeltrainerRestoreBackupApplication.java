@@ -39,6 +39,9 @@ public class VokabeltrainerRestoreBackupApplication implements CommandLineRunner
 			indexBoxTableHandler.handleTable();
 			questionWithAnswerTableHandler.handleTable();
 			setLastAction("RestoreFromBackup");
+		} else {
+			String exceptionText = "Not allowed to start. Look in the file to see what's next allowed to start!";
+			throw new RuntimeException(exceptionText);
 		}
 	}
 

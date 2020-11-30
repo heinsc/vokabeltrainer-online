@@ -49,9 +49,6 @@
 			<br/>
 			<div th:utext="#{manageConfigurationsPage.behaviourIfPoolWithWrongAnswersIsFull}">BehaviourIfPoolWithWrongAnswersIsFull</div>
 			<div th:utext="#{${'manageConfigurationsPage.'}+*{learnProfile.behaviourIfPoolWithWrongAnswersIsFull}}">Onions</div>
-			<br/>
-			<div th:utext="#{manageConfigurationsPage.faultTolerance}">FAULT TOLERANCE</div>
-			<div th:utext="#{${'manageConfigurationsPage.'}+*{learnProfile.faultTolerance}}">FAULT_TOLERANCE</div>
 			<button type="submit" name="editLearnProfile" th:utext="#{manageConfigurationsPage.edit}" ></button>
 		</div>
 		<h2 class="accordion" th:utext="#{manageConfigurationsPage.indexBoxes}">Index Boxes</h2>
@@ -132,6 +129,7 @@
 			    <th th:utext="#{manageConfigurationsPage.name}">NAME</th>
 			    <th th:utext="#{manageConfigurationsPage.nextAppearanceInDays}">NEXT_APPEARANCE_IN_DAYS</th>
 			    <th th:utext="#{manageConfigurationsPage.behaviourIfWrong}">BEHAVIOUR_IF_WRONG</th>
+			    <th th:utext="#{manageConfigurationsPage.faultTolerance}">FAULT TOLERANCE</th>
 			  </tr>
 		      <tr th:each="successStep : *{allSuccessSteps}">
 		      	<td>
@@ -157,6 +155,7 @@
 		        <td th:utext="${successStep.name}">Onions</td>
 		        <td th:utext="${successStep.nextAppearanceInDays}">Onions</td>
 		        <td th:utext="#{${'manageConfigurationsPage.'}+${successStep.behaviourIfWrong}}">Onions</td>
+		        <td th:utext="#{${'manageConfigurationsPage.'}+${successStep.faultTolerance}}">Onions</td>
 		      </tr>
 		    </table>
 			<button type="submit" name="createSuccessStep" th:utext="#{manageConfigurationsPage.createSuccessStep}" ></button>

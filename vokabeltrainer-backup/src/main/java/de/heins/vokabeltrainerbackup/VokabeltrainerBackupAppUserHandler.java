@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import de.heins.vokabeltrainerbackup.business.entity.AppUser;
 import de.heins.vokabeltrainerbackup.business.entity.backup.AppUserBackup;
 import de.heins.vokabeltrainerbackup.business.entity.backup.BehaviourIfPoolWithWrongAnswersIsFullBackup;
-import de.heins.vokabeltrainerbackup.business.entity.backup.FaultToleranceBackup;
 import de.heins.vokabeltrainerbackup.business.repository.AppUserRepository;
 import de.heins.vokabeltrainerbackup.business.repository.backup.AppUserBackupRepository;
 
@@ -32,9 +31,7 @@ public class VokabeltrainerBackupAppUserHandler
 				null//
 				, sourceEntity.getEmail()//
 				, sourceEntity.getPassword()//
-				, FaultToleranceBackup.valueOf(//
-						sourceEntity.getFaultTolerance().name()//
-				), sourceEntity.getMaxNumberOfWrongAnswersPerSession()//
+				, sourceEntity.getMaxNumberOfWrongAnswersPerSession()//
 				, BehaviourIfPoolWithWrongAnswersIsFullBackup.valueOf(//
 						sourceEntity.getBehaviourIfPoolWithWrongAnswersIsFull().name()//
 				), sourceEntity.getLastLogin()//

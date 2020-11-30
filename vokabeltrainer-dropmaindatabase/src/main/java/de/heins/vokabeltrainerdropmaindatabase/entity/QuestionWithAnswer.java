@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.sun.istack.NotNull;
 @Entity
 @Table(uniqueConstraints={@UniqueConstraint(columnNames={"appUser", "question"})})
 public class QuestionWithAnswer {
@@ -18,7 +20,8 @@ public class QuestionWithAnswer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
    
-    @ManyToOne
+    @ManyToOne()
+    @NotNull()
 	private IndexBox indexBox;
 
     @ManyToOne

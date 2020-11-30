@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import de.heins.vokabeltraineronline.business.repository.SuccessStepRepository;
 import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
 import de.heins.vokabeltraineronline.business.entity.BehaviourIfWrong;
+import de.heins.vokabeltraineronline.business.entity.FaultTolerance;
 import de.heins.vokabeltraineronline.business.entity.SuccessStep;
 import de.heins.vokabeltraineronline.business.entity.SuccessStepFactory;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
@@ -40,6 +41,7 @@ public class SuccessStepService {
 					successStepAttrRef.setName(successStep.getName());
 					successStepAttrRef.setNextAppearanceInDays(successStep.getNextAppearanceInDays());
 					successStepAttrRef.setBehaviourIfWrong(successStep.getBehaviourIfWrong().name());
+					successStepAttrRef.setFaultTolerance(successStep.getFaultTolerance().name());
 					successStepAttrRefs.add(successStepAttrRef);
 				});
 			} catch (Exception e) {
@@ -63,6 +65,7 @@ public class SuccessStepService {
 				successStepAttrRef.setName(successStep.getName());
 				successStepAttrRef.setNextAppearanceInDays(successStep.getNextAppearanceInDays());
 				successStepAttrRef.setBehaviourIfWrong(successStep.getBehaviourIfWrong().name());
+				successStepAttrRef.setFaultTolerance(successStep.getFaultTolerance().name());
 				return successStepAttrRef;
 			}
 		} catch (Exception e) {
@@ -92,6 +95,7 @@ public class SuccessStepService {
 					.setName(successStepAttrRef.getName())//
 					.setNextAppearanceInDays(successStepAttrRef.getNextAppearanceInDays())//
 					.setBehaviourIfWrong(BehaviourIfWrong.valueOf(successStepAttrRef.getBehaviourIfWrong()))//
+					.setFaultTolerance(FaultTolerance.valueOf(successStepAttrRef.getFaultTolerance()))//
 					.setAppUser(appUser)//
 					.getNewObject();
 		} else {
@@ -103,10 +107,15 @@ public class SuccessStepService {
 		successStepRepository.save(successStep);
 	}
 	public List<String> getAllBehavioursIfWrongAsStringArray() {
-		// TODO Auto-generated method stub
 		return java.util.stream.Stream//
 				.of(BehaviourIfWrong.values())//
 				.map(BehaviourIfWrong::name)//
+				.collect(Collectors.toList());
+	}
+	public List<String> getAllFaultTolerancesAsStringArray() {
+		return java.util.stream.Stream//
+				.of(FaultTolerance.values())//
+				.map(FaultTolerance::name)//
 				.collect(Collectors.toList());
 	}
 }
