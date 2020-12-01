@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import de.heins.vokabeltraineronline.business.entity.BehaviourIfPoolWithWrongAnswersIsFull;
+import de.heins.vokabeltraineronline.business.service.FaultToleranceService;
 import de.heins.vokabeltraineronline.business.service.LearnProfileService;
 import de.heins.vokabeltraineronline.business.service.QuestionWithAnswerService;
+import de.heins.vokabeltraineronline.business.service.SuccessStepService;
 import de.heins.vokabeltraineronline.web.entities.IndexBoxes;
 import de.heins.vokabeltraineronline.web.entities.PoolWithWrongAnswers;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
@@ -22,6 +24,7 @@ import de.heins.vokabeltraineronline.web.entities.StockOfAllQuestionsWithAnswers
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
 import de.heins.vokabeltraineronline.web.entities.attributereference.LearnProfileAttrRef;
 import de.heins.vokabeltraineronline.web.entities.attributereference.QuestionWithAnswerAttrRef;
+import de.heins.vokabeltraineronline.web.entities.attributereference.SuccessStepAttrRef;
 import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.LearnDoLearnModAtt;
 
 @Controller
@@ -36,6 +39,11 @@ public class LearnDoLearnController {
 	private QuestionWithAnswerService questionWithAnswerService;
 	@Autowired
 	private LearnProfileService learnProfileService;
+	@Autowired
+	private SuccessStepService successStepService;
+	@Autowired
+	private FaultToleranceService faultToleranceService;
+
 	public LearnDoLearnController() {
 		super();
 	}
@@ -168,8 +176,12 @@ public class LearnDoLearnController {
 		} else {
 			if (//
 					isEqualWithoutSpecialCharacters(//
-							questionWithAnswerAttrRef.getAnswer()//
+							questionWithAnswerAttrRef//
 							, learnDoLearnModAtt.getAnswerByUser()//
+					) || isEqualDueToFaultTolerance(//
+							questionWithAnswerAttrRef//
+							, learnDoLearnModAtt.getAnswerByUser()//
+							, sessionAppUser//
 					)
 			) {
 				session.setAttribute(//
@@ -179,8 +191,6 @@ public class LearnDoLearnController {
 				session.setAttribute(ControllerConstants.sessionYourAnswer.name(), learnDoLearnModAtt.getAnswerByUser());
 				return "redirect:" + ControllerConstants.controlPageDeclareCorrectDespiteErrors.name();
 			}
-			//TODO hier noch weitere if-Abfragen (ist Antwort völlig falsch, oder im Rahmen
-			// von regex evtl. doch noch richtig? In Abhängigkeit davon andere redirects.
 		}
 		// Wenn bis hier kein Ausstieg (return), ist die Antwort so falsch, dass sie wie falsch behandelt werden
 		// muss.
@@ -193,10 +203,32 @@ public class LearnDoLearnController {
 		return "redirect:" + ControllerConstants.controlPageAnswerIsIncorrect.name();
 
 	}
+
+	private boolean isEqualDueToFaultTolerance(//
+			QuestionWithAnswerAttrRef questionWithAnswerAttrRef//
+			, String answerByUser//
+			, SessionAppUser sessionAppUser//
+		) {
+		SuccessStepAttrRef actualSuccessStep = successStepService.findForAppUserAndName(//
+				sessionAppUser//
+				, questionWithAnswerAttrRef.getActualSuccessStepDescription()//
+		);
+		if (SuccessStepService.EMPTY_SUCCESS_STEP != actualSuccessStep) {
+			String faultTolerance = actualSuccessStep.getFaultTolerance();
+			return faultToleranceService.checkOnEqualnessOfCurrentIndexPair(//
+					questionWithAnswerAttrRef.getAnswer()//
+					, answerByUser//
+					, faultTolerance//
+			);
+		}
+		// before first success step or without any success step is always orally
+		return true;
+	}
 	private boolean isEqualWithoutSpecialCharacters(//
-			String answer//
+			QuestionWithAnswerAttrRef questionWithAnswerAttrRef
 			, String answerByUser//
 	) {
+		String answer = questionWithAnswerAttrRef.getAnswer();
 		String answerOnlyWordCharacter = answer.replaceAll("[^\\p{L}\\p{Nd}]+", "");
 		String answerByUserOnlyWordCharacter = answerByUser.replaceAll("[^\\p{L}\\p{Nd}]+", "");
 		return answerOnlyWordCharacter.equals(answerByUserOnlyWordCharacter);

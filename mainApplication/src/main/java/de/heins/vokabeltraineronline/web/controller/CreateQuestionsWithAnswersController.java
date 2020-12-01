@@ -48,16 +48,7 @@ public class CreateQuestionsWithAnswersController {
 			, Model model//
 	) throws Exception {
 		CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt = new CreateQuestionsWithAnswersModAtt();
-		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
-
-		refreshIndexBoxDescriptions(//
-				createQuestionsWithAnswersModAtt//
-				, sessionAppUser//
-		);
-		refreshLearningStrategyDescriptions(//
-				createQuestionsWithAnswersModAtt//
-				, sessionAppUser//
-		);
+		refreshSelectBoxes(session, createQuestionsWithAnswersModAtt);
 		
 		model.addAttribute(Constants.createQuestionsWithAnswersModAtt.name(), createQuestionsWithAnswersModAtt);
 		
@@ -118,26 +109,17 @@ public class CreateQuestionsWithAnswersController {
 
 	}
 
-	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"cancel"})
+	@RequestMapping(value="/controlActionCreateQuestionsWithAnswers", method=RequestMethod.POST, params= {"cancel"})
 	public String cancel() {
 		return "redirect:" + ControllerConstants.controlPageManageQuestionsWithAnswers.name();
 		
 	}
-	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"next"})
+	@RequestMapping(value="/controlActionCreateQuestionsWithAnswers", method=RequestMethod.POST, params= {"next"})
 	public String next(//
 			StandardSessionFacade session//
 			, @ModelAttribute(name = "createQuestionsWithAnswersModAtt")
 			CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt
 	) {
-		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
-		refreshIndexBoxDescriptions(//
-				createQuestionsWithAnswersModAtt//
-				, sessionAppUser//
-		);
-		refreshLearningStrategyDescriptions(//
-				createQuestionsWithAnswersModAtt//
-				, sessionAppUser//
-		);
 		String returnValue = trySaveQuestionWithAnswer(session, createQuestionsWithAnswersModAtt);
 		if (!Strings.isEmpty(returnValue)) {
 			return returnValue;
@@ -149,7 +131,20 @@ public class CreateQuestionsWithAnswersController {
 		 */
 		return Constants.createQuestionsWithAnswersPage.name();
 	}
-	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"submit"})
+
+	private void refreshSelectBoxes(StandardSessionFacade session,
+			CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt) {
+		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
+		refreshIndexBoxDescriptions(//
+				createQuestionsWithAnswersModAtt//
+				, sessionAppUser//
+		);
+		refreshLearningStrategyDescriptions(//
+				createQuestionsWithAnswersModAtt//
+				, sessionAppUser//
+		);
+	}
+	@RequestMapping(value="/controlActionCreateQuestionsWithAnswers", method=RequestMethod.POST, params= {"submit"})
 	public String submit(
 			StandardSessionFacade session//
 			, @ModelAttribute(name = "createQuestionsWithAnswersModAtt")
@@ -159,7 +154,7 @@ public class CreateQuestionsWithAnswersController {
 		if (!Strings.isEmpty(returnValue)) {
 			return returnValue;
 		}
-		return "redirect:" + ControllerConstants.controlPageManageQuestionsWithAnswers.name();
+		return "redirect:"+ControllerConstants.controlPageManageQuestionsWithAnswers.name();
 	}
 
 	private String trySaveQuestionWithAnswer(StandardSessionFacade session,
@@ -167,6 +162,7 @@ public class CreateQuestionsWithAnswersController {
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
 		createQuestionsWithAnswersModAtt.setMandatoryViolated(false);
 		createQuestionsWithAnswersModAtt.setQuestionAlreadyExists(false);
+		refreshSelectBoxes(session, createQuestionsWithAnswersModAtt);
 		if (Strings.isEmpty(createQuestionsWithAnswersModAtt.getQuestionWithAnswer().getQuestion())) {
 			createQuestionsWithAnswersModAtt.setMandatoryViolated(true);
 			return Constants.createQuestionsWithAnswersPage.name();

@@ -2,7 +2,6 @@ package de.heins.vokabeltraineronline.web.controller;
 
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.catalina.session.StandardSessionFacade;
@@ -39,22 +38,33 @@ public class ManageQuestionsWithAnswersController {
 			Model model//
 			, StandardSessionFacade session//
 	) throws Exception {
-		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
-				ControllerConstants.sessionAppUser.name()//
-		);
+		IndexBoxes indexBoxes = manageIndexBoxes(session);
+		Set<QuestionWithAnswerAttrRef> questionsWithAnswersList = findQuestionsWithAnswersList(indexBoxes);
 		ManageQuestionsWithAnswersModAtt manageQuestionsWithAnswersModAtt = new ManageQuestionsWithAnswersModAtt();
-		
-		List<IndexBoxAttrRef> indexBoxAttrRefList = indexBoxService.findAllForAppUser(sessionAppUser);
-		session.setAttribute(Constants.sessionIndexBoxAttrRefList.name(), indexBoxAttrRefList);
-		Set<QuestionWithAnswerAttrRef> questionsWithAnswersList = findQuestionsWithAnswersList(indexBoxAttrRefList);
 		manageQuestionsWithAnswersModAtt.setQuestionsWithAnswers(questionsWithAnswersList);
 		model.addAttribute(Constants.manageQuestionsWithAnswersModAtt.name(), manageQuestionsWithAnswersModAtt);
 		return Constants.manageQuestionsWithAnswersPage.name();
 	}
 
-	private Set<QuestionWithAnswerAttrRef> findQuestionsWithAnswersList(List<IndexBoxAttrRef> indexBoxAttrRefList) {
+	private IndexBoxes manageIndexBoxes(//
+			StandardSessionFacade session//
+	) {
+		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
+				ControllerConstants.sessionAppUser.name()//
+		);
+		IndexBoxes indexBoxes = (IndexBoxes) session.getAttribute(//
+				Constants.sessionIndexBoxAttrRefList.name()//
+		);
+		if (null == indexBoxes) {
+			indexBoxes = indexBoxService.findAllForAppUser(sessionAppUser);
+			session.setAttribute(Constants.sessionIndexBoxAttrRefList.name(), indexBoxes);
+		}
+		return indexBoxes;
+	}
+
+	private Set<QuestionWithAnswerAttrRef> findQuestionsWithAnswersList(IndexBoxes indexBoxes) {
 		Set<QuestionWithAnswerAttrRef> allQuestionsWithAnswers = new HashSet<QuestionWithAnswerAttrRef>();
-		for (IndexBoxAttrRef indexBoxAttrRef : indexBoxAttrRefList) {
+		for (IndexBoxAttrRef indexBoxAttrRef : indexBoxes) {
 			if (indexBoxAttrRef.isFilterOn()) {
 				allQuestionsWithAnswers.addAll(//
 						indexBoxAttrRef.getQuestionsWithAnswers()//

@@ -20,6 +20,7 @@
 		th:action="@{/controlActionManageQuestionsWithAnswers}"
 		th:object="${manageQuestionsWithAnswersModAtt}" method="post">
 
+		<button type="submit" name="createQuestionsWithAnswers" th:utext="#{manageQuestionsWithAnswersPage.addQuestionWithAnswer}" ></button>
 		<h2 th:utext="#{manageQuestionsWithAnswersPage.filter}">Filter</h2>
 		<table>
 			<tr>
@@ -101,7 +102,6 @@
 			</tr>
 		</table>
 		
-		<button type="submit" name="createQuestionsWithAnswers" th:utext="#{manageQuestionsWithAnswersPage.addQuestionWithAnswer}" ></button>
 		<br/>
 		<button type="submit" name="backToMenu" th:utext="#{manageConfigurationsPage.menu}" ></button>
 		<button type="submit" name="logout" th:utext="#{manageConfigurationsPage.logout}" ></button>

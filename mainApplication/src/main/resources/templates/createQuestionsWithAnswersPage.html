@@ -13,7 +13,7 @@
     <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
 
 	<h1 th:utext="#{createQuestionsWithAnswersPage.header}">Edit Or Create IndexBox</h1>
-	<form action="#" th:action="@{/controlActionManageQuestionsWithAnswers}"
+	<form action="#" th:action="@{/controlActionCreateQuestionsWithAnswers}"
 			th:object="${createQuestionsWithAnswersModAtt}" method="post">
 		<div th:if="*{mandatoryViolated}">
 			<p th:utext="#{createQuestionsWithAnswersPage.mandatoryViolated}" class="error">Please fill all
@@ -55,7 +55,7 @@
 		<label th:utext="#{createQuestionsWithAnswersPage.answer}"></label>
 		<input type="text" th:field="*{questionWithAnswer.answer}" />
 		</div>
-		<div th:if="*{not noIndexBoxExists}">
+		<div th:unless="*{noIndexBoxExists}">
 			<button type="submit" name="submit" th:utext="#{createQuestionsWithAnswersPage.submit}" ></button>
 			<button type="submit" name="next" th:utext="#{createQuestionsWithAnswersPage.next}" ></button>
 		</div>

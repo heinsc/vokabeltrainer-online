@@ -67,7 +67,7 @@ public class IndexBoxService {
 						questionWithAnswerAttrRef.setLearningProgress(learningProgress);
 						indexBoxForm.getQuestionsWithAnswers().add(questionWithAnswerAttrRef);
 					});
-					indexBoxForm.setFilterOn(true);
+					indexBoxForm.setFilterOn(false);
 					indexBoxForms.add(indexBoxForm);
 				});
 			} catch (Exception e) {
