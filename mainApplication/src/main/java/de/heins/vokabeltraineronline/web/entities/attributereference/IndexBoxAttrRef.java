@@ -12,6 +12,7 @@ public class IndexBoxAttrRef {
 	private String name;
 	private String subject;
 	private Set<QuestionWithAnswerAttrRef> questionsWithAnswers;
+	private String learningProgress;
 	private boolean filterOn;
 	
 	public String getName() {
@@ -40,6 +41,13 @@ public class IndexBoxAttrRef {
 
 	public Set<QuestionWithAnswerAttrRef> getQuestionsWithAnswers() {
 		return questionsWithAnswers;
+	}
+
+	public void setLearningProgress(String learningProgress) {
+		this.learningProgress = learningProgress;
+	}
+	public String getLearningProgress() {
+		return this.learningProgress;
 	}
 	
 

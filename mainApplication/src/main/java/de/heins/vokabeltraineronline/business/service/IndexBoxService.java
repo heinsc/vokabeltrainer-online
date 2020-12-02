@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
 import de.heins.vokabeltraineronline.business.entity.IndexBox;
 import de.heins.vokabeltraineronline.business.entity.IndexBoxFactory;
-import de.heins.vokabeltraineronline.business.entity.LearningStrategy;
 import de.heins.vokabeltraineronline.business.entity.QuestionWithAnswer;
 import de.heins.vokabeltraineronline.business.entity.SuccessStep;
 import de.heins.vokabeltraineronline.business.repository.AppUserRepository;
@@ -25,6 +24,18 @@ import de.heins.vokabeltraineronline.web.entities.attributereference.QuestionWit
 
 @Service
 public class IndexBoxService {
+	private static class DaysCounter {
+		private int days;
+		private void addDays(int days) {
+			this.days = this.days + days;
+		}
+		private int getDays() {
+			return days;
+		}
+		public String toString() {
+			return String.valueOf(this.days);
+		}
+	}
 	public static final IndexBoxAttrRef EMPTY_INDEX_BOX = new IndexBoxAttrRef();
 	public static final Date LAST_SUCCESSSTEP_MADE_DATE = Calendar.getInstance().getTime();
 	static {
@@ -68,6 +79,7 @@ public class IndexBoxService {
 						indexBoxForm.getQuestionsWithAnswers().add(questionWithAnswerAttrRef);
 					});
 					indexBoxForm.setFilterOn(false);
+					indexBoxForm.setLearningProgress(calculateProgress(indexBox));
 					indexBoxForms.add(indexBoxForm);
 				});
 			} catch (Exception e) {
@@ -81,32 +93,18 @@ public class IndexBoxService {
 			throw new RuntimeException("No AppUser found or AppUser not unique by email");
 		}
 	}
-	private String calculateProgress(QuestionWithAnswer questionWithAnswer) {
-		SuccessStep actualSuccessStep = questionWithAnswer.getActualSuccessStep();
-		LearningStrategy learningStrategy = questionWithAnswer.getLearningStrategy();
-		List<SuccessStep> successSteps = learningStrategy.getSuccessSteps();
-		int totalDaysOfLearningStrategy=0;
-		int sumUntilActualSuccessStep=0;
-		if (questionWithAnswer.getActualSuccessStep() == null) {
-			if (questionWithAnswer.getNextAppearance().equals(LAST_SUCCESSSTEP_MADE_DATE)) {
-				return "100 %";
-			} else {
-				return "0 %";
-			}
+	private String calculateProgress(IndexBox anIndexBox) {
+		List<QuestionWithAnswer> questionWithAnswers = questionWithAnswerRepository.findByAppUserAndIndexBox(//
+				anIndexBox.getAppUser()//
+				, anIndexBox//
+		);
+		DaysCounter allDaysCounter = new DaysCounter();
+		DaysCounter successDaysCounter = new DaysCounter();
+		for (QuestionWithAnswer currentQuestionWithAnswer : questionWithAnswers) {
+			countDays(currentQuestionWithAnswer, allDaysCounter, successDaysCounter);
 		}
-		boolean actualSuccessStepFound = false;
-		for (SuccessStep currentSuccessStep : successSteps) {
-			totalDaysOfLearningStrategy = totalDaysOfLearningStrategy + currentSuccessStep.getNextAppearanceInDays();
-			if (currentSuccessStep.equals(actualSuccessStep)) {
-				actualSuccessStepFound = true;
-			}
-			if (!actualSuccessStepFound) {
-				sumUntilActualSuccessStep = sumUntilActualSuccessStep + currentSuccessStep.getNextAppearanceInDays();
-			}				
-				
-		}
-		int resultAsFloat = (int) Math.round(100 * (float)sumUntilActualSuccessStep / totalDaysOfLearningStrategy);
-		return resultAsFloat+"%";
+		int resultAsInt = (int) Math.round(100 * (float)successDaysCounter.getDays() / allDaysCounter.getDays());
+		return resultAsInt+"%";
 	}
 	public IndexBoxAttrRef findForAppUserAndNameAndSubject(//
 			SessionAppUser sessionAppUserForm//
@@ -169,6 +167,48 @@ public class IndexBoxService {
 			indexBox.setSubject(indexBoxAttrRef.getSubject());//
 		}
 		indexBoxRepository.save(indexBox);
+	}
+	private String calculateProgress(QuestionWithAnswer questionWithAnswer) {
+		DaysCounter allDaysCounter = new DaysCounter();
+		DaysCounter successDaysCounter = new DaysCounter();
+		countDays(questionWithAnswer, allDaysCounter, successDaysCounter);
+		int resultAsFloat = (int) Math.round(100 * (float)successDaysCounter.getDays() / allDaysCounter.getDays());
+		return resultAsFloat+"%";
+	}
+	private void countDays(//
+			QuestionWithAnswer questionWithAnswer//
+			, DaysCounter allDaysCounter//
+			, DaysCounter successDaysCounter//
+	) {
+		SuccessStep actualSuccessStep = questionWithAnswer.getActualSuccessStep();
+		List<SuccessStep> successSteps = questionWithAnswer
+				.getLearningStrategy()//
+				.getSuccessSteps();
+		if (successSteps.isEmpty()) {
+			allDaysCounter.addDays(1);
+			if (questionWithAnswer.getNextAppearance().equals(LAST_SUCCESSSTEP_MADE_DATE)) {
+				successDaysCounter.addDays(1);
+			}
+		} else {
+			boolean actualSuccessStepReached = false;
+			for (SuccessStep currentSuccessStep : successSteps) {
+				// not only the days are counted, but the successSteps too.
+				// take one day extra for each successStep.
+				allDaysCounter.addDays(1 + currentSuccessStep.getNextAppearanceInDays());
+				if (//
+						actualSuccessStep != null//
+						&& !currentSuccessStep.equals(actualSuccessStep)//
+						&& !actualSuccessStepReached//
+				) {
+					successDaysCounter.addDays(1 + currentSuccessStep.getNextAppearanceInDays());
+				} else {
+					actualSuccessStepReached = true;
+					if (questionWithAnswer.getNextAppearance().equals(LAST_SUCCESSSTEP_MADE_DATE)) {
+						successDaysCounter.addDays(1 + currentSuccessStep.getNextAppearanceInDays());
+					}
+				}
+			}
+		}
 	}
 
 }

@@ -140,12 +140,15 @@ public class ManageQuestionsWithAnswersController {
 		return "redirect:" + ControllerConstants.controlPageCreateQuestionsWithAnswers.name();
 	}
 	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"backToMenu"})
-	public String backToMenu() {
+	public String backToMenu(StandardSessionFacade session) {
+		session.removeAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
 		//direct go to mainMenu
 		return "redirect:" +ControllerConstants.controlPageMenu.name();
 	}
 	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"logout"})
-	public String logout() {
+	public String logout(StandardSessionFacade session) {
+		session.removeAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
+		session.removeAttribute(ControllerConstants.sessionAppUser.name());
 		//direct go to login 
 		return "redirect:" + ControllerConstants.controlPageLogin.name();
 	}

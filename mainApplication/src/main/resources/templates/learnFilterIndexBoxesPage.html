@@ -25,6 +25,7 @@
 				<th th:utext=#{learnFilterIndexBoxesPage.filter}>FILTER</th>
 				<th th:utext=#{learnFilterIndexBoxesPage.name}>NAME</th>
 				<th th:utext=#{learnFilterIndexBoxesPage.subject}>SUBJECT</th>
+				<th th:utext=#{learnFilterIndexBoxesPage.learningProgress}>LEARNING PROGRESS</th>
 			</tr>
 			<tr
 				th:each="indexBox : ${#session.getAttribute('sessionIndexBoxAttrRefList')}">
@@ -41,6 +42,7 @@
 				</a></td>
 				<td th:text="${indexBox.name}">Onions</td>
 				<td th:text="${indexBox.subject}">Onions</td>
+				<td th:text="${indexBox.learningProgress}">n%</td>
 			</tr>
 		</table>
 		<p>
