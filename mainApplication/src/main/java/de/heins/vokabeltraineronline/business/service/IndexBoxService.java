@@ -78,7 +78,7 @@ public class IndexBoxService {
 						questionWithAnswerAttrRef.setLearningProgress(learningProgress);
 						indexBoxForm.getQuestionsWithAnswers().add(questionWithAnswerAttrRef);
 					});
-					indexBoxForm.setFilterOn(false);
+					indexBoxForm.setFilterOn(indexBox.isActualInUse());
 					indexBoxForm.setLearningProgress(calculateProgress(indexBox));
 					indexBoxForms.add(indexBoxForm);
 				});
@@ -165,6 +165,7 @@ public class IndexBoxService {
 			indexBox = findByAppUserAndNameAndSubjectList.get(0); //
 			indexBox.setName(indexBoxAttrRef.getName());//
 			indexBox.setSubject(indexBoxAttrRef.getSubject());//
+			indexBox.setActualInUse(indexBoxAttrRef.isFilterOn());
 		}
 		indexBoxRepository.save(indexBox);
 	}

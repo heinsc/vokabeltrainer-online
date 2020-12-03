@@ -4,6 +4,7 @@ import org.apache.catalina.session.StandardSessionFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +19,10 @@ import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.LearnFilter
 public class LearnFilterIndexBoxesController {
 	private static enum Constants {
 		learnFilterIndexBoxesPage
+		, learnFilterIndexBoxesModAtt
 	}
+	@Autowired
+	LearnDoLearnController LearnDoLearnController;
 	@Autowired
 	private IndexBoxService indexBoxService;
 	public LearnFilterIndexBoxesController() {
@@ -27,14 +31,15 @@ public class LearnFilterIndexBoxesController {
 
 	@RequestMapping("/controlPageLearnFilterIndexBoxes")
 	public String showLearnFilterIndexBoxesPage(//
-			Model model//
-			, StandardSessionFacade session//
+			StandardSessionFacade session//
+			, Model model
 	) throws Exception {
+		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt = new LearnFilterIndexBoxesModAtt();
+		learnFilterIndexBoxesModAtt.setMandatoryViolated(false);
+		model.addAttribute(Constants.learnFilterIndexBoxesModAtt.name(), learnFilterIndexBoxesModAtt);
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
-		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt = new LearnFilterIndexBoxesModAtt();
-		model.addAttribute("learnFilterIndexBoxesModAtt", learnFilterIndexBoxesModAtt);
 		IndexBoxes indexBoxAttrRefList = indexBoxService.findAllForAppUser(sessionAppUser);
 		session.setAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name(), indexBoxAttrRefList);
 		return Constants.learnFilterIndexBoxesPage.name();
@@ -42,13 +47,43 @@ public class LearnFilterIndexBoxesController {
 	}
 	@RequestMapping(value = "/controlActionLearnFilterIndexBoxes", method = RequestMethod.POST, params = {"learn"})
 	public String learn(
-			StandardSessionFacade session
+			StandardSessionFacade session//
+			, @ModelAttribute("learnFilterIndexBoxesModAtt")
+			LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt//
 	) throws Exception {
-		session.setAttribute(ControllerConstants.sessionPoolWithWrongAnswers.name(), null);
-		session.setAttribute(ControllerConstants.sessionStockOfAllQuestionsWithAnswers.name(), null);
+
+		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(//
+				ControllerConstants.sessionIndexBoxAttrRefList.name()//
+		);
+		boolean mandatoryViolated = !checkAtLeastOneIndexBoxIsSelected(indexBoxAttrRefList);
+		if (mandatoryViolated) {
+			learnFilterIndexBoxesModAtt.setMandatoryViolated(//
+					mandatoryViolated//
+			);
+			return Constants.learnFilterIndexBoxesPage.name();
+		}
+		// save filter
+		for (IndexBoxAttrRef indexBoxAttrRef : indexBoxAttrRefList) {
+			SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
+			indexBoxService.update(//
+					sessionAppUser//
+					, indexBoxAttrRef//
+					, indexBoxAttrRef.getName()//
+					, indexBoxAttrRef.getSubject()//
+			);
+		}
 		return "redirect:" + ControllerConstants.controlPageLearnDoLearn.name();
 
 	}
+	private boolean checkAtLeastOneIndexBoxIsSelected(IndexBoxes indexBoxAttrRefList) {
+		for (IndexBoxAttrRef indexBoxAttrRef : indexBoxAttrRefList) {
+			if (indexBoxAttrRef.isFilterOn()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@RequestMapping(value = "/controlActionLearnFilterIndexBoxes", method = RequestMethod.POST, params = {"cancel"})
 	public String cancel() throws Exception {
 		return "redirect:" + ControllerConstants.controlPageMenu.name();
@@ -61,19 +96,17 @@ public class LearnFilterIndexBoxesController {
 
 	@RequestMapping({"controlLinkAddIndexBoxToFilterOnLearningPage"})
 	public String addIndexBoxToFilter(//
-			@RequestParam(name = "index", required = false, defaultValue = "")
-	        int index//
-	        , Model model//
-			, StandardSessionFacade session//
+		@RequestParam(name = "index", required = false, defaultValue = "")
+        int index//
+		, StandardSessionFacade session//
+		, @ModelAttribute("learnFilterIndexBoxesModAtt")
+		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt
 	) throws Exception {
-		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt = new LearnFilterIndexBoxesModAtt();
-		model.addAttribute("learnFilterIndexBoxesModAtt", learnFilterIndexBoxesModAtt);
 		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(//
 				ControllerConstants.sessionIndexBoxAttrRefList.name()//
 		);
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
 		indexBox.setFilterOn(true);
-		
 		return Constants.learnFilterIndexBoxesPage.name();
 	}
 
@@ -81,15 +114,14 @@ public class LearnFilterIndexBoxesController {
 	public String removeIndexBoxFromFilter(//
 			@RequestParam(name = "index", required = false, defaultValue = "")
 	        int index//
-	        , Model model//
 			, StandardSessionFacade session//
+			, @ModelAttribute("learnFilterIndexBoxesModAtt")
+			LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt
 	) throws Exception {
-		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt = new LearnFilterIndexBoxesModAtt();
-		model.addAttribute("learnFilterIndexBoxesModAtt", learnFilterIndexBoxesModAtt);
 		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
 		indexBox.setFilterOn(false);
-		
+		learnFilterIndexBoxesModAtt.setMandatoryViolated(!checkAtLeastOneIndexBoxIsSelected(indexBoxAttrRefList));
 		return Constants.learnFilterIndexBoxesPage.name();
 	}
 
