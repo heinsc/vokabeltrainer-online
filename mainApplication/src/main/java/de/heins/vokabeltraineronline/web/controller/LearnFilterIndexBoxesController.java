@@ -89,11 +89,6 @@ public class LearnFilterIndexBoxesController {
 		return "redirect:" + ControllerConstants.controlPageMenu.name();
 
 	}
-	@RequestMapping(value = "/controlActionLearnFilterIndexBoxes", method = RequestMethod.POST, params = {"logout"})
-	public String logout() throws Exception {
-		return "redirect:" + ControllerConstants.controlPageLogin.name();
-	}
-
 	@RequestMapping({"controlLinkAddIndexBoxToFilterOnLearningPage"})
 	public String addIndexBoxToFilter(//
 		@RequestParam(name = "index", required = false, defaultValue = "")

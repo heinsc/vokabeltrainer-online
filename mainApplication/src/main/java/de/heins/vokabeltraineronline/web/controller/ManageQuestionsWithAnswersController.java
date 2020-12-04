@@ -145,11 +145,4 @@ public class ManageQuestionsWithAnswersController {
 		//direct go to mainMenu
 		return "redirect:" +ControllerConstants.controlPageMenu.name();
 	}
-	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"logout"})
-	public String logout(StandardSessionFacade session) {
-		session.removeAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
-		session.removeAttribute(ControllerConstants.sessionAppUser.name());
-		//direct go to login 
-		return "redirect:" + ControllerConstants.controlPageLogin.name();
-	}
 }

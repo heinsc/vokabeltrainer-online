@@ -28,11 +28,6 @@ public class AnswerIsIncorrectController {
 	public String submit() throws Exception {	return "redirect:" + ControllerConstants.controlPageLearnDoLearn.name();
 
 }
-	@RequestMapping(value = "/controlActionAnswerIsIncorrect", method = RequestMethod.POST, params = {"logout"})
-	public String logout() throws Exception {
-		return "redirect:" + ControllerConstants.controlPageLogin.name();
-
-	}
 
 
 }

@@ -118,12 +118,6 @@ public class ManageConfigurationsController {
 		//direct go to mainMenu
 		return "redirect:" +ControllerConstants.controlPageMenu.name();
 	}
-	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"logout"})
-	public String logout() {
-		//direct go to login 
-		return "redirect:" + ControllerConstants.controlPageLogin.name();
-	}
-
 	@RequestMapping({"controlLinkEditSuccessStep"})
 	public String editSuccessStep(//
 	        @RequestParam(name = "name", required = false, defaultValue = "")

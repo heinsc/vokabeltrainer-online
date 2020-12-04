@@ -83,11 +83,6 @@ public class DeclareCorrectDespiteErrorsController {
 	return "redirect:" + ControllerConstants.controlPageLearnDoLearn.name();
 
 }
-	@RequestMapping(value = "/controlActionDeclareCorrectDespiteErrors", method = RequestMethod.POST, params = {"logout"})
-	public String logout() throws Exception {
-		return "redirect:" + ControllerConstants.controlPageLogin.name();
-
-	}
 
 
 }

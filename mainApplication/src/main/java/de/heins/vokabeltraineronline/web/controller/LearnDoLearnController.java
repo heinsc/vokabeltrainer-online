@@ -244,11 +244,6 @@ public class LearnDoLearnController {
 		return "redirect:" + ControllerConstants.controlPageLearnFilterIndexBoxes.name();
 
 	}
-	@RequestMapping(value = "/controlActionLearnDoLearn", method = RequestMethod.POST, params = {"logout"})
-	public String logout() throws Exception {
-		return "redirect:" + ControllerConstants.controlPageLogin.name();
-
-	}
 
 
 }

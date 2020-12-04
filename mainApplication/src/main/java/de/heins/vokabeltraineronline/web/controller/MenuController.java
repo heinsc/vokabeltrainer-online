@@ -53,11 +53,6 @@ public class MenuController {
 		return "redirect:" + ControllerConstants.controlPageDeleteAppUser.name();
 
 	}
-	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"logout"})
-	public String logout() throws Exception {
-		//direct Link to DeleteAppUserController
-		return "redirect:" + ControllerConstants.controlPageLogin.name();
-	}
 
 
 }
