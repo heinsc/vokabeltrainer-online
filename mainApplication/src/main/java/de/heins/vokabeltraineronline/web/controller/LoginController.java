@@ -1,5 +1,7 @@
 package de.heins.vokabeltraineronline.web.controller;
 
+import java.util.Enumeration;
+
 import org.apache.catalina.session.StandardSessionFacade;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +22,21 @@ public class LoginController {
 	}
 	@Autowired
 	private AppUserService appUserService;
-
+	@Autowired
+	private MenuController menuController;
+	@Autowired
+	private CreateAppUserController createAppUserController;
 	public LoginController() {
 		super();
 	}
 
-	@RequestMapping({ "/", "/login", "/controlPageLogin" })
-	public String showLoginPage(Model model) throws Exception {
+	@RequestMapping({ "/", "/login"})
+	public String showLoginPage(Model model, StandardSessionFacade session) {
+		Enumeration<String> attributeNames = session.getAttributeNames();
+		while (attributeNames.hasMoreElements()) {
+			String currentAttributeName = (String) attributeNames.nextElement();
+			session.removeAttribute(currentAttributeName);
+		}
 		LoginModAtt loginModelAttribute = new LoginModAtt();
 		model.addAttribute(Constants.loginModAtt.name(), loginModelAttribute);
 		return Constants.loginPage.name();
@@ -37,7 +47,8 @@ public class LoginController {
 	public String checkLogin(//
 			@ModelAttribute(name = "loginModAtt")
 			LoginModAtt loginModelAttribute
-			, StandardSessionFacade session
+			, StandardSessionFacade session//
+			, Model model
 	) {
 		if (//
 				Strings.isBlank(loginModelAttribute.getAppUser().getEmail())//
@@ -52,7 +63,7 @@ public class LoginController {
 					ControllerConstants.sessionAppUser.name()//
 					, sessionAppUserForLogin//
 			);
-			return "redirect:" + ControllerConstants.controlPageMenu.name();
+			return menuController.showMenuPage(model, session);
 		} catch (WrongPasswordException e) {
 			// wrong appUser credentials
 			loginModelAttribute.setLoginError(true);
@@ -60,9 +71,8 @@ public class LoginController {
 		}
 	}
 	@RequestMapping(value = "/controlActionLogin", params = {"createAppUser"}, method = RequestMethod.POST)
-	public String createAppUser() {
-		//direct go to CreateAppUserController
-		return "redirect:" + ControllerConstants.controlPageCreateAppUser.name();
+	public String createAppUser(Model model) {
+		return createAppUserController.showCreateAppUserPage(model);
 	}
 
 }

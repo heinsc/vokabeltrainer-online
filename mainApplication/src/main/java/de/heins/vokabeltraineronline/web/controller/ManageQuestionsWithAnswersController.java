@@ -27,17 +27,27 @@ public class ManageQuestionsWithAnswersController {
 		, manageQuestionsWithAnswersPage
 	}
 	@Autowired
+	private MenuController menuController;
+	@Autowired
+	private ManageQuestionsWithAnswersController manageQuestionsWithAnswersController;
+	@Autowired
+	private CreateQuestionsWithAnswersController createQuestionsWithAnswersController;
+	// TODO
+//	@Autowired
+//	private EditQuestionWithAnswerController deleteQuestionWithAnswerController
+//	@Autowired
+//	private DeleteQuestionWithAnserController deleteQuestionWithAnswerController
+	@Autowired
 	private IndexBoxService indexBoxService;
 
 	public ManageQuestionsWithAnswersController() {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageManageQuestionsWithAnswers" })
 	public String showManageQuestionsWithAnswersPage(//
 			Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		IndexBoxes indexBoxes = manageIndexBoxes(session);
 		Set<QuestionWithAnswerAttrRef> questionsWithAnswersList = findQuestionsWithAnswersList(indexBoxes);
 		ManageQuestionsWithAnswersModAtt manageQuestionsWithAnswersModAtt = new ManageQuestionsWithAnswersModAtt();
@@ -77,13 +87,14 @@ public class ManageQuestionsWithAnswersController {
 	public String deleteQuestionWithAnswer(//
             @RequestParam(name = "question", required = false, defaultValue = "")
             String question//
+            , Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 	    session.setAttribute(//
 	    		ControllerConstants.sessionOldVersionOfQuestion.name()//
 	    		, question//
 	    );
-	    return "redirect:" + ControllerConstants.controlPageManageQuestionsWithAnswers;
+	    return manageQuestionsWithAnswersController.showManageQuestionsWithAnswersPage(model, session);
 //		TODO return "redirect:" + ControllerConstants.controlDeleteQuestion.name();
 	}
 	@RequestMapping({"controlLinkAddIndexBoxToFilter"})
@@ -128,21 +139,25 @@ public class ManageQuestionsWithAnswersController {
 	public String editQuestionWithAnswer(//
 			@RequestParam(name = "question", required = false, defaultValue = "")
             String question//
+            , Model model//
 			, StandardSessionFacade session//
 	) throws Exception {
 		session.setAttribute(ControllerConstants.sessionOldVersionOfQuestion.name(), question);
-		
-		return "redirect:" + ControllerConstants.controlPageEditQuestionWithAnswer.name();
+		// TODO EditQuestionWithAnswerController implementieren, und hier
+		// return editQuestionWithAnswerController.showEditQuestionWithAnswerPage(model, session)
+		// aufrufen.
+		return this.showManageQuestionsWithAnswersPage(model, session);
 	}
 	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"createQuestionsWithAnswers"})
 	public String createQuestionsWithAnswers(//
+			Model model//
+			, StandardSessionFacade session//
 	) throws Exception {
-		return "redirect:" + ControllerConstants.controlPageCreateQuestionsWithAnswers.name();
+		return createQuestionsWithAnswersController.showCreateQuestionsWithAnswersPage(model, session);
 	}
 	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"backToMenu"})
-	public String backToMenu(StandardSessionFacade session) {
+	public String backToMenu(Model model, StandardSessionFacade session) {
 		session.removeAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
-		//direct go to mainMenu
-		return "redirect:" +ControllerConstants.controlPageMenu.name();
+		return menuController.showMenuPage(model, session);
 	}
 }

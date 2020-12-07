@@ -1,7 +1,5 @@
 package de.heins.vokabeltraineronline.web.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.catalina.session.StandardSessionFacade;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +21,14 @@ public class EditAppUserController {
 		, editAppUserModAtt
 	}
 	@Autowired
+	private MenuController menuController;
+	@Autowired
 	private AppUserService appUserService;
 
 	public EditAppUserController() {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageEditAppUser" })
 	public String showEditAppUserPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -50,7 +49,8 @@ public class EditAppUserController {
 	public String submitChanges(//
 			@ModelAttribute(name = "editAppUserModAtt")
 			EditAppUserModAtt editAppUser//
-			, HttpSession session
+			, Model model
+			, StandardSessionFacade session
 	) {
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
@@ -70,7 +70,7 @@ public class EditAppUserController {
 						? appUser.getEmail()//
 						: sessionAppUser.getEmail()//
 				);
-				return "redirect:" + ControllerConstants.controlPageMenu.name();
+				return menuController.showMenuPage(model, session);
 			} catch (AppUserAlreadyExistsException e) {//
 				editAppUser.setAppUserAlreadyExists(true);
 			} catch (WrongPasswordException e) {
@@ -84,9 +84,10 @@ public class EditAppUserController {
 	public String cancel(//
 			@ModelAttribute(name = "editAppUserModAtt")
 			EditAppUserModAtt editAppUser//
-			, HttpSession session
+			, Model model//
+			, StandardSessionFacade session
 	) {
-		return "redirect:" + ControllerConstants.controlPageMenu.name();
+		return menuController.showMenuPage(model, session);
 	}
 	
 	private boolean checkPasswords(EditAppUserModAtt editAppUserModAtt) {

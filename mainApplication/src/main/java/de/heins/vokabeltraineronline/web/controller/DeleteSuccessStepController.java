@@ -24,6 +24,8 @@ public class DeleteSuccessStepController {
 		deleteSuccessStepPage,  deleteSuccessStepModAtt
 	}
 	@Autowired
+	private ManageConfigurationsController manageConfigurationsController;
+	@Autowired
 	private AppUserService appUserService;
 	
 	@Autowired
@@ -33,7 +35,6 @@ public class DeleteSuccessStepController {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageDeleteSuccessStep" })
 	public String showDeleteSuccessStepPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -54,14 +55,20 @@ public class DeleteSuccessStepController {
 
 	}
 	@RequestMapping(value = "/controlActionDeleteSuccessStep", method = RequestMethod.POST, params = {"cancel"})
-	public String cancel() {
-		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+	public String cancel(Model model, StandardSessionFacade session) {
+		return backToManageConfigurations(model, session);
+	}
+
+	private String backToManageConfigurations(Model model, StandardSessionFacade session) {
+		session.removeAttribute(ControllerConstants.sessionOldVersionOfSuccessStepName.name());
+		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
 	@RequestMapping(value = "/controlActionDeleteSuccessStep", method = RequestMethod.POST, params = {"delete"})
 	public String delete(//
 			@ModelAttribute(name = "deleteSuccessStepModAtt")
 			DeleteSuccessStepModAtt deleteSuccessStep//
-			, HttpSession session
+			, Model model//
+			, StandardSessionFacade session//
 	) {
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
@@ -73,7 +80,7 @@ public class DeleteSuccessStepController {
 			try {
 				appUserService.getSessionAppUserForLogin(appUserAttrRef);
 				// TODO eigentliches Delete...
-				return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+				return backToManageConfigurations(model, session);
 			} catch (WrongPasswordException e) {
 				deleteSuccessStep.setWrongPassword(true);
 			}

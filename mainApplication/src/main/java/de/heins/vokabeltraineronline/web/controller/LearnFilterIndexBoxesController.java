@@ -22,18 +22,19 @@ public class LearnFilterIndexBoxesController {
 		, learnFilterIndexBoxesModAtt
 	}
 	@Autowired
-	LearnDoLearnController LearnDoLearnController;
+	private LearnDoLearnController learnDoLearnController;
+	@Autowired
+	private MenuController menuController;
 	@Autowired
 	private IndexBoxService indexBoxService;
 	public LearnFilterIndexBoxesController() {
 		super();
 	}
 
-	@RequestMapping("/controlPageLearnFilterIndexBoxes")
 	public String showLearnFilterIndexBoxesPage(//
 			StandardSessionFacade session//
 			, Model model
-	) throws Exception {
+	) {
 		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt = new LearnFilterIndexBoxesModAtt();
 		learnFilterIndexBoxesModAtt.setMandatoryViolated(false);
 		model.addAttribute(Constants.learnFilterIndexBoxesModAtt.name(), learnFilterIndexBoxesModAtt);
@@ -48,6 +49,7 @@ public class LearnFilterIndexBoxesController {
 	@RequestMapping(value = "/controlActionLearnFilterIndexBoxes", method = RequestMethod.POST, params = {"learn"})
 	public String learn(
 			StandardSessionFacade session//
+			, Model model
 			, @ModelAttribute("learnFilterIndexBoxesModAtt")
 			LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt//
 	) throws Exception {
@@ -72,7 +74,7 @@ public class LearnFilterIndexBoxesController {
 					, indexBoxAttrRef.getSubject()//
 			);
 		}
-		return "redirect:" + ControllerConstants.controlPageLearnDoLearn.name();
+		return learnDoLearnController.showLearnDoLearnPage(model, session);
 
 	}
 	private boolean checkAtLeastOneIndexBoxIsSelected(IndexBoxes indexBoxAttrRefList) {
@@ -85,9 +87,9 @@ public class LearnFilterIndexBoxesController {
 	}
 
 	@RequestMapping(value = "/controlActionLearnFilterIndexBoxes", method = RequestMethod.POST, params = {"cancel"})
-	public String cancel() throws Exception {
-		return "redirect:" + ControllerConstants.controlPageMenu.name();
-
+	public String cancel(Model model, StandardSessionFacade session) {
+		session.removeAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
+		return menuController.showMenuPage(model, session);
 	}
 	@RequestMapping({"controlLinkAddIndexBoxToFilterOnLearningPage"})
 	public String addIndexBoxToFilter(//

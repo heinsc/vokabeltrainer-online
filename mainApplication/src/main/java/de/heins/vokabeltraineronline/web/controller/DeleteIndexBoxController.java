@@ -1,7 +1,5 @@
 package de.heins.vokabeltraineronline.web.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.catalina.session.StandardSessionFacade;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +23,8 @@ public class DeleteIndexBoxController {
 		, deleteIndexBoxModAtt
 	}
 	@Autowired
+	private ManageConfigurationsController manageConfigurationsController;
+	@Autowired
 	private AppUserService appUserService;
 	
 	@Autowired
@@ -34,7 +34,6 @@ public class DeleteIndexBoxController {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageDeleteIndexBox" })
 	public String showDeleteIndexBoxPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -64,14 +63,17 @@ public class DeleteIndexBoxController {
 
 	}
 	@RequestMapping(value = "/controlActionDeleteIndexBox", method = RequestMethod.POST, params = {"cancel"})
-	public String cancel() {
-		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+	public String cancel(Model model, StandardSessionFacade session) {
+		session.removeAttribute(ControllerConstants.sessionOldVersionOfIndexBoxName.name());
+		session.removeAttribute(ControllerConstants.sessionOldVersionOfIndexBoxSubject.name());
+		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
 	@RequestMapping(value = "/controlActionDeleteIndexBox", method = RequestMethod.POST, params = {"delete"})
 	public String delete(//
 			@ModelAttribute(name = "deleteIndexBoxModAtt")
 			DeleteIndexBoxModAtt deleteIndexBoxModAtt//
-			, HttpSession session
+			, Model model//
+			, StandardSessionFacade session
 	) {
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
@@ -82,8 +84,11 @@ public class DeleteIndexBoxController {
 		if (checkFields(deleteIndexBoxModAtt)) {
 			try {
 				appUserService.getSessionAppUserForLogin(appUserAttrRef);
+				
 				// TODO eigentliches Delete...
-				return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+				session.removeAttribute(ControllerConstants.sessionOldVersionOfIndexBoxName.name());
+				session.removeAttribute(ControllerConstants.sessionOldVersionOfIndexBoxSubject.name());
+				return manageConfigurationsController.showManageConfigurationsPage(model, session);
 			} catch (WrongPasswordException e) {
 				deleteIndexBoxModAtt.setWrongPassword(true);
 			}

@@ -30,6 +30,8 @@ public class CreateQuestionsWithAnswersController {
 	private static final String OLD_QUESTION_FOR_NEW_QUESTION="";
 	
 	@Autowired
+	ManageQuestionsWithAnswersController manageQuestionsWithAnswersController;
+	@Autowired
 	private IndexBoxService indexBoxService;
 
 	@Autowired
@@ -42,10 +44,9 @@ public class CreateQuestionsWithAnswersController {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageCreateQuestionsWithAnswers" })
 	public String showCreateQuestionsWithAnswersPage(//
-			StandardSessionFacade session//
-			, Model model//
+			Model model//
+			, StandardSessionFacade session//
 	) throws Exception {
 		CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt = new CreateQuestionsWithAnswersModAtt();
 		refreshSelectBoxes(session, createQuestionsWithAnswersModAtt);
@@ -110,8 +111,8 @@ public class CreateQuestionsWithAnswersController {
 	}
 
 	@RequestMapping(value="/controlActionCreateQuestionsWithAnswers", method=RequestMethod.POST, params= {"cancel"})
-	public String cancel() {
-		return "redirect:" + ControllerConstants.controlPageManageQuestionsWithAnswers.name();
+	public String cancel(Model model, StandardSessionFacade session) {
+		return manageQuestionsWithAnswersController.showManageQuestionsWithAnswersPage(model, session);
 		
 	}
 	@RequestMapping(value="/controlActionCreateQuestionsWithAnswers", method=RequestMethod.POST, params= {"next"})
@@ -146,7 +147,8 @@ public class CreateQuestionsWithAnswersController {
 	}
 	@RequestMapping(value="/controlActionCreateQuestionsWithAnswers", method=RequestMethod.POST, params= {"submit"})
 	public String submit(
-			StandardSessionFacade session//
+			Model model//
+			, StandardSessionFacade session//
 			, @ModelAttribute(name = "createQuestionsWithAnswersModAtt")
 			CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt
 	) {
@@ -154,7 +156,7 @@ public class CreateQuestionsWithAnswersController {
 		if (!Strings.isEmpty(returnValue)) {
 			return returnValue;
 		}
-		return "redirect:"+ControllerConstants.controlPageManageQuestionsWithAnswers.name();
+		return manageQuestionsWithAnswersController.showManageQuestionsWithAnswersPage(model, session);
 	}
 
 	private String trySaveQuestionWithAnswer(StandardSessionFacade session,

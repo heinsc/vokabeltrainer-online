@@ -25,6 +25,8 @@ public class DeleteLearningStrategyController {
 		,  deleteLearningStrategyModAtt
 	}
 	@Autowired
+	private ManageConfigurationsController manageConfigurationsController;
+	@Autowired
 	private AppUserService appUserService;
 	
 	@Autowired
@@ -34,7 +36,6 @@ public class DeleteLearningStrategyController {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageDeleteLearningStrategy" })
 	public String showDeleteLearningStrategyPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -55,14 +56,20 @@ public class DeleteLearningStrategyController {
 
 	}
 	@RequestMapping(value = "/controlActionDeleteLearningStrategy", method = RequestMethod.POST, params = {"cancel"})
-	public String cancel() {
-		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+	public String cancel(Model model, StandardSessionFacade session) {
+		return backToManageConfigurations(model, session);
+	}
+
+	private String backToManageConfigurations(Model model, StandardSessionFacade session) {
+		session.removeAttribute(ControllerConstants.sessionOldVersionOfLearningStrategyName.name());
+		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
 	@RequestMapping(value = "/controlActionDeleteLearningStrategy", method = RequestMethod.POST, params = {"delete"})
 	public String delete(//
 			@ModelAttribute(name = "deleteLearningStrategyModAtt")
 			DeleteLearningStrategyModAtt learningStrategyModAtt//
-			, HttpSession session
+			, Model model//
+			, StandardSessionFacade session
 	) {
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
@@ -74,7 +81,7 @@ public class DeleteLearningStrategyController {
 			try {
 				appUserService.getSessionAppUserForLogin(appUserAttrRef);
 				// TODO eigentliches Delete...
-				return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+				return backToManageConfigurations(model, session);
 			} catch (WrongPasswordException e) {
 				learningStrategyModAtt.setWrongPassword(true);
 			}

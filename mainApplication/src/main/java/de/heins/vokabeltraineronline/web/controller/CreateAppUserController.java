@@ -1,7 +1,6 @@
 package de.heins.vokabeltraineronline.web.controller;
 
-import javax.servlet.http.HttpSession;
-
+import org.apache.catalina.session.StandardSessionFacade;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,27 +20,31 @@ public class CreateAppUserController {
 	}
 	@Autowired
 	private AppUserService appUserService;
+	@Autowired
+	private MenuController menuController;
+	@Autowired
+	private LoginController loginController;
 
 	public CreateAppUserController() {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageCreateAppUser" })
-	public String showCreateAppUserPage(Model model) throws Exception {
+	public String showCreateAppUserPage(Model model) {
 		model.addAttribute(Constants.createAppUserModAtt.name(), new CreateAppUserModAtt());
 		return Constants.createAppUserPage.name();
 
 	}
 	@RequestMapping(value = "/controlActionCreateAppUser" , method = RequestMethod.POST, params= {"cancel"})
-	public String cancel() throws Exception {
-		return "redirect:" + ControllerConstants.controlPageLogin.name();
+	public String cancel(Model model, StandardSessionFacade session) throws Exception {
+		return loginController.showLoginPage(model, session);
 	}
 
 	@RequestMapping(value = "/controlActionCreateAppUser", method = RequestMethod.POST, params= {"submit"})
 	public String addAccount(//
 			@ModelAttribute(name = "createAppUserModAtt")
 			CreateAppUserModAtt createAppUser
-			, HttpSession session
+			, StandardSessionFacade session
+			, Model model
 	) {
 		if (checkFields(createAppUser)) {
 			try {
@@ -50,7 +53,7 @@ public class CreateAppUserController {
 						ControllerConstants.sessionAppUser.name()//
 						, sessionAppUser//
 				);
-				return "redirect:"+ControllerConstants.controlPageMenu.name();
+				return menuController.showMenuPage(model, session);
 			} catch (AppUserAlreadyExistsException e) {
 				createAppUser.setAppUserAlreadyExists(true);
 			}

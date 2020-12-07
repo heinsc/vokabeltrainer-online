@@ -21,7 +21,8 @@ public class EditLearnProfileController {
 		editLearnProfilePage//
 		, editLearnProfileModAtt//
 	}
-	
+	@Autowired
+	private ManageConfigurationsController manageConfigurationsController;
 	@Autowired
 	private LearnProfileService learnProfileService;
 
@@ -29,10 +30,9 @@ public class EditLearnProfileController {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageEditLearnProfile" })
 	public String showEditLearnProfilePage(//
-			StandardSessionFacade session//
-			, Model model//
+			Model model//
+			, StandardSessionFacade session//
 	) throws Exception {
 		
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(//
@@ -53,7 +53,8 @@ public class EditLearnProfileController {
 
 	@RequestMapping(value="/controlActionEditLearnProfile", method=RequestMethod.POST, params= {"submit"})
 	public String submit(//
-			StandardSessionFacade session//
+			Model model//
+			, StandardSessionFacade session//
 			, @ModelAttribute(name = "editLearnProfileModAtt")
 			EditLearnProfileModAtt editLearnProfileModAtt
 	) {
@@ -65,11 +66,11 @@ public class EditLearnProfileController {
 				, editLearnProfileModAtt.getLearnProfile().getMaxNumberOfWrongAnswersPerSession()//
 				, editLearnProfileModAtt.getLearnProfile().getBehaviourIfPoolWithWrongAnswersIsFull()//
 		);
-		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
 	@RequestMapping(value="/controlActionEditLearnProfile", method=RequestMethod.POST, params= {"cancel"})
-	public String cancel() {
-		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+	public String cancel(Model model, StandardSessionFacade session) {
+		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 		
 	}
 

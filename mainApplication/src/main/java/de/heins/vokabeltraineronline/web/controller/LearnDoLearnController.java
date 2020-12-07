@@ -36,7 +36,17 @@ public class LearnDoLearnController {
 		, learnDoLearnModAtt
 	}
 	@Autowired
+	private LearnFilterIndexBoxesController learnFilterIndexBoxesController;
+	@Autowired
+	private MenuController menuController;
+	@Autowired
 	private QuestionWithAnswerService questionWithAnswerService;
+	@Autowired
+	private AnswerIsCorrectController answerIsCorrectController;
+	@Autowired
+	private AnswerIsIncorrectController answerIsIncorrectController;
+	@Autowired
+	private DeclareCorrectDespiteErrorsController declareCorrectDespiteErrorsController;
 	@Autowired
 	private LearnProfileService learnProfileService;
 	@Autowired
@@ -48,11 +58,10 @@ public class LearnDoLearnController {
 		super();
 	}
 
-	@RequestMapping("/controlPageLearnDoLearn")
 	public String showLearnDoLearnPage(//
 			Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
@@ -62,7 +71,7 @@ public class LearnDoLearnController {
 		if (poolWithWrongAnwers.isEmpty()) {
 			session.setAttribute(INDICATOR_TO_MAKE_POOL_EMPTY, false);
 			if  (stockOfAllQuestionsWithAnswers.isEmpty()) {
-				return "redirect:" + ControllerConstants.controlPageLearnFilterIndexBoxes.name();
+				return backToLearnFilterIndexBoxes(model, session);
 			} else {
 				questionWithAnswerAttrRef = stockOfAllQuestionsWithAnswers.get(0);
 			}
@@ -91,6 +100,17 @@ public class LearnDoLearnController {
 		model.addAttribute(Constants.learnDoLearnModAtt.name(), learnDoLearnModAtt);
 		return Constants.learnDoLearnPage.name();
 
+	}
+
+	private String backToLearnFilterIndexBoxes(Model model, StandardSessionFacade session) {
+		cleanSessionAttributes(session);
+		return learnFilterIndexBoxesController.showLearnFilterIndexBoxesPage(session, model);
+	}
+
+	private void cleanSessionAttributes(StandardSessionFacade session) {
+		session.removeAttribute(INDICATOR_TO_MAKE_POOL_EMPTY);
+		session.removeAttribute(ControllerConstants.sessionPoolWithWrongAnswers.name());
+		session.removeAttribute(ControllerConstants.sessionStockOfAllQuestionsWithAnswers.name());
 	}
 
 	private PoolWithWrongAnswers manageSessionPoolOfWrongAnswers(StandardSessionFacade session) {
@@ -172,7 +192,7 @@ public class LearnDoLearnController {
 					, pool//
 					, stock//
 			);
-			return "redirect:" + ControllerConstants.controlPageAnswerIsCorrect.name();
+			return answerIsCorrectController.showAnswerIsCorrectPage();
 		} else {
 			if (//
 					isEqualWithoutSpecialCharacters(//
@@ -189,7 +209,7 @@ public class LearnDoLearnController {
 						, questionWithAnswerAttrRef//
 				);
 				session.setAttribute(ControllerConstants.sessionYourAnswer.name(), learnDoLearnModAtt.getAnswerByUser());
-				return "redirect:" + ControllerConstants.controlPageDeclareCorrectDespiteErrors.name();
+				return declareCorrectDespiteErrorsController.showDeclareCorrectDespiteErrorsPage(session);
 			}
 		}
 		// Wenn bis hier kein Ausstieg (return), ist die Antwort so falsch, dass sie wie falsch behandelt werden
@@ -200,7 +220,7 @@ public class LearnDoLearnController {
 				, stock//
 				, pool//
 		);
-		return "redirect:" + ControllerConstants.controlPageAnswerIsIncorrect.name();
+		return answerIsIncorrectController.showAnswerIsIncorrectPage(session);
 
 	}
 
@@ -235,14 +255,13 @@ public class LearnDoLearnController {
 	}
 
 	@RequestMapping(value = "/controlActionLearnDoLearn", method = RequestMethod.POST, params = {"cancel"})
-	public String cancel() throws Exception {
-		return "redirect:" + ControllerConstants.controlPageMenu.name();
-
+	public String cancel(Model model, StandardSessionFacade session) {
+		cleanSessionAttributes(session);
+		return menuController.showMenuPage(model, session);
 	}
 	@RequestMapping(value = "/controlActionLearnDoLearn", method = RequestMethod.POST, params = {"chooseOtherIndexBoxes"})
-	public String chooseOtherIndexBoxes() throws Exception {
-		return "redirect:" + ControllerConstants.controlPageLearnFilterIndexBoxes.name();
-
+	public String chooseOtherIndexBoxes(Model model, StandardSessionFacade session)  {
+		return backToLearnFilterIndexBoxes(model, session);
 	}
 
 

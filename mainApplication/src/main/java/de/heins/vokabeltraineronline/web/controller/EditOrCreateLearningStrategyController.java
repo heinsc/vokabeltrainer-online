@@ -30,7 +30,8 @@ public class EditOrCreateLearningStrategyController {
 		, editOrCreateLearningStrategyModAtt//
 		, editOrCreateLearningStrategySuccessStepsPage
 	}
-	
+	@Autowired
+	private ManageConfigurationsController manageConfigurationsController;
 	@Autowired
 	private LearningStrategyService learningStrategyService;
 	@Autowired
@@ -40,7 +41,6 @@ public class EditOrCreateLearningStrategyController {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageEditOrCreateLearningStrategy" })
 	public String showEditOrCreateLearningStrategyPages(//
 			StandardSessionFacade session//
 			, Model model//
@@ -84,7 +84,8 @@ public class EditOrCreateLearningStrategyController {
 	}
 	@RequestMapping(value="/controlActionEditOrCreateLearningStrategy", method=RequestMethod.POST, params= {"submit"})
 	public String submit(//
-			StandardSessionFacade session//
+			Model model//
+			, StandardSessionFacade session//
 	) {
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
@@ -103,7 +104,7 @@ public class EditOrCreateLearningStrategyController {
 				, editOrCreateLearningStrategyModAtt.getLearningStrategy()//
 				, oldVersionOfLearningStrategyName 
 		);
-		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+		return backToManageConfigurations(model, session);
 	}
 	@RequestMapping(value="/controlActionEditOrCreateLearningStrategy", method=RequestMethod.POST, params= {"assignSuccessSteps"})
 	public String showAssignSuccessStepsPage(//
@@ -181,9 +182,14 @@ public class EditOrCreateLearningStrategyController {
 
 	
 	@RequestMapping(value="/controlActionEditOrCreateLearningStrategy", method=RequestMethod.POST, params= {"cancel"})
-	public String cancel() {
-		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
-		
+	public String cancel(Model model, StandardSessionFacade session) {
+		return backToManageConfigurations(model, session);
+	}
+
+	private String backToManageConfigurations(Model model, StandardSessionFacade session) {
+		session.removeAttribute(ControllerConstants.sessionOldVersionOfLearningStrategyName.name());
+		session.removeAttribute(Constants.sessionEditOrCreateLearningStrategy.name());
+		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
 	@RequestMapping({"controlLinkAddSuccessStep"})
 	public String addSuccessStep(//

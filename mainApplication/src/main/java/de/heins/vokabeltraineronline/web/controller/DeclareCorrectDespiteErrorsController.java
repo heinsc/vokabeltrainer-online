@@ -4,6 +4,7 @@ package de.heins.vokabeltraineronline.web.controller;
 import org.apache.catalina.session.StandardSessionFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,12 +21,13 @@ public class DeclareCorrectDespiteErrorsController {
 		declareCorrectDespiteErrorsPage
 	}
 	@Autowired
+	private LearnDoLearnController learnDoLearnController;
+	@Autowired
 	private QuestionWithAnswerService questionWithAnswerService;
 	public DeclareCorrectDespiteErrorsController() {
 		super();
 	}
 
-	@RequestMapping("/controlPageDeclareCorrectDespiteErrors")
 	public String showDeclareCorrectDespiteErrorsPage(//
 			StandardSessionFacade session//
 	) throws Exception {
@@ -35,7 +37,8 @@ public class DeclareCorrectDespiteErrorsController {
 
 	@RequestMapping(value = "/controlActionDeclareCorrectDespiteErrors", method = RequestMethod.POST, params = {"declareCorrect"})
 	public String declareAsCorrect(//
-			StandardSessionFacade session
+			Model model//
+			, StandardSessionFacade session
 	) throws Exception {
 		QuestionWithAnswerAttrRef questionWithAnswerAttrRef//
 			= (QuestionWithAnswerAttrRef)session.getAttribute(//
@@ -56,12 +59,12 @@ public class DeclareCorrectDespiteErrorsController {
 				, pool//
 				, stock//
 		);
-		return "redirect:" + ControllerConstants.controlPageLearnDoLearn.name();
-
+		return learnDoLearnController.showLearnDoLearnPage(model, session);
 	}
 	@RequestMapping(value = "/controlActionDeclareCorrectDespiteErrors", method = RequestMethod.POST, params = {"declareIncorrect"})
 	public String declareAsIncorrect(//
-			StandardSessionFacade session
+			Model model//
+			, StandardSessionFacade session
 			) throws Exception {
 		QuestionWithAnswerAttrRef sessionQuestionWithAnswerAttrRef//
 		= (QuestionWithAnswerAttrRef)session.getAttribute(//
@@ -80,8 +83,7 @@ public class DeclareCorrectDespiteErrorsController {
 			, stockOfAllNonAskedQuestions//
 			, poolOfQuestionsWithIncorrectAnswer//
 	);
-	return "redirect:" + ControllerConstants.controlPageLearnDoLearn.name();
-
+	return learnDoLearnController.showLearnDoLearnPage(model, session);
 }
 
 

@@ -28,6 +28,22 @@ public class ManageConfigurationsController {
 		manageConfigurationsPage, manageConfigurationsModAtt
 	}
 	@Autowired
+	private MenuController menuController;
+	@Autowired
+	private EditOrCreateSuccessStepController editOrCreateSuccessStepController;
+	@Autowired
+	private DeleteSuccessStepController deleteSuccessStepController;
+	@Autowired
+	private DeleteLearningStrategyController deleteLearningStrategyController;
+	@Autowired
+	private EditOrCreateLearningStrategyController editOrCreateLearningStrategyController;
+	@Autowired
+	private EditOrCreateIndexBoxController editOrCreateIndexBoxController;
+	@Autowired
+	private DeleteIndexBoxController deleteIndexBoxController;
+	@Autowired
+	private EditLearnProfileController editLearnProfileController;
+	@Autowired
 	private LearnProfileService learnProfileService;
 	
 	@Autowired
@@ -43,11 +59,10 @@ public class ManageConfigurationsController {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageManageConfigurations" })
 	public String showManageConfigurationsPage(//
 			Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
@@ -71,81 +86,86 @@ public class ManageConfigurationsController {
 	public String deleteSuccessStep(//
             @RequestParam(name = "name", required = false, defaultValue = "")
             String name//
+            , Model model//
 			, StandardSessionFacade session//
 	) throws Exception {
 	    session.setAttribute(//
 	    		ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
 	    		, name//
 	    );
-		return "redirect:" + ControllerConstants.controlPageDeleteSuccessStep.name();
+		return deleteSuccessStepController.showDeleteSuccessStepPage(model, session);
 	}
 	@RequestMapping({"controlLinkDeleteLearningStrategy"})
 	public String deleteLearningStrategy(//
             @RequestParam(name = "name", required = false, defaultValue = "")
             String name//
+            , Model model//
 			, StandardSessionFacade session//
 	) throws Exception {
 	    session.setAttribute(//
 	    		ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
 	    		, name//
 	    );
-		return "redirect:" + ControllerConstants.controlPageDeleteLearningStrategy.name();
+		return deleteLearningStrategyController.showDeleteLearningStrategyPage(model, session);
 	}
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"createSuccessStep"})
 	public String createSuccessStep(//
-			StandardSessionFacade session//
+			Model model//
+			, StandardSessionFacade session//
 	) throws Exception {
 	    session.setAttribute(//
 	    		ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
 	    		, ""//
 	    );
-	    	    
-		return "redirect:" + ControllerConstants.controlPageEditOrCreateSuccessStep.name();
+		return editOrCreateSuccessStepController.showEditOrCreateSuccessStepPage(model, session);
 	}
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"createLearningStrategy"})
 	public String createLearningStrategy(//
-			StandardSessionFacade session//
+			Model model//
+			, StandardSessionFacade session//
 	) throws Exception {
 	    session.setAttribute(//
 	    		ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
 	    		, ""//
 	    );
 	    	    
-		return "redirect:" + ControllerConstants.controlPageEditOrCreateLearningStrategy.name();
+		return editOrCreateLearningStrategyController.showEditOrCreateLearningStrategyPages(session, model);
 	}
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"backToMenu"})
-	public String backToMenu() {
-		//direct go to mainMenu
-		return "redirect:" +ControllerConstants.controlPageMenu.name();
+	public String backToMenu(Model model, StandardSessionFacade session) {
+		return menuController.showMenuPage(model, session);
 	}
 	@RequestMapping({"controlLinkEditSuccessStep"})
 	public String editSuccessStep(//
 	        @RequestParam(name = "name", required = false, defaultValue = "")
 	        String name//
+	        , Model model//
 			, StandardSessionFacade session//
 	) throws Exception {
 	    session.setAttribute(//
 	    		ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
 	    		, name//
 	    );
-		return "redirect:" + ControllerConstants.controlPageEditOrCreateSuccessStep.name();
+		return editOrCreateSuccessStepController.showEditOrCreateSuccessStepPage(model, session);
 	}
 	@RequestMapping({"controlLinkEditLearningStrategy"})
 	public String editLearningStrategy(//
 	        @RequestParam(name = "name", required = false, defaultValue = "")
 	        String name//
+	        , Model model//
 			, StandardSessionFacade session//
 	) throws Exception {
 	    session.setAttribute(//
 	    		ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
 	    		, name//
 	    );
-		return "redirect:" + ControllerConstants.controlPageEditOrCreateLearningStrategy.name();
+		return editOrCreateLearningStrategyController.showEditOrCreateLearningStrategyPages(session, model);
 	}
 
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"createIndexBox"})
 	public String createIndexBox(//
-			StandardSessionFacade session//
+			Model model//
+			, StandardSessionFacade session//
 	) throws Exception {
 	    session.setAttribute(//
 	    		ControllerConstants.sessionOldVersionOfIndexBoxName.name()//
@@ -156,7 +176,7 @@ public class ManageConfigurationsController {
 	    		, ""//
 	    );
 	    	    
-		return "redirect:" + ControllerConstants.controlPageEditOrCreateIndexBox.name();
+		return editOrCreateIndexBoxController.showEditOrCreateIndexBoxPage(model, session);
 	}
 
 	@RequestMapping({"controlLinkEditIndexBox"})
@@ -165,6 +185,7 @@ public class ManageConfigurationsController {
 	        String name//
 	       ,  @RequestParam(name = "subject", required = false, defaultValue = "")
 	        String subject//
+	        , Model model//
 			, StandardSessionFacade session//
 	) throws Exception {
 	    session.setAttribute(//
@@ -175,7 +196,7 @@ public class ManageConfigurationsController {
 	    		ControllerConstants.sessionOldVersionOfIndexBoxSubject.name()//
 	    		, subject//
 	    );
-		return "redirect:" + ControllerConstants.controlPageEditOrCreateIndexBox.name();
+		return editOrCreateIndexBoxController.showEditOrCreateIndexBoxPage(model, session);
 	}
 
 	@RequestMapping({"controlLinkDeleteIndexBox"})
@@ -184,6 +205,7 @@ public class ManageConfigurationsController {
 	        String name//
 	        , @RequestParam(name = "subject", required = false, defaultValue = "")
 	        String subject//
+	        , Model model//
 			, StandardSessionFacade session//
 	) throws Exception {
 	    session.setAttribute(//
@@ -194,12 +216,12 @@ public class ManageConfigurationsController {
 	    		ControllerConstants.sessionOldVersionOfIndexBoxSubject.name()//
 	    		, subject//
 	    );
-		return "redirect:" + ControllerConstants.controlPageDeleteIndexBox.name();
+		return deleteIndexBoxController.showDeleteIndexBoxPage(model, session);
 	}
 
 	@RequestMapping(value="/controlActionManageConfiguration", method=RequestMethod.POST, params= {"editLearnProfile"})
-	public String editLearnProfile() throws Exception {
-		return "redirect:" + ControllerConstants.controlPageEditLearnProfile.name();
+	public String editLearnProfile(Model model, StandardSessionFacade session) throws Exception {
+		return editLearnProfileController.showEditLearnProfilePage(model, session);
 	}
 
 

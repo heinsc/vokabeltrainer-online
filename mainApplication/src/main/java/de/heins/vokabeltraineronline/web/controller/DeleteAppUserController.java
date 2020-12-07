@@ -1,7 +1,5 @@
 package de.heins.vokabeltraineronline.web.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.catalina.session.StandardSessionFacade;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +21,15 @@ public class DeleteAppUserController {
 	}
 	@Autowired
 	private AppUserService appUserService;
+	@Autowired
+	private MenuController menuController;
+	@Autowired
+	private LoginController loginController;
 
 	public DeleteAppUserController() {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageDeleteAppUser" })
 	public String showDeleteAppUserPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -48,14 +49,15 @@ public class DeleteAppUserController {
 
 	}
 	@RequestMapping(value = "/controlActionDeleteAppUser", method = RequestMethod.POST, params = {"cancel"})
-	public String cancel() {
-		return "redirect:" + ControllerConstants.controlPageMenu.name();
+	public String cancel(Model model, StandardSessionFacade session) {
+		return menuController.showMenuPage(model, session);
 	}
 	@RequestMapping(value = "/controlActionDeleteAppUser", method = RequestMethod.POST, params = {"delete"})
 	public String delete(//
 			@ModelAttribute(name = "deleteAppUserModAtt")
 			DeleteAppUserModAtt deleteAppUser//
-			, HttpSession session
+			, Model model//
+			, StandardSessionFacade session
 	) {
 		SessionAppUser sessionAppUserForm = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
@@ -64,7 +66,8 @@ public class DeleteAppUserController {
 			AppUserAttrRef appUserForm = deleteAppUser.getAppUser();
 			try {
 				appUserService.deleteAppUser(sessionAppUserForm.getId(), sessionAppUserForm.getEmail(), appUserForm.getPassword());
-				return "redirect:" + ControllerConstants.controlPageLogin.name();
+				session.removeAttribute(ControllerConstants.sessionAppUser.name());
+				return loginController.showLoginPage(model, session);
 			} catch (WrongPasswordException e) {
 				deleteAppUser.setWrongPassword(true);
 			}

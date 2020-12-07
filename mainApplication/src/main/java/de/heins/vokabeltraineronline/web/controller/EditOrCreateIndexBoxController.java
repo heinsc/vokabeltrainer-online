@@ -20,7 +20,8 @@ public class EditOrCreateIndexBoxController {
 		editOrCreateIndexBoxPage//
 		, editOrCreateIndexBoxModAtt//
 	}
-	
+	@Autowired
+	private ManageConfigurationsController manageConfigurationsController;
 	@Autowired
 	private IndexBoxService indexBoxService;
 
@@ -28,10 +29,9 @@ public class EditOrCreateIndexBoxController {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageEditOrCreateIndexBox" })
 	public String showEditOrCreateIndexBoxPage(//
-			StandardSessionFacade session//
-			, Model model//
+			Model model//
+			, StandardSessionFacade session//
 	) throws Exception {
 		
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(//
@@ -65,9 +65,10 @@ public class EditOrCreateIndexBoxController {
 
 	@RequestMapping(value="/controlActionEditOrCreateIndexBox", method=RequestMethod.POST, params= {"submit"})
 	public String submit(//
-			StandardSessionFacade session//
-			, @ModelAttribute(name = "editOrCreateIndexBoxModAtt")
+			@ModelAttribute(name = "editOrCreateIndexBoxModAtt")
 			EditOrCreateIndexBoxModAtt editOrCreateIndexBoxModAtt
+			, Model model//
+			, StandardSessionFacade session//
 	) {
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
@@ -115,12 +116,17 @@ public class EditOrCreateIndexBoxController {
 				, oldVersionOfIndexBoxName//
 				, oldVersionOfIndexBoxSubject
 		);
-		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+		return backToManageConfigurations(model, session);
 	}
 	@RequestMapping(value="/controlActionEditOrCreateIndexBox", method=RequestMethod.POST, params= {"cancel"})
-	public String cancel() {
-		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
-		
+	public String cancel(Model model, StandardSessionFacade session) {
+		return backToManageConfigurations(model, session);
+	}
+
+	private String backToManageConfigurations(Model model, StandardSessionFacade session) {
+		session.removeAttribute(ControllerConstants.sessionOldVersionOfIndexBoxName.name());
+		session.removeAttribute(ControllerConstants.sessionOldVersionOfIndexBoxSubject.name());
+		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
 
 }

@@ -2,7 +2,9 @@ package de.heins.vokabeltraineronline.web.controller;
 
 
 import org.apache.catalina.session.StandardSessionFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -15,8 +17,8 @@ public class AnswerIsIncorrectController {
 	public AnswerIsIncorrectController() {
 		super();
 	}
-
-	@RequestMapping("/controlPageAnswerIsIncorrect")
+	@Autowired
+	private LearnDoLearnController learnDoLearnController;
 	public String showAnswerIsIncorrectPage(//
 			StandardSessionFacade session//
 	) throws Exception {
@@ -25,9 +27,12 @@ public class AnswerIsIncorrectController {
 	}
 
 	@RequestMapping(value = "/controlActionAnswerIsIncorrect", method = RequestMethod.POST, params = {"submit"})
-	public String submit() throws Exception {	return "redirect:" + ControllerConstants.controlPageLearnDoLearn.name();
-
-}
+	public String submit(//
+			Model model//
+			, StandardSessionFacade session//
+	) throws Exception {
+		return learnDoLearnController.showLearnDoLearnPage(model, session);
+	}
 
 
 }

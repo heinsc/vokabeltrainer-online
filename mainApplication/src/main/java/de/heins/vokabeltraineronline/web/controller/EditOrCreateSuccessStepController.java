@@ -22,7 +22,8 @@ public class EditOrCreateSuccessStepController {
 		editOrCreateSuccessStepPage//
 		, editOrCreateSuccessStepModAtt
 	}
-	
+	@Autowired
+	private ManageConfigurationsController manageConfigurationsController;
 	@Autowired
 	private SuccessStepService successStepService;
 
@@ -30,7 +31,6 @@ public class EditOrCreateSuccessStepController {
 		super();
 	}
 
-	@RequestMapping({ "/controlPageEditOrCreateSuccessStep" })
 	public String showEditOrCreateSuccessStepPage(//
 			Model model//
 			, StandardSessionFacade session//
@@ -101,12 +101,14 @@ public class EditOrCreateSuccessStepController {
 				, editOrCreateSuccessModAtt.getSuccessStep()//
 				, oldVersionOfSuccessStepName//
 		);
-		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+		session.removeAttribute(ControllerConstants.sessionOldVersionOfSuccessStepName.name());
+		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
 	
 	@RequestMapping(value="/controlActionEditOrCreateSuccessStep", method=RequestMethod.POST, params= {"cancel"})
-	public String cancel() {
-		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+	public String cancel(Model model, StandardSessionFacade session) {
+		session.removeAttribute(ControllerConstants.sessionOldVersionOfSuccessStepName.name());
+		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 		
 	}
 

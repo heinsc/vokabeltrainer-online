@@ -1,6 +1,7 @@
 package de.heins.vokabeltraineronline.web.controller;
 
 import org.apache.catalina.session.StandardSessionFacade;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +9,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class MenuController {
+	@Autowired
+	private LearnFilterIndexBoxesController learnFilterIndexBoxesController;
+	@Autowired
+	private ManageConfigurationsController manageConfigurationsController;
+	@Autowired
+	private EditAppUserController editAppUserController;
+	@Autowired
+	private DeleteAppUserController deleteAppUserController;
+	@Autowired
+	private ManageQuestionsWithAnswersController manageQuestionsWithAnswersController;
 	private static enum Constants {
 		menuPage
 	}
@@ -15,42 +26,38 @@ public class MenuController {
 		super();
 	}
 
-	@RequestMapping("/controlPageMenu")
 	public String showMenuPage(//
 			Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	)  {
 		return Constants.menuPage.name();
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"manageConfigurations"})
-	public String manageConfigurations() throws Exception {
+	public String manageConfigurations(Model model, StandardSessionFacade session) throws Exception {
 		// direct link to ManangeConfigurationsController
-		return "redirect:" + ControllerConstants.controlPageManageConfigurations.name();
+		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"learn"})
-	public String learn() throws Exception {
-		// direct link to ManangeConfigurationsController
-		return "redirect:" + ControllerConstants.controlPageLearnFilterIndexBoxes.name();
+	public String learn(Model model, StandardSessionFacade session) throws Exception {
+		return learnFilterIndexBoxesController.showLearnFilterIndexBoxesPage(session, model);
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"manageQuestionsWithAnswers"})
-	public String manageQuestionsWithAnswers() throws Exception {
-		// direct link to ManangeConfigurationsController
-		return "redirect:" + ControllerConstants.controlPageManageQuestionsWithAnswers.name();
+	public String manageQuestionsWithAnswers(Model model, StandardSessionFacade session) throws Exception {
+		return manageQuestionsWithAnswersController.showManageQuestionsWithAnswersPage(model, session);
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"editAppUser"})
-	public String editAppUser() throws Exception {
+	public String editAppUser(Model model, StandardSessionFacade session) throws Exception {
 		// direct link to ManangeAppUserController
-		return "redirect:" + ControllerConstants.controlPageEditAppUser.name();
+		return editAppUserController.showEditAppUserPage(model, session);
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"deleteAppUser"})
-	public String deleteAppUser() throws Exception {
-		//direct Link to DeleteAppUserController
-		return "redirect:" + ControllerConstants.controlPageDeleteAppUser.name();
+	public String deleteAppUser(Model model, StandardSessionFacade session) throws Exception {
+		return deleteAppUserController.showDeleteAppUserPage(model, session);
 
 	}
 
