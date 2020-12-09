@@ -18,6 +18,7 @@ import de.heins.vokabeltraineronline.business.entity.QuestionWithAnswerFactory;
 import de.heins.vokabeltraineronline.business.entity.SuccessStep;
 import de.heins.vokabeltraineronline.business.entity.AppUser;
 import de.heins.vokabeltraineronline.business.entity.BehaviourIfWrong;
+import de.heins.vokabeltraineronline.business.entity.FaultTolerance;
 import de.heins.vokabeltraineronline.web.entities.PoolWithWrongAnswers;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
 import de.heins.vokabeltraineronline.web.entities.StockOfAllQuestionsWithAnswers;
@@ -30,7 +31,7 @@ public class QuestionWithAnswerService {
 	private static final int INDEXBOX_NAME_SPLITTINGINDEX = 0;
 	public static final String INDEXBOX_DESCRIPTION_SPLITTER = ", ";
 	public static final QuestionWithAnswerAttrRef EMPTY_QUESTION_WITH_ANSWER = new QuestionWithAnswerAttrRef();
-	private static final String FIRST_SUCCESS_STEP_NOT_YET_REACHED = null;
+	static final String FIRST_SUCCESS_STEP_NOT_YET_REACHED = null;
 	@Autowired
 	private QuestionWithAnswerRepository questionWithAnswerRepository;
 	@Autowired
@@ -68,15 +69,17 @@ public class QuestionWithAnswerService {
 					.setLearningStrategy(learningStrategy)//
 					.setAppUser(appUser)//
 					.getNewObject();
-			questionWithAnswerRepository.save(questionWithAnswer);
+			save(questionWithAnswerAttrRef, questionWithAnswer);
 		} else {//update existing questionWithAnswer
 			questionWithAnswer = findByAppUserAndQuestion.get(0);
 			questionWithAnswer.setQuestion(questionWithAnswerAttrRef.getQuestion());
 			questionWithAnswer.setAnswer(questionWithAnswerAttrRef.getAnswer());
-			// the learningStrategy of a questionWithAnswer can never be changed
-			// moving questionWithAnswers from one index box to another is done by an extra function.
-			questionWithAnswerRepository.save(questionWithAnswer);
+			save(questionWithAnswerAttrRef, questionWithAnswer);
 		}
+	}
+	private void save(QuestionWithAnswerAttrRef questionWithAnswerAttrRef, QuestionWithAnswer questionWithAnswer) {
+		QuestionWithAnswer savedInstance = questionWithAnswerRepository.save(questionWithAnswer);
+		transferValuesFromDataBaseEntityToWebEntity(savedInstance, questionWithAnswerAttrRef);
 	}
 	private LearningStrategy findUniqeLearningStrategyByName(QuestionWithAnswerAttrRef questionWithAnswerAttrRef,
 			AppUser appUser) {
@@ -109,14 +112,7 @@ public class QuestionWithAnswerService {
 		try {
 			QuestionWithAnswer questionWithAnswer = questionWithAnswerRepository.findByAppUserAndQuestion(appUser, question).get(0);
 			QuestionWithAnswerAttrRef questionWithAnswerAttrRef = new QuestionWithAnswerAttrRef();
-			questionWithAnswerAttrRef.setQuestion(questionWithAnswer.getQuestion());
-			questionWithAnswerAttrRef.setAnswer(questionWithAnswer.getAnswer());
-			questionWithAnswerAttrRef.setLearningStrategyDescription(questionWithAnswer.getLearningStrategy().getName());
-			if (null != questionWithAnswer.getActualSuccessStep()) {
-				questionWithAnswerAttrRef.setActualSuccessStepDescription(QuestionWithAnswerService.FIRST_SUCCESS_STEP_NOT_YET_REACHED);
-			} else {
-				questionWithAnswerAttrRef.setActualSuccessStepDescription(questionWithAnswer.getActualSuccessStep().getName());
-			}
+			transferValuesFromDataBaseEntityToWebEntity(questionWithAnswer, questionWithAnswerAttrRef);
 			return questionWithAnswerAttrRef;
 		} catch (Exception e) {
 			// this occurs only if there are no items in the database table,
@@ -124,6 +120,19 @@ public class QuestionWithAnswerService {
 			// nothing to do then.
 		}
 		return EMPTY_QUESTION_WITH_ANSWER;
+	}
+	private void transferValuesFromDataBaseEntityToWebEntity(QuestionWithAnswer questionWithAnswer,
+			QuestionWithAnswerAttrRef questionWithAnswerAttrRef) {
+		questionWithAnswerAttrRef.setQuestion(questionWithAnswer.getQuestion());
+		questionWithAnswerAttrRef.setAnswer(questionWithAnswer.getAnswer());
+		questionWithAnswerAttrRef.setLearningStrategyDescription(questionWithAnswer.getLearningStrategy().getName());
+		if (null == questionWithAnswer.getActualSuccessStep()) {
+			questionWithAnswerAttrRef.setActualSuccessStepDescription(QuestionWithAnswerService.FIRST_SUCCESS_STEP_NOT_YET_REACHED);
+			questionWithAnswerAttrRef.setFaultToleranceDescription(FaultTolerance.ORALLY.name());
+		} else {
+			questionWithAnswerAttrRef.setActualSuccessStepDescription(questionWithAnswer.getActualSuccessStep().getName());
+			questionWithAnswerAttrRef.setFaultToleranceDescription(questionWithAnswer.getActualSuccessStep().getFaultTolerance().name());
+		}
 	}
 	/**
 	 * 
@@ -212,7 +221,8 @@ public class QuestionWithAnswerService {
 			pool.remove(questionWithAnswerAttrRef);
 			
 		}
-		questionWithAnswerRepository.save(questionWithAnswer);
+		save(questionWithAnswerAttrRef, questionWithAnswer);
+		
 	}
 	public void markAsAnsweredIncorrectlyAndSave(//
 			QuestionWithAnswerAttrRef sessionQuestionWithAnswerAttrRef//
@@ -254,6 +264,7 @@ public class QuestionWithAnswerService {
 		if (stockOfAllNonAskedQuestions.remove(sessionQuestionWithAnswerAttrRef)) {
 			poolOfQuestionsWithIncorrectAnswer.add(sessionQuestionWithAnswerAttrRef);
 		}
+		save(sessionQuestionWithAnswerAttrRef, questionWithAnswer);
 	}
 
 }

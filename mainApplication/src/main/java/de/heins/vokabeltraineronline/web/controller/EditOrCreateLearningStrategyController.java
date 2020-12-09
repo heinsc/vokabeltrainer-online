@@ -28,7 +28,8 @@ public class EditOrCreateLearningStrategyController {
 		editOrCreateLearningStrategyNamePage//
 		, sessionEditOrCreateLearningStrategy//
 		, editOrCreateLearningStrategyModAtt//
-		, editOrCreateLearningStrategySuccessStepsPage
+		, editOrCreateLearningStrategySuccessStepsPage//
+		, sessionOldVersionOfLearningStrategyName
 	}
 	@Autowired
 	private ManageConfigurationsController manageConfigurationsController;
@@ -42,17 +43,14 @@ public class EditOrCreateLearningStrategyController {
 	}
 
 	public String showEditOrCreateLearningStrategyPages(//
-			StandardSessionFacade session//
+			String oldVersionOfLearningStrategyName//
+			, StandardSessionFacade session//
 			, Model model//
-	) throws Exception {
-		
+	) {
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
 		EditOrCreateLearningStrategyModAtt editOrCreateLearningStrategyModAtt = new EditOrCreateLearningStrategyModAtt();
-		String oldVersionOfLearningStrategyName = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
-		);
 		if (Strings.isEmpty(oldVersionOfLearningStrategyName)) {
 			LearningStrategyAttrRef learningStrategy = new LearningStrategyAttrRef();
 			editOrCreateLearningStrategyModAtt.setLearningStrategy(learningStrategy);
@@ -91,7 +89,7 @@ public class EditOrCreateLearningStrategyController {
 				ControllerConstants.sessionAppUser.name()//
 		);
 		String oldVersionOfLearningStrategyName = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
+				Constants.sessionOldVersionOfLearningStrategyName.name()//
 		);
 		// if you miss the check for duplicates here (like in de.heins.vokabeltraineronline.web.controller.EditOrCreateSuccessStepController.submit(EditOrCreateSuccessStepModAttr, StandardSessionFacade, Model)
 		// the check for duplicates already happens in 
@@ -107,7 +105,7 @@ public class EditOrCreateLearningStrategyController {
 		return backToManageConfigurations(model, session);
 	}
 	@RequestMapping(value="/controlActionEditOrCreateLearningStrategy", method=RequestMethod.POST, params= {"assignSuccessSteps"})
-	public String showAssignSuccessStepsPage(//
+	public String goToAssignSuccessStepsPage(//
 			StandardSessionFacade session//
 			, Model model
 			, @ModelAttribute(name = "editOrCreateLearningStrategyModAtt" )
@@ -119,7 +117,7 @@ public class EditOrCreateLearningStrategyController {
 				ControllerConstants.sessionAppUser.name()//
 		);
 		String oldVersionOfLearningStrategyName = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfLearningStrategyName.name()//
+				Constants.sessionOldVersionOfLearningStrategyName.name()//
 		);
 		model.addAttribute(Constants.editOrCreateLearningStrategyModAtt.name(), editOrCreateLearningStrategyModAtt);
 		if (Strings.isEmpty(editOrCreateLearningStrategyModAtt.getLearningStrategy().getName())) {
@@ -164,7 +162,7 @@ public class EditOrCreateLearningStrategyController {
 		return Constants.editOrCreateLearningStrategySuccessStepsPage.name();
 	}
 	@RequestMapping(value="/controlActionEditOrCreateLearningStrategy", method=RequestMethod.POST, params= {"editName"})
-	public String showNamePage(//
+	public String goToNamePage(//
 			StandardSessionFacade session//
 			, Model model
 	) {
@@ -187,7 +185,7 @@ public class EditOrCreateLearningStrategyController {
 	}
 
 	private String backToManageConfigurations(Model model, StandardSessionFacade session) {
-		session.removeAttribute(ControllerConstants.sessionOldVersionOfLearningStrategyName.name());
+		session.removeAttribute(Constants.sessionOldVersionOfLearningStrategyName.name());
 		session.removeAttribute(Constants.sessionEditOrCreateLearningStrategy.name());
 		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
@@ -197,7 +195,7 @@ public class EditOrCreateLearningStrategyController {
             String successStepName//
             , StandardSessionFacade session//
             , Model model//
-	) throws Exception {
+	) {
 		EditOrCreateLearningStrategyModAtt editOrCreateLearningStrategyModAtt//
 			= (EditOrCreateLearningStrategyModAtt) session.getAttribute(//
 					Constants.sessionEditOrCreateLearningStrategy.name()//
@@ -222,7 +220,7 @@ public class EditOrCreateLearningStrategyController {
            ,  @RequestParam(name = "index", required = false, defaultValue = "")
             int index//
            , Model model//
-	) throws Exception {
+	) {
 		EditOrCreateLearningStrategyModAtt sessionEditOrCreateLearningStrategyModAtt//
 		= (EditOrCreateLearningStrategyModAtt) session.getAttribute(//
 				Constants.sessionEditOrCreateLearningStrategy.name()//
@@ -237,7 +235,7 @@ public class EditOrCreateLearningStrategyController {
 	        ,  @RequestParam(name = "index", required = false, defaultValue = "")
             int index//
             , Model model//
-	) throws Exception {
+	) {
 		EditOrCreateLearningStrategyModAtt sessionEditOrCreateLearningStrategyModAtt//
 		= (EditOrCreateLearningStrategyModAtt) session.getAttribute(//
 				Constants.sessionEditOrCreateLearningStrategy.name()//
@@ -261,7 +259,7 @@ public class EditOrCreateLearningStrategyController {
 	        ,  @RequestParam(name = "index", required = false, defaultValue = "")
             int index//
             , Model model//
-	) throws Exception {
+	) {
 		EditOrCreateLearningStrategyModAtt sessionEditOrCreateLearningStrategyModdAtt//
 		= (EditOrCreateLearningStrategyModAtt) session.getAttribute(//
 				Constants.sessionEditOrCreateLearningStrategy.name()//

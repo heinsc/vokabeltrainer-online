@@ -30,7 +30,7 @@ public class CreateQuestionsWithAnswersController {
 	private static final String OLD_QUESTION_FOR_NEW_QUESTION="";
 	
 	@Autowired
-	ManageQuestionsWithAnswersController manageQuestionsWithAnswersController;
+	private ManageQuestionsWithAnswersController manageQuestionsWithAnswersController;
 	@Autowired
 	private IndexBoxService indexBoxService;
 
@@ -47,9 +47,10 @@ public class CreateQuestionsWithAnswersController {
 	public String showCreateQuestionsWithAnswersPage(//
 			Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt = new CreateQuestionsWithAnswersModAtt();
-		refreshSelectBoxes(session, createQuestionsWithAnswersModAtt);
+		SessionAppUser  sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
+		refreshSelectBoxes(sessionAppUser, createQuestionsWithAnswersModAtt);
 		
 		model.addAttribute(Constants.createQuestionsWithAnswersModAtt.name(), createQuestionsWithAnswersModAtt);
 		
@@ -133,9 +134,10 @@ public class CreateQuestionsWithAnswersController {
 		return Constants.createQuestionsWithAnswersPage.name();
 	}
 
-	private void refreshSelectBoxes(StandardSessionFacade session,
-			CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt) {
-		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
+	private void refreshSelectBoxes(//
+			SessionAppUser sessionAppUser//
+			, CreateQuestionsWithAnswersModAtt createQuestionsWithAnswersModAtt//
+	) {
 		refreshIndexBoxDescriptions(//
 				createQuestionsWithAnswersModAtt//
 				, sessionAppUser//
@@ -164,7 +166,7 @@ public class CreateQuestionsWithAnswersController {
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
 		createQuestionsWithAnswersModAtt.setMandatoryViolated(false);
 		createQuestionsWithAnswersModAtt.setQuestionAlreadyExists(false);
-		refreshSelectBoxes(session, createQuestionsWithAnswersModAtt);
+		refreshSelectBoxes(sessionAppUser, createQuestionsWithAnswersModAtt);
 		if (Strings.isEmpty(createQuestionsWithAnswersModAtt.getQuestionWithAnswer().getQuestion())) {
 			createQuestionsWithAnswersModAtt.setMandatoryViolated(true);
 			return Constants.createQuestionsWithAnswersPage.name();

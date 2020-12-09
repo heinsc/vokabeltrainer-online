@@ -19,14 +19,13 @@ public class AnswerIsCorrectController {
 	@Autowired
 	private LearnDoLearnController LearnDoLearnController;
 
-	public String showAnswerIsCorrectPage() throws Exception {
+	public String showAnswerIsCorrectPage() {
 		return Constants.answerIsCorrectPage.name();
-
 	}
 
 	@RequestMapping(value = "/controlActionAnswerIsCorrect", method = RequestMethod.POST, params = {"nextQuestion"})
 	public String nextQuestion(Model model, StandardSessionFacade session) {
-		return LearnDoLearnController.showLearnDoLearnPage(model, session);
+		return LearnDoLearnController.showLearnDoLearnPages(model, session);
 	}
 
 

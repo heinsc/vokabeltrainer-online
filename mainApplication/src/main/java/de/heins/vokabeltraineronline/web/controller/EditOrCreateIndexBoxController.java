@@ -19,6 +19,8 @@ public class EditOrCreateIndexBoxController {
 	private static enum Constants {
 		editOrCreateIndexBoxPage//
 		, editOrCreateIndexBoxModAtt//
+		, sessionOldVersionOfIndexBoxName//
+		, sessionOldVersionOfIndexBoxSubject
 	}
 	@Autowired
 	private ManageConfigurationsController manageConfigurationsController;
@@ -30,20 +32,17 @@ public class EditOrCreateIndexBoxController {
 	}
 
 	public String showEditOrCreateIndexBoxPage(//
-			Model model//
+			String oldVersionOfIndexBoxName//
+			, String oldVersionOfIndexBoxSubject//
+			, Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
-		
+	)  {
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
 		EditOrCreateIndexBoxModAtt editOrCreateIndexBoxModAtt = new EditOrCreateIndexBoxModAtt();
-		String oldVersionOfIndexBoxName = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfIndexBoxName.name()//
-		);
-		String oldVersionOfIndexBoxSubject = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfIndexBoxSubject.name()//
-		);
+		session.setAttribute(Constants.sessionOldVersionOfIndexBoxName.name(), oldVersionOfIndexBoxName);
+		session.setAttribute(Constants.sessionOldVersionOfIndexBoxSubject.name(), oldVersionOfIndexBoxSubject);
 		if (Strings.isEmpty(oldVersionOfIndexBoxName) && Strings.isEmpty(oldVersionOfIndexBoxSubject)) {
 			IndexBoxAttrRef indexBoxAttrRef = new IndexBoxAttrRef();
 			editOrCreateIndexBoxModAtt.setIndexBox(indexBoxAttrRef);
@@ -83,10 +82,10 @@ public class EditOrCreateIndexBoxController {
 			return Constants.editOrCreateIndexBoxPage.name();
 		}
 		String oldVersionOfIndexBoxName = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfIndexBoxName.name()//
+				Constants.sessionOldVersionOfIndexBoxName.name()//
 		);
 		String oldVersionOfIndexBoxSubject = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfIndexBoxSubject.name()//
+				Constants.sessionOldVersionOfIndexBoxSubject.name()//
 		);
 		if (//
 				(//
@@ -124,8 +123,8 @@ public class EditOrCreateIndexBoxController {
 	}
 
 	private String backToManageConfigurations(Model model, StandardSessionFacade session) {
-		session.removeAttribute(ControllerConstants.sessionOldVersionOfIndexBoxName.name());
-		session.removeAttribute(ControllerConstants.sessionOldVersionOfIndexBoxSubject.name());
+		session.removeAttribute(Constants.sessionOldVersionOfIndexBoxName.name());
+		session.removeAttribute(Constants.sessionOldVersionOfIndexBoxSubject.name());
 		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
 

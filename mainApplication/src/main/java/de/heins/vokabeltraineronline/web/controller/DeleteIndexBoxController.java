@@ -20,7 +20,8 @@ import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.DeleteIndex
 public class DeleteIndexBoxController {
 	private static enum Constants {
 		deleteIndexBoxPage//
-		, deleteIndexBoxModAtt
+		, deleteIndexBoxModAtt//
+		, sessionDeleteIndexBox//
 	}
 	@Autowired
 	private ManageConfigurationsController manageConfigurationsController;
@@ -35,37 +36,36 @@ public class DeleteIndexBoxController {
 	}
 
 	public String showDeleteIndexBoxPage(//
-			Model model//
+			String oldVersionOfIndexBoxName//
+			, String oldVersionOfIndexBoxSubject//
+			, Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
-		String sessionOldVersionOfIndexBoxName = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfIndexBoxName.name()//
-		);
-		String sessionOldVersionOfIndexBoxSubject = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfIndexBoxSubject.name()//
-		);
 		IndexBoxAttrRef indexBox = indexBoxService.findForAppUserAndNameAndSubject(//
 				sessionAppUser//
-				, sessionOldVersionOfIndexBoxName//
-				, sessionOldVersionOfIndexBoxSubject//
+				, oldVersionOfIndexBoxName//
+				, oldVersionOfIndexBoxSubject//
 		);
 		
 		DeleteIndexBoxModAtt deleteIndexBoxModAtt = new DeleteIndexBoxModAtt();
-		deleteIndexBoxModAtt.setIndexBox(indexBox);
-		model.addAttribute(//
-				Constants.deleteIndexBoxModAtt.name()//
-				, deleteIndexBoxModAtt//
+		model.addAttribute(Constants.deleteIndexBoxModAtt.name(), deleteIndexBoxModAtt);
+		session.setAttribute(//
+				Constants.sessionDeleteIndexBox.name()//
+				, indexBox//
 		);
 		return Constants.deleteIndexBoxPage.name();
 
 	}
 	@RequestMapping(value = "/controlActionDeleteIndexBox", method = RequestMethod.POST, params = {"cancel"})
 	public String cancel(Model model, StandardSessionFacade session) {
-		session.removeAttribute(ControllerConstants.sessionOldVersionOfIndexBoxName.name());
-		session.removeAttribute(ControllerConstants.sessionOldVersionOfIndexBoxSubject.name());
+		return backToManageConfigurationPage(model, session);
+	}
+
+	private String backToManageConfigurationPage(Model model, StandardSessionFacade session) {
+		session.removeAttribute(Constants.sessionDeleteIndexBox.name());
 		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
 	@RequestMapping(value = "/controlActionDeleteIndexBox", method = RequestMethod.POST, params = {"delete"})
@@ -84,16 +84,14 @@ public class DeleteIndexBoxController {
 		if (checkFields(deleteIndexBoxModAtt)) {
 			try {
 				appUserService.getSessionAppUserForLogin(appUserAttrRef);
-				
-				// TODO eigentliches Delete...
-				session.removeAttribute(ControllerConstants.sessionOldVersionOfIndexBoxName.name());
-				session.removeAttribute(ControllerConstants.sessionOldVersionOfIndexBoxSubject.name());
-				return manageConfigurationsController.showManageConfigurationsPage(model, session);
+				IndexBoxAttrRef indexBoxAttrRef = (IndexBoxAttrRef) session.getAttribute(Constants.sessionDeleteIndexBox.name());
+				//TODO eigentliches delete
+				return backToManageConfigurationPage(model, session);
 			} catch (WrongPasswordException e) {
 				deleteIndexBoxModAtt.setWrongPassword(true);
 			}
 		}
-		return Constants.deleteIndexBoxModAtt.name();
+		return Constants.deleteIndexBoxPage.name();
 	}
 
 	private boolean checkFields(DeleteIndexBoxModAtt deleteIndexBoxModAtt) {

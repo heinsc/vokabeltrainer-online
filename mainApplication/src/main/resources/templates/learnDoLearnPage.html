@@ -3,7 +3,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>Vokabeltrainer Online New Account</title>
+<title>Vokabeltrainer Online Do Learn</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" media="all"
 	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
@@ -16,10 +16,15 @@
 
 	<form action="#" th:action="@{/controlActionLearnDoLearn}"
 		th:object="${learnDoLearnModAtt}" method="post">
+		<label th:utext="#{learnDoLearnPage.actualSuccessStep}">ACTUAL SUCCESS STEP</label>
+		<div th:utext="${#session.getAttribute('sessionActualAskedQuestion').actualSuccessStepDescription}"></div>
+		<div th:utext="#{${'learnDoLearnPage.'}+${#session.getAttribute('sessionActualAskedQuestion').faultToleranceDescription}}">FAULT TOLERANCE</div>
+
 		<label th:utext="#{learnDoLearnPage.question}">QUESTION</label>
-		<div th:text="*{questionWithAnswerAttrRef.question}"></div>
+		<div th:utext="${#session.getAttribute('sessionActualAskedQuestion').question}"></div>
+		<br/>
 		<label th:utext="#{learnDoLearnPage.answer}">ANSWER</label>
-		<input type="text" th:field="*{answerByUser}"/>
+		<input type="text" th:field="*{answerByUser}" autocomplete="off"/>
 		<p>
 			<button type="submit" name="checkAnswer" th:utext="#{learnDoLearnPage.checkAnswer}">CHECK ANSWER</button>
 		</p>

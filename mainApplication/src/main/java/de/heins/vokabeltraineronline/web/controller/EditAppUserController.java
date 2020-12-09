@@ -32,7 +32,7 @@ public class EditAppUserController {
 	public String showEditAppUserPage(//
 			Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		SessionAppUser sessioAppUser = (SessionAppUser) session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);

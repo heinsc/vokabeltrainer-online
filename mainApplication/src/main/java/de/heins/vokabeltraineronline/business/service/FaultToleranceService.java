@@ -10,6 +10,9 @@ public class FaultToleranceService {
 		private FaultCounter(int anInteger) {
 			this.faultCounter=anInteger;
 		}
+		public String toString() {
+			return String.valueOf(faultCounter);
+		}
 	}
 	private Integer resolveMaxNumberOfLettersByFaultTolerance(//
 			String faultTolerance
@@ -44,55 +47,67 @@ public class FaultToleranceService {
 			, String answerByUser//
 			, Integer maxNumberOfWrongLetters//
 	) {
-		int lengthOfAnswer = answer.length();
 		int lengthOfAnswerByUser = answerByUser.length();
-		if (answer.getBytes()[currentIndexOfAnswer] != answerByUser.getBytes()[currentIndexOfAnswerByUser]) {
+		if (lengthOfAnswerByUser == 0) {
+			return false;
+		}
+		int lengthOfAnswer = answer.length();
+		char currentCharOfAnwer = (char)answer.getBytes()[currentIndexOfAnswer];
+		char currentCharOfAnswerByUser = (char)answerByUser.getBytes()[currentIndexOfAnswerByUser];
+		if (currentCharOfAnwer != currentCharOfAnswerByUser) {
 			faultCounter.faultCounter++;
 			if (faultCounter.faultCounter > maxNumberOfWrongLetters) {
 				return false;
 			}
-			int nextIndexOfAnswer = currentIndexOfAnswer++;
-			int nextIndexOfAnswerByUser = currentIndexOfAnswerByUser++;
-			if (//
-					nextIndexOfAnswer < lengthOfAnswer //
-					&& nextIndexOfAnswerByUser < lengthOfAnswerByUser//
-			) {
-				return checkOnEqualnessOfCurrentIndexPair(//
-						new FaultCounter(faultCounter.faultCounter)//
-						, currentIndexOfAnswer//
-						, nextIndexOfAnswerByUser//
-						, answer//
-						, answerByUser//
-						, maxNumberOfWrongLetters//
-				) || checkOnEqualnessOfCurrentIndexPair(//
-						new FaultCounter(faultCounter.faultCounter)//
-						, nextIndexOfAnswer//
-						, currentIndexOfAnswerByUser//
-						, answer//
-						, answerByUser//
-						, maxNumberOfWrongLetters//
-				);
-			}
-			if (nextIndexOfAnswer < lengthOfAnswer) {
-				return checkOnEqualnessOfCurrentIndexPair(//
-						new FaultCounter(faultCounter.faultCounter)//
-						, nextIndexOfAnswer//
-						, currentIndexOfAnswerByUser//
-						, answer//
-						, answerByUser//
-						, maxNumberOfWrongLetters//
-				);
-			}
-			if (nextIndexOfAnswerByUser < lengthOfAnswerByUser) {
-				return checkOnEqualnessOfCurrentIndexPair(//
-						new FaultCounter(faultCounter.faultCounter)//
-						, currentIndexOfAnswer//
-						, nextIndexOfAnswerByUser//
-						, answer//
-						, answerByUser//
-						, maxNumberOfWrongLetters//
-				);
-			}
+		}
+		int nextIndexOfAnswer = currentIndexOfAnswer + 1;
+		int nextIndexOfAnswerByUser = currentIndexOfAnswerByUser + 1;
+		if (//
+				nextIndexOfAnswer < lengthOfAnswer //
+				&& nextIndexOfAnswerByUser < lengthOfAnswerByUser//
+		) {
+			return checkOnEqualnessOfCurrentIndexPair(//
+					new FaultCounter(faultCounter.faultCounter)//
+					, nextIndexOfAnswer//
+					, nextIndexOfAnswerByUser//
+					, answer//
+					, answerByUser//
+					, maxNumberOfWrongLetters//
+			) || checkOnEqualnessOfCurrentIndexPair(//
+					new FaultCounter(faultCounter.faultCounter)//
+					, nextIndexOfAnswer//
+					, currentIndexOfAnswerByUser//
+					, answer//
+					, answerByUser//
+					, maxNumberOfWrongLetters//
+			) || checkOnEqualnessOfCurrentIndexPair(//
+					new FaultCounter(faultCounter.faultCounter)//
+					, currentIndexOfAnswer//
+					, nextIndexOfAnswerByUser//
+					, answer//
+					, answerByUser//
+					, maxNumberOfWrongLetters//
+			);
+		}
+		if (nextIndexOfAnswer < lengthOfAnswer) {
+			return checkOnEqualnessOfCurrentIndexPair(//
+					new FaultCounter(faultCounter.faultCounter)//
+					, nextIndexOfAnswer//
+					, currentIndexOfAnswerByUser//
+					, answer//
+					, answerByUser//
+					, maxNumberOfWrongLetters//
+			);
+		}
+		if (nextIndexOfAnswerByUser < lengthOfAnswerByUser) {
+			return checkOnEqualnessOfCurrentIndexPair(//
+					new FaultCounter(faultCounter.faultCounter)//
+					, currentIndexOfAnswer//
+					, nextIndexOfAnswerByUser//
+					, answer//
+					, answerByUser//
+					, maxNumberOfWrongLetters//
+			);
 		}
 		return true;
 	}

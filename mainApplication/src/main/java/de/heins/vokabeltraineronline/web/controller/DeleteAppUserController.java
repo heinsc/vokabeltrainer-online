@@ -33,7 +33,7 @@ public class DeleteAppUserController {
 	public String showDeleteAppUserPage(//
 			Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		SessionAppUser sessioAppUser = (SessionAppUser) session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
@@ -66,13 +66,17 @@ public class DeleteAppUserController {
 			AppUserAttrRef appUserForm = deleteAppUser.getAppUser();
 			try {
 				appUserService.deleteAppUser(sessionAppUserForm.getId(), sessionAppUserForm.getEmail(), appUserForm.getPassword());
-				session.removeAttribute(ControllerConstants.sessionAppUser.name());
-				return loginController.showLoginPage(model, session);
+				return backToLoginPage(model, session);
 			} catch (WrongPasswordException e) {
 				deleteAppUser.setWrongPassword(true);
 			}
 		}
 		return Constants.deleteAppUserPage.name();
+	}
+
+	private String backToLoginPage(Model model, StandardSessionFacade session) {
+		session.removeAttribute(ControllerConstants.sessionAppUser.name());
+		return loginController.showLoginPage(model, session);
 	}
 
 	private boolean checkFields(DeleteAppUserModAtt deleteAppUserModAtt) {

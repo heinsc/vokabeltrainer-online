@@ -23,6 +23,13 @@
 			<p th:utext="#{deleteIndexBoxPage.mandatoryViolated}" class="error">Please fill all
 				fields!</p>
 		</div>
+		<h2 th:utext="#{deleteIndexBoxPage.doYouReallyWantToDeleteTheIndexBox}">DO YOU REALLY WANT TO DELETE THE INDEX BOX?</h2>
+		<span th:text="#{deleteIndexBoxPage.name}">NAME:</span>
+		<span th:text="${#session.getAttribute('sessionDeleteIndexBox').name}">INDEX BOX NAME</span>
+		<br/>
+		<span th:text="#{deleteIndexBoxPage.subject}">SUBJECT:</span>
+		<span th:text="${#session.getAttribute('sessionDeleteIndexBox').subject}">INDEX BOX SUBJECT</span>
+	    <br/>
 		<div th:if="*{wrongPassword}">
 			<p th:utext="#{deleteIndexBoxPage.wrongPassword}" class="error">This appUser already exists.</p>
 		</div>

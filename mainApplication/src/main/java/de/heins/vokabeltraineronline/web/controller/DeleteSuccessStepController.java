@@ -1,7 +1,5 @@
 package de.heins.vokabeltraineronline.web.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.catalina.session.StandardSessionFacade;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,9 @@ import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.DeleteSucce
 @Controller
 public class DeleteSuccessStepController {
 	private static enum Constants {
-		deleteSuccessStepPage,  deleteSuccessStepModAtt
+		deleteSuccessStepPage//
+		,  deleteSuccessStepModAtt//
+		, sessionSuccessStepNameForDeletion//
 	}
 	@Autowired
 	private ManageConfigurationsController manageConfigurationsController;
@@ -36,14 +36,15 @@ public class DeleteSuccessStepController {
 	}
 
 	public String showDeleteSuccessStepPage(//
-			Model model//
+			String successStepNameForDeletion//
+			, Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
-		String sessionOldVersionOfSuccessStepName = (String) session.getAttribute(ControllerConstants.sessionOldVersionOfSuccessStepName.name());
-		SuccessStepAttrRef successStep = successStepService.findForAppUserAndName(sessionAppUser, sessionOldVersionOfSuccessStepName);
+		session.setAttribute(Constants.sessionSuccessStepNameForDeletion.name(), successStepNameForDeletion);
+		SuccessStepAttrRef successStep = successStepService.findForAppUserAndName(sessionAppUser, successStepNameForDeletion);
 		
 		DeleteSuccessStepModAtt deleteSuccessStepModAtt = new DeleteSuccessStepModAtt();
 		deleteSuccessStepModAtt.setSuccessStep(successStep);
@@ -60,7 +61,7 @@ public class DeleteSuccessStepController {
 	}
 
 	private String backToManageConfigurations(Model model, StandardSessionFacade session) {
-		session.removeAttribute(ControllerConstants.sessionOldVersionOfSuccessStepName.name());
+		session.removeAttribute(Constants.sessionSuccessStepNameForDeletion.name());
 		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
 	@RequestMapping(value = "/controlActionDeleteSuccessStep", method = RequestMethod.POST, params = {"delete"})
@@ -79,6 +80,7 @@ public class DeleteSuccessStepController {
 		if (checkFields(deleteSuccessStep)) {
 			try {
 				appUserService.getSessionAppUserForLogin(appUserAttrRef);
+				Object successStepName = session.getAttribute(Constants.sessionSuccessStepNameForDeletion.name());
 				// TODO eigentliches Delete...
 				return backToManageConfigurations(model, session);
 			} catch (WrongPasswordException e) {

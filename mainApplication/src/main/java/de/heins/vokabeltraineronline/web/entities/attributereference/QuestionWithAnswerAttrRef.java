@@ -3,6 +3,7 @@ package de.heins.vokabeltraineronline.web.entities.attributereference;
 public class QuestionWithAnswerAttrRef {
 	private String question;
 	private String answer;
+	private String faultToleranceDescription;
 	/*
 	 * the index box description is only used in createQuestionsWithAnswersPage and manageQuestionsWithAnswersPage
 	 */
@@ -63,4 +64,11 @@ public class QuestionWithAnswerAttrRef {
 	public void setActualSuccessStepDescription(String actualSuccessStepDescription) {
 		this.actualSuccessStepDescription = actualSuccessStepDescription;
 	}
+	public String getFaultToleranceDescription() {
+		return faultToleranceDescription;
+	}
+	public void setFaultToleranceDescription(String faultToleranceDescription) {
+		this.faultToleranceDescription = faultToleranceDescription;
+	}
+
 }

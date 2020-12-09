@@ -5,7 +5,6 @@ import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAtt
 public class DeleteIndexBoxModAtt {
 	private Boolean mandatoryViolated;
 	private Boolean wrongPassword;
-	private IndexBoxAttrRef indexBox;
 	private String password;
 	public Boolean getMandatoryViolated() {
 		return mandatoryViolated;
@@ -18,12 +17,6 @@ public class DeleteIndexBoxModAtt {
 	}
 	public void setWrongPassword(Boolean wrongPassword) {
 		this.wrongPassword = wrongPassword;
-	}
-	public IndexBoxAttrRef getIndexBox() {
-		return indexBox;
-	}
-	public void setIndexBox(IndexBoxAttrRef anIndexBox) {
-		this.indexBox = anIndexBox;
 	}
 	public String getPassword() {
 		return password;

@@ -33,8 +33,7 @@ public class EditLearnProfileController {
 	public String showEditLearnProfilePage(//
 			Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
-		
+	) {
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.heins.vokabeltraineronline.business.entity.AppUser;
+import de.heins.vokabeltraineronline.business.entity.FaultTolerance;
 import de.heins.vokabeltraineronline.business.entity.IndexBox;
 import de.heins.vokabeltraineronline.business.entity.IndexBoxFactory;
 import de.heins.vokabeltraineronline.business.entity.QuestionWithAnswer;
@@ -76,6 +77,13 @@ public class IndexBoxService {
 						questionWithAnswerAttrRef.setLearningStrategyDescription(learningStrategyDescription);
 						String learningProgress = calculateProgress(currentQwA);
 						questionWithAnswerAttrRef.setLearningProgress(learningProgress);
+						if (null == currentQwA.getActualSuccessStep()) {
+							questionWithAnswerAttrRef.setActualSuccessStepDescription(QuestionWithAnswerService.FIRST_SUCCESS_STEP_NOT_YET_REACHED);
+							questionWithAnswerAttrRef.setFaultToleranceDescription(FaultTolerance.ORALLY.name());
+						} else {
+							questionWithAnswerAttrRef.setActualSuccessStepDescription(currentQwA.getActualSuccessStep().getName());
+							questionWithAnswerAttrRef.setFaultToleranceDescription(currentQwA.getActualSuccessStep().getFaultTolerance().name());
+						}
 						indexBoxForm.getQuestionsWithAnswers().add(questionWithAnswerAttrRef);
 					});
 					indexBoxForm.setFilterOn(indexBox.isActualInUse());

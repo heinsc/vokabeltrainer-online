@@ -35,7 +35,7 @@ public class CreateAppUserController {
 
 	}
 	@RequestMapping(value = "/controlActionCreateAppUser" , method = RequestMethod.POST, params= {"cancel"})
-	public String cancel(Model model, StandardSessionFacade session) throws Exception {
+	public String cancel(Model model, StandardSessionFacade session) {
 		return loginController.showLoginPage(model, session);
 	}
 

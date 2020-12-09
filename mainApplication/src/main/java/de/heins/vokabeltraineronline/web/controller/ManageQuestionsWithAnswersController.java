@@ -48,7 +48,7 @@ public class ManageQuestionsWithAnswersController {
 			Model model//
 			, StandardSessionFacade session//
 	) {
-		IndexBoxes indexBoxes = manageIndexBoxes(session);
+		IndexBoxes indexBoxes = refreshIndexBoxes(session);
 		Set<QuestionWithAnswerAttrRef> questionsWithAnswersList = findQuestionsWithAnswersList(indexBoxes);
 		ManageQuestionsWithAnswersModAtt manageQuestionsWithAnswersModAtt = new ManageQuestionsWithAnswersModAtt();
 		manageQuestionsWithAnswersModAtt.setQuestionsWithAnswers(questionsWithAnswersList);
@@ -56,19 +56,14 @@ public class ManageQuestionsWithAnswersController {
 		return Constants.manageQuestionsWithAnswersPage.name();
 	}
 
-	private IndexBoxes manageIndexBoxes(//
+	private IndexBoxes refreshIndexBoxes(//
 			StandardSessionFacade session//
 	) {
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
-		IndexBoxes indexBoxes = (IndexBoxes) session.getAttribute(//
-				Constants.sessionIndexBoxAttrRefList.name()//
-		);
-		if (null == indexBoxes) {
-			indexBoxes = indexBoxService.findAllForAppUser(sessionAppUser);
-			session.setAttribute(Constants.sessionIndexBoxAttrRefList.name(), indexBoxes);
-		}
+		IndexBoxes indexBoxes = indexBoxService.findAllForAppUser(sessionAppUser);
+		session.setAttribute(Constants.sessionIndexBoxAttrRefList.name(), indexBoxes);
 		return indexBoxes;
 	}
 
@@ -103,7 +98,7 @@ public class ManageQuestionsWithAnswersController {
             int index//
             , Model model
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(Constants.sessionIndexBoxAttrRefList.name());
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
 		indexBox.setFilterOn(true);
@@ -122,7 +117,7 @@ public class ManageQuestionsWithAnswersController {
             int index//
             , Model model
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(Constants.sessionIndexBoxAttrRefList.name());
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
 		indexBox.setFilterOn(false);
@@ -141,7 +136,7 @@ public class ManageQuestionsWithAnswersController {
             String question//
             , Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		session.setAttribute(ControllerConstants.sessionOldVersionOfQuestion.name(), question);
 		// TODO EditQuestionWithAnswerController implementieren, und hier
 		// return editQuestionWithAnswerController.showEditQuestionWithAnswerPage(model, session)
@@ -152,12 +147,12 @@ public class ManageQuestionsWithAnswersController {
 	public String createQuestionsWithAnswers(//
 			Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		return createQuestionsWithAnswersController.showCreateQuestionsWithAnswersPage(model, session);
 	}
 	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"backToMenu"})
 	public String backToMenu(Model model, StandardSessionFacade session) {
-		session.removeAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
+		session.removeAttribute(Constants.sessionIndexBoxAttrRefList.name());
 		return menuController.showMenuPage(model, session);
 	}
 }

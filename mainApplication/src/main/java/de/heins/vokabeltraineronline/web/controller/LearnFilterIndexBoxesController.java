@@ -52,7 +52,7 @@ public class LearnFilterIndexBoxesController {
 			, Model model
 			, @ModelAttribute("learnFilterIndexBoxesModAtt")
 			LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt//
-	) throws Exception {
+	) {
 
 		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(//
 				ControllerConstants.sessionIndexBoxAttrRefList.name()//
@@ -74,7 +74,7 @@ public class LearnFilterIndexBoxesController {
 					, indexBoxAttrRef.getSubject()//
 			);
 		}
-		return learnDoLearnController.showLearnDoLearnPage(model, session);
+		return learnDoLearnController.showLearnDoLearnPages(model, session);
 
 	}
 	private boolean checkAtLeastOneIndexBoxIsSelected(IndexBoxes indexBoxAttrRefList) {
@@ -98,7 +98,7 @@ public class LearnFilterIndexBoxesController {
 		, StandardSessionFacade session//
 		, @ModelAttribute("learnFilterIndexBoxesModAtt")
 		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt
-	) throws Exception {
+	) {
 		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(//
 				ControllerConstants.sessionIndexBoxAttrRefList.name()//
 		);
@@ -114,7 +114,7 @@ public class LearnFilterIndexBoxesController {
 			, StandardSessionFacade session//
 			, @ModelAttribute("learnFilterIndexBoxesModAtt")
 			LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt
-	) throws Exception {
+	) {
 		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(ControllerConstants.sessionIndexBoxAttrRefList.name());
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
 		indexBox.setFilterOn(false);

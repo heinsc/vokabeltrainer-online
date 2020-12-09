@@ -1,7 +1,5 @@
 package de.heins.vokabeltraineronline.web.controller;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.catalina.session.StandardSessionFacade;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,8 @@ import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.DeleteLearn
 public class DeleteLearningStrategyController {
 	private static enum Constants {
 		deleteLearningStrategyPage//
-		,  deleteLearningStrategyModAtt
+		,  deleteLearningStrategyModAtt//
+		, sessionLearningStrategyNameForDeletion
 	}
 	@Autowired
 	private ManageConfigurationsController manageConfigurationsController;
@@ -37,14 +36,18 @@ public class DeleteLearningStrategyController {
 	}
 
 	public String showDeleteLearningStrategyPage(//
-			Model model//
+			String name//
+			, Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
-		String sessionOldVersionOfLearningStrategyName = (String) session.getAttribute(ControllerConstants.sessionOldVersionOfLearningStrategyName.name());
-		LearningStrategyAttrRef learningStrategy = LearningStrategyService.findForAppUserAndName(sessionAppUser, sessionOldVersionOfLearningStrategyName);
+		session.setAttribute(Constants.sessionLearningStrategyNameForDeletion.name(), name);
+		LearningStrategyAttrRef learningStrategy = LearningStrategyService.findForAppUserAndName(//
+				sessionAppUser//
+				, name//
+		);
 		
 		DeleteLearningStrategyModAtt deleteLearningStrategyModAtt = new DeleteLearningStrategyModAtt();
 		deleteLearningStrategyModAtt.setLearningStrategy(learningStrategy);
@@ -61,7 +64,7 @@ public class DeleteLearningStrategyController {
 	}
 
 	private String backToManageConfigurations(Model model, StandardSessionFacade session) {
-		session.removeAttribute(ControllerConstants.sessionOldVersionOfLearningStrategyName.name());
+		session.removeAttribute(Constants.sessionLearningStrategyNameForDeletion.name());
 		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
 	@RequestMapping(value = "/controlActionDeleteLearningStrategy", method = RequestMethod.POST, params = {"delete"})
@@ -80,6 +83,7 @@ public class DeleteLearningStrategyController {
 		if (checkFields(learningStrategyModAtt)) {
 			try {
 				appUserService.getSessionAppUserForLogin(appUserAttrRef);
+				String nameOfLearningStrategy = (String) session.getAttribute(Constants.sessionLearningStrategyNameForDeletion.name());
 				// TODO eigentliches Delete...
 				return backToManageConfigurations(model, session);
 			} catch (WrongPasswordException e) {

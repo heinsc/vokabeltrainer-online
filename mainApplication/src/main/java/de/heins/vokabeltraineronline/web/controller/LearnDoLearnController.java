@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import de.heins.vokabeltraineronline.business.entity.BehaviourIfPoolWithWrongAnswersIsFull;
 import de.heins.vokabeltraineronline.business.service.FaultToleranceService;
@@ -28,13 +27,14 @@ import de.heins.vokabeltraineronline.web.entities.attributereference.SuccessStep
 import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.LearnDoLearnModAtt;
 
 @Controller
-@SessionAttributes("learnDoLearnModAtt")
 public class LearnDoLearnController {
-	private static final String INDICATOR_TO_MAKE_POOL_EMPTY = "indicatorToMakePoolEmpty";
 	private static enum Constants {
 		learnDoLearnPage
 		, learnDoLearnModAtt
-	}
+		, indicatorToMakePoolEmpty
+		, declareCorrectDespiteErrorsPage
+		, sessionPoolWithWrongAnswers
+		, sessionStockOfAllQuestionsWithAnswers	}
 	@Autowired
 	private LearnFilterIndexBoxesController learnFilterIndexBoxesController;
 	@Autowired
@@ -46,8 +46,6 @@ public class LearnDoLearnController {
 	@Autowired
 	private AnswerIsIncorrectController answerIsIncorrectController;
 	@Autowired
-	private DeclareCorrectDespiteErrorsController declareCorrectDespiteErrorsController;
-	@Autowired
 	private LearnProfileService learnProfileService;
 	@Autowired
 	private SuccessStepService successStepService;
@@ -58,10 +56,14 @@ public class LearnDoLearnController {
 		super();
 	}
 
-	public String showLearnDoLearnPage(//
+	public String showLearnDoLearnPages(//
 			Model model//
 			, StandardSessionFacade session//
 	) {
+		return goToLearnDoLearnPage(model, session);
+	}
+
+	private String goToLearnDoLearnPage(Model model, StandardSessionFacade session) {
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
@@ -69,7 +71,7 @@ public class LearnDoLearnController {
 		List<QuestionWithAnswerAttrRef> poolWithWrongAnwers = manageSessionPoolOfWrongAnswers(session);
 		List<QuestionWithAnswerAttrRef> stockOfAllQuestionsWithAnswers = manageStockOfAllQuestions(session);
 		if (poolWithWrongAnwers.isEmpty()) {
-			session.setAttribute(INDICATOR_TO_MAKE_POOL_EMPTY, false);
+			session.setAttribute(Constants.indicatorToMakePoolEmpty.name(), false);
 			if  (stockOfAllQuestionsWithAnswers.isEmpty()) {
 				return backToLearnFilterIndexBoxes(model, session);
 			} else {
@@ -79,12 +81,12 @@ public class LearnDoLearnController {
 			LearnProfileAttrRef learnProfile = learnProfileService.findLearnProfileByUser(sessionAppUser);
 			if (poolWithWrongAnwers.size() >= learnProfile.getMaxNumberOfWrongAnswersPerSession()) {
 				questionWithAnswerAttrRef = poolWithWrongAnwers.get(0);
-				if (learnProfile.getBehaviourIfPoolWithWrongAnswersIsFull().equals(BehaviourIfPoolWithWrongAnswersIsFull.EMPTY_POOL_UNTIL_ALL_QUESTIONS_CORRECT)) {
-					session.setAttribute(INDICATOR_TO_MAKE_POOL_EMPTY, true);
+				if (BehaviourIfPoolWithWrongAnswersIsFull.EMPTY_POOL_UNTIL_ALL_QUESTIONS_CORRECT.name().equals(learnProfile.getBehaviourIfPoolWithWrongAnswersIsFull())) {
+					session.setAttribute(Constants.indicatorToMakePoolEmpty.name(), true);
 				}
 			} else {
 				//pool is neither full nor emtpy
-				if ((Boolean) session.getAttribute(INDICATOR_TO_MAKE_POOL_EMPTY)) {
+				if ((Boolean) session.getAttribute(Constants.indicatorToMakePoolEmpty.name())) {
 					questionWithAnswerAttrRef = poolWithWrongAnwers.get(0);
 				} else {
 					if  (stockOfAllQuestionsWithAnswers.isEmpty()) {
@@ -95,11 +97,10 @@ public class LearnDoLearnController {
 				}
 			}
 		}
+		session.setAttribute(ControllerConstants.sessionActualAskedQuestion.name(),  questionWithAnswerAttrRef);
 		LearnDoLearnModAtt learnDoLearnModAtt = new LearnDoLearnModAtt();
-		learnDoLearnModAtt.setQuestionWithAnswerAttrRef(questionWithAnswerAttrRef);
 		model.addAttribute(Constants.learnDoLearnModAtt.name(), learnDoLearnModAtt);
 		return Constants.learnDoLearnPage.name();
-
 	}
 
 	private String backToLearnFilterIndexBoxes(Model model, StandardSessionFacade session) {
@@ -108,19 +109,19 @@ public class LearnDoLearnController {
 	}
 
 	private void cleanSessionAttributes(StandardSessionFacade session) {
-		session.removeAttribute(INDICATOR_TO_MAKE_POOL_EMPTY);
-		session.removeAttribute(ControllerConstants.sessionPoolWithWrongAnswers.name());
-		session.removeAttribute(ControllerConstants.sessionStockOfAllQuestionsWithAnswers.name());
+		session.removeAttribute(Constants.indicatorToMakePoolEmpty.name());
+		session.removeAttribute(Constants.sessionPoolWithWrongAnswers.name());
+		session.removeAttribute(Constants.sessionStockOfAllQuestionsWithAnswers.name());
 	}
 
 	private PoolWithWrongAnswers manageSessionPoolOfWrongAnswers(StandardSessionFacade session) {
-		Object tempPool = session.getAttribute(ControllerConstants.sessionPoolWithWrongAnswers.name());
+		Object tempPool = session.getAttribute(Constants.sessionPoolWithWrongAnswers.name());
 		PoolWithWrongAnswers pool;
 		if (null != tempPool) {
 			pool = (PoolWithWrongAnswers) tempPool;
 		} else {
 			pool = new PoolWithWrongAnswers();
-			session.setAttribute(ControllerConstants.sessionPoolWithWrongAnswers.name(), pool);
+			session.setAttribute(Constants.sessionPoolWithWrongAnswers.name(), pool);
 		}
 		return pool;
 	}
@@ -130,7 +131,7 @@ public class LearnDoLearnController {
 	) {
 		StockOfAllQuestionsWithAnswers  stockOfAllQuestionsWithAnswers
 			= (StockOfAllQuestionsWithAnswers)session.getAttribute(//
-					ControllerConstants.sessionStockOfAllQuestionsWithAnswers.name()//
+					Constants.sessionStockOfAllQuestionsWithAnswers.name()//
 		);
 		if (//
 				stockOfAllQuestionsWithAnswers == null
@@ -154,7 +155,7 @@ public class LearnDoLearnController {
 				}
 			}
  			session.setAttribute(//
-					ControllerConstants.sessionStockOfAllQuestionsWithAnswers.name()//
+					Constants.sessionStockOfAllQuestionsWithAnswers.name()//
 					, stockOfAllQuestionsWithAnswers//
 		);
 		}
@@ -163,21 +164,26 @@ public class LearnDoLearnController {
 	
 	@RequestMapping(value = "/controlActionLearnDoLearn", method = RequestMethod.POST, params = {"checkAnswer"})
 	public String checkAnswer(//
-			@ModelAttribute(name = "learnDoLearnModAtt")
+			Model model// for the following sites, that they have a model.
+			, @ModelAttribute(name = "learnDoLearnModAtt")
 			LearnDoLearnModAtt learnDoLearnModAtt//
 			, StandardSessionFacade session//
-	) throws Exception {
+	) {
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);
-		QuestionWithAnswerAttrRef questionWithAnswerAttrRef = learnDoLearnModAtt.getQuestionWithAnswerAttrRef();
+		
+		QuestionWithAnswerAttrRef questionWithAnswerAttrRef//
+			= (QuestionWithAnswerAttrRef) session.getAttribute(//
+					ControllerConstants.sessionActualAskedQuestion.name()//
+			);
 		PoolWithWrongAnswers pool
 		= (PoolWithWrongAnswers) session.getAttribute(//
-				ControllerConstants.sessionPoolWithWrongAnswers.name()//
+				Constants.sessionPoolWithWrongAnswers.name()//
 		);
 		StockOfAllQuestionsWithAnswers stock
 		= (StockOfAllQuestionsWithAnswers) session.getAttribute(//
-				ControllerConstants.sessionStockOfAllQuestionsWithAnswers.name()//
+				Constants.sessionStockOfAllQuestionsWithAnswers.name()//
 		);
 		if (//
 				questionWithAnswerAttrRef.getAnswer()//
@@ -205,11 +211,11 @@ public class LearnDoLearnController {
 					)
 			) {
 				session.setAttribute(//
-						ControllerConstants.sessionQuestionWithAnswerAttrRef.name()//
+						ControllerConstants.sessionActualAskedQuestion.name()//
 						, questionWithAnswerAttrRef//
 				);
 				session.setAttribute(ControllerConstants.sessionYourAnswer.name(), learnDoLearnModAtt.getAnswerByUser());
-				return declareCorrectDespiteErrorsController.showDeclareCorrectDespiteErrorsPage(session);
+				return goToDeclareCorrectDespiteErrorsPage();
 			}
 		}
 		// Wenn bis hier kein Ausstieg (return), ist die Antwort so falsch, dass sie wie falsch behandelt werden
@@ -220,7 +226,11 @@ public class LearnDoLearnController {
 				, stock//
 				, pool//
 		);
-		return answerIsIncorrectController.showAnswerIsIncorrectPage(session);
+		return answerIsIncorrectController.showAnswerIsIncorrectPage(//
+				model//
+				, questionWithAnswerAttrRef//
+				, learnDoLearnModAtt.getAnswerByUser()//
+		);
 
 	}
 
@@ -264,5 +274,60 @@ public class LearnDoLearnController {
 		return backToLearnFilterIndexBoxes(model, session);
 	}
 
+	private String goToDeclareCorrectDespiteErrorsPage()  {
+		return Constants.declareCorrectDespiteErrorsPage.name();
+	}
+
+	@RequestMapping(value = "/controlActionDeclareCorrectDespiteErrors", method = RequestMethod.POST, params = {"declareCorrect"})
+	public String declareAsCorrect(//
+			Model model//
+			, StandardSessionFacade session
+	) {
+		QuestionWithAnswerAttrRef questionWithAnswerAttrRef//
+			= (QuestionWithAnswerAttrRef)session.getAttribute(//
+					ControllerConstants.sessionActualAskedQuestion.name()//
+			);
+		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(//
+				ControllerConstants.sessionAppUser.name()//
+		);
+		PoolWithWrongAnswers pool = (PoolWithWrongAnswers) session.getAttribute(//
+				Constants.sessionPoolWithWrongAnswers.name()//
+		);
+		StockOfAllQuestionsWithAnswers stock = (StockOfAllQuestionsWithAnswers) session.getAttribute(//
+				Constants.sessionStockOfAllQuestionsWithAnswers.name()//
+		);
+		questionWithAnswerService.markAsAnsweredCorrectAndSave(//
+				questionWithAnswerAttrRef//
+				, sessionAppUser//
+				, pool//
+				, stock//
+		);
+		return showLearnDoLearnPages(model, session);
+	}
+
+	@RequestMapping(value = "/controlActionDeclareCorrectDespiteErrors", method = RequestMethod.POST, params = {"declareIncorrect"})
+		public String declareAsIncorrect(//
+				Model model//
+				, StandardSessionFacade session
+				) {
+			QuestionWithAnswerAttrRef sessionQuestionWithAnswerAttrRef//
+			= (QuestionWithAnswerAttrRef)session.getAttribute(//
+					ControllerConstants.sessionActualAskedQuestion.name()//
+			);
+		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
+		PoolWithWrongAnswers poolOfQuestionsWithIncorrectAnswer = (PoolWithWrongAnswers) session.getAttribute(//
+				Constants.sessionPoolWithWrongAnswers.name()//
+		);
+		StockOfAllQuestionsWithAnswers stockOfAllNonAskedQuestions = (StockOfAllQuestionsWithAnswers) session.getAttribute(//
+				Constants.sessionStockOfAllQuestionsWithAnswers.name()//
+		);
+		questionWithAnswerService.markAsAnsweredIncorrectlyAndSave(//
+				sessionQuestionWithAnswerAttrRef//
+				, sessionAppUser//
+				, stockOfAllNonAskedQuestions//
+				, poolOfQuestionsWithIncorrectAnswer//
+		);
+		return goToLearnDoLearnPage(model, session);
+	}
 
 }

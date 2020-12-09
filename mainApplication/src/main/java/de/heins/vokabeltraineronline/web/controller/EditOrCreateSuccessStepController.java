@@ -20,7 +20,8 @@ import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.EditOrCreat
 public class EditOrCreateSuccessStepController {
 	private static enum Constants {
 		editOrCreateSuccessStepPage//
-		, editOrCreateSuccessStepModAtt
+		, editOrCreateSuccessStepModAtt//
+		, sessionOldVersionOfSuccessStepName
 	}
 	@Autowired
 	private ManageConfigurationsController manageConfigurationsController;
@@ -32,17 +33,18 @@ public class EditOrCreateSuccessStepController {
 	}
 
 	public String showEditOrCreateSuccessStepPage(//
-			Model model//
+			String oldVersionOfSuccessStepName//
+			, Model model//
 			, StandardSessionFacade session//
-	) throws Exception {
-		
+	)  {
 		EditOrCreateSuccessStepModAttr editOrCreateSuccessStep = new EditOrCreateSuccessStepModAttr();
 		model.addAttribute(//
 				Constants.editOrCreateSuccessStepModAtt.name()//
 				, editOrCreateSuccessStep);
 		
-		String oldVersionOfSuccessStepName = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
+		session.setAttribute(//
+				Constants.sessionOldVersionOfSuccessStepName.name()//
+				, oldVersionOfSuccessStepName
 		);
 		SuccessStepAttrRef successStep = null;
 		if (Strings.isEmpty(oldVersionOfSuccessStepName)) {
@@ -79,8 +81,8 @@ public class EditOrCreateSuccessStepController {
 			return Constants.editOrCreateSuccessStepPage.name();
 		}
 		String oldVersionOfSuccessStepName = (String) session.getAttribute(//
-				ControllerConstants.sessionOldVersionOfSuccessStepName.name()//
-				);
+				Constants.sessionOldVersionOfSuccessStepName.name()//
+		);
 		if (//
 				Strings.isEmpty(oldVersionOfSuccessStepName)//
 				|| !oldVersionOfSuccessStepName.equals(//
@@ -101,14 +103,17 @@ public class EditOrCreateSuccessStepController {
 				, editOrCreateSuccessModAtt.getSuccessStep()//
 				, oldVersionOfSuccessStepName//
 		);
-		session.removeAttribute(ControllerConstants.sessionOldVersionOfSuccessStepName.name());
+		return backToManageConfigurationsPage(session, model);
+	}
+
+	private String backToManageConfigurationsPage(StandardSessionFacade session, Model model) {
+		session.removeAttribute(Constants.sessionOldVersionOfSuccessStepName.name());
 		return manageConfigurationsController.showManageConfigurationsPage(model, session);
 	}
 	
 	@RequestMapping(value="/controlActionEditOrCreateSuccessStep", method=RequestMethod.POST, params= {"cancel"})
 	public String cancel(Model model, StandardSessionFacade session) {
-		session.removeAttribute(ControllerConstants.sessionOldVersionOfSuccessStepName.name());
-		return manageConfigurationsController.showManageConfigurationsPage(model, session);
+		return backToManageConfigurationsPage(session, model);
 		
 	}
 

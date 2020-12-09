@@ -31,32 +31,29 @@ public class MenuController {
 			, StandardSessionFacade session//
 	)  {
 		return Constants.menuPage.name();
-
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"manageConfigurations"})
-	public String manageConfigurations(Model model, StandardSessionFacade session) throws Exception {
-		// direct link to ManangeConfigurationsController
+	public String manageConfigurations(Model model, StandardSessionFacade session) {
 		return manageConfigurationsController.showManageConfigurationsPage(model, session);
-
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"learn"})
-	public String learn(Model model, StandardSessionFacade session) throws Exception {
+	public String learn(Model model, StandardSessionFacade session) {
 		return learnFilterIndexBoxesController.showLearnFilterIndexBoxesPage(session, model);
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"manageQuestionsWithAnswers"})
-	public String manageQuestionsWithAnswers(Model model, StandardSessionFacade session) throws Exception {
+	public String manageQuestionsWithAnswers(Model model, StandardSessionFacade session) {
 		return manageQuestionsWithAnswersController.showManageQuestionsWithAnswersPage(model, session);
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"editAppUser"})
-	public String editAppUser(Model model, StandardSessionFacade session) throws Exception {
+	public String editAppUser(Model model, StandardSessionFacade session) {
 		// direct link to ManangeAppUserController
 		return editAppUserController.showEditAppUserPage(model, session);
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"deleteAppUser"})
-	public String deleteAppUser(Model model, StandardSessionFacade session) throws Exception {
+	public String deleteAppUser(Model model, StandardSessionFacade session) {
 		return deleteAppUserController.showDeleteAppUserPage(model, session);
 
 	}
