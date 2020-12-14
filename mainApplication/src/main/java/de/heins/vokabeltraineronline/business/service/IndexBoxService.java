@@ -92,6 +92,7 @@ public class IndexBoxService {
 				});
 			} catch (Exception e) {
 				System.out.println("Teststop");
+				e.printStackTrace();
 				// this occurs only when there are no items in the database table,
 				// or the table wasn't created yet.
 				// nothing to do then.
@@ -190,9 +191,9 @@ public class IndexBoxService {
 			, DaysCounter successDaysCounter//
 	) {
 		SuccessStep actualSuccessStep = questionWithAnswer.getActualSuccessStep();
-		List<SuccessStep> successSteps = questionWithAnswer
-				.getLearningStrategy()//
-				.getSuccessSteps();
+		List<SuccessStep> successSteps = null != questionWithAnswer.getLearningStrategy()
+				? questionWithAnswer.getLearningStrategy().getSuccessSteps()
+				: new ArrayList<SuccessStep>();
 		if (successSteps.isEmpty()) {
 			allDaysCounter.addDays(1);
 			if (questionWithAnswer.getNextAppearance().equals(LAST_SUCCESSSTEP_MADE_DATE)) {
@@ -205,19 +206,26 @@ public class IndexBoxService {
 				// take one day extra for each successStep.
 				allDaysCounter.addDays(1 + currentSuccessStep.getNextAppearanceInDays());
 				if (//
-						actualSuccessStep != null//
-						&& !currentSuccessStep.equals(actualSuccessStep)//
-						&& !actualSuccessStepReached//
-				) {
-					successDaysCounter.addDays(1 + currentSuccessStep.getNextAppearanceInDays());
-				} else {
+						actualSuccessStep == null//
+						&& !LAST_SUCCESSSTEP_MADE_DATE.equals(questionWithAnswer.getNextAppearance())//
+				) {// no success step reached, no success points. 
+					// realize that by setting actual SuccessStep to true
 					actualSuccessStepReached = true;
-					if (questionWithAnswer.getNextAppearance().equals(LAST_SUCCESSSTEP_MADE_DATE)) {
-						successDaysCounter.addDays(1 + currentSuccessStep.getNextAppearanceInDays());
+				} else {
+					if (actualSuccessStep != null) {
+						if (!actualSuccessStepReached) {
+							successDaysCounter.addDays(1 + currentSuccessStep.getNextAppearanceInDays());
+						}
+						if (actualSuccessStep.equals(currentSuccessStep)) {
+							actualSuccessStepReached = true;
+						}
+					} else {
+						if (LAST_SUCCESSSTEP_MADE_DATE.equals(questionWithAnswer.getNextAppearance())) {
+							successDaysCounter.addDays(1 + currentSuccessStep.getNextAppearanceInDays());
+						}
 					}
 				}
 			}
 		}
 	}
-
 }

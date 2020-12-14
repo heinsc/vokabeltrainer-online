@@ -73,6 +73,7 @@ public class LearnDoLearnController {
 		if (poolWithWrongAnwers.isEmpty()) {
 			session.setAttribute(Constants.indicatorToMakePoolEmpty.name(), false);
 			if  (stockOfAllQuestionsWithAnswers.isEmpty()) {
+				cleanSessionAttributes(session);
 				return backToLearnFilterIndexBoxes(model, session);
 			} else {
 				questionWithAnswerAttrRef = stockOfAllQuestionsWithAnswers.get(0);
@@ -105,7 +106,7 @@ public class LearnDoLearnController {
 
 	private String backToLearnFilterIndexBoxes(Model model, StandardSessionFacade session) {
 		cleanSessionAttributes(session);
-		return learnFilterIndexBoxesController.showLearnFilterIndexBoxesPage(session, model);
+		return learnFilterIndexBoxesController.showLearnFilterIndexBoxesPage(session, model, true);
 	}
 
 	private void cleanSessionAttributes(StandardSessionFacade session) {

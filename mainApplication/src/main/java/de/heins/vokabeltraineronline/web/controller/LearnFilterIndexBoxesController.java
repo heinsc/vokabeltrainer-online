@@ -33,11 +33,13 @@ public class LearnFilterIndexBoxesController {
 
 	public String showLearnFilterIndexBoxesPage(//
 			StandardSessionFacade session//
-			, Model model
+			, Model model//
+			, boolean noQuestionsWithThisSelection//
 	) {
 		LearnFilterIndexBoxesModAtt learnFilterIndexBoxesModAtt = new LearnFilterIndexBoxesModAtt();
 		learnFilterIndexBoxesModAtt.setMandatoryViolated(false);
 		model.addAttribute(Constants.learnFilterIndexBoxesModAtt.name(), learnFilterIndexBoxesModAtt);
+		learnFilterIndexBoxesModAtt.setNoQuestionsWithThisSelection(noQuestionsWithThisSelection);
 		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
 				ControllerConstants.sessionAppUser.name()//
 		);

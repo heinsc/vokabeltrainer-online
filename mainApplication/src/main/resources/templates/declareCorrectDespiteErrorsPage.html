@@ -15,7 +15,9 @@
 	<h1 th:utext="#{declareCorrectDespiteErrorsPage.typos}">YOU HAVE TYPOS</h1>
 
 	<label th:utext="#{declareCorrectDespiteErrorsPage.question}">QUESTION</label>
-	<div th:text="${#session.getAttribute('sessionActualAskedQuestion').question}"></div>
+	<div>
+		<textarea th:text="${#session.getAttribute('sessionActualAskedQuestion').question}" rows="5" disabled="disabled"></textarea>
+	</div>
 	<label th:utext="#{declareCorrectDespiteErrorsPage.answer}">ANSWER</label>
 	<div th:text="${session.sessionActualAskedQuestion.answer}"></div>
 	<label th:utext="#{declareCorrectDespiteErrorsPage.yourAnswer}">BUT YOUR ANSWER WAS</label>

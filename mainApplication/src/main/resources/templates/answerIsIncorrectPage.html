@@ -14,8 +14,12 @@
 
 	<h1 th:utext="#{answerIsIncorrectPage.wrong}">YOUR ANSWER IS WRONG</h1>
 
-	<label th:utext="#{answerIsIncorrectPage.question}">QUESTION</label>
-	<div th:text="${answerIsIncorrectModAtt.questionWithAnswerAttrRef.question}"></div>
+	<div>
+		<label th:utext="#{answerIsIncorrectPage.question}">QUESTION</label>
+	</div>
+	<div>
+		<textarea th:text="${answerIsIncorrectModAtt.questionWithAnswerAttrRef.question}" rows="1" disabled="disabled"></textarea>
+	</div>
 	<label th:utext="#{answerIsIncorrectPage.answer}">ANSWER</label>
 	<div th:text="${answerIsIncorrectModAtt.questionWithAnswerAttrRef.answer}"></div>
 	<label th:utext="#{answerIsIncorrectPage.yourAnswer}">BUT YOUR ANSWER WAS</label>

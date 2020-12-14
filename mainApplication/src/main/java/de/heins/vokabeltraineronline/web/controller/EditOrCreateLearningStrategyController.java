@@ -67,17 +67,30 @@ public class EditOrCreateLearningStrategyController {
 				Constants.sessionEditOrCreateLearningStrategy.name()//
 				, editOrCreateLearningStrategyModAtt//
 		);
+		session.setAttribute(//
+				Constants.sessionOldVersionOfLearningStrategyName.name()//
+				, editOrCreateLearningStrategyModAtt.getLearningStrategy().getName()//
+		);
+				
 		return Constants.editOrCreateLearningStrategyNamePage.name();
 	}
 
-	private void initSelectableSteps(SessionAppUser sessionAppUser,
-			EditOrCreateLearningStrategyModAtt sessionEditOrCreateLearningStrategyModAtt) {
+	private void initSelectableSteps(//
+			SessionAppUser sessionAppUser//
+			, EditOrCreateLearningStrategyModAtt sessionEditOrCreateLearningStrategyModAtt//
+	) {
+		List<String> assignedSuccessSteps = sessionEditOrCreateLearningStrategyModAtt.getLearningStrategy().getAssignedSuccessSteps();
 		List<SuccessStepAttrRef> selectableSuccessSteps = successStepService.findAllForAppUser(sessionAppUser);
 	    sessionEditOrCreateLearningStrategyModAtt.setSelectableSuccessSteps(new ArrayList<String>());
 	    selectableSuccessSteps.forEach(//
-	    		currentStep -> sessionEditOrCreateLearningStrategyModAtt//
-	    			.getSelectableSuccessSteps()//
-	    			.add(currentStep.getName())//
+	    		currentStep -> {//
+	    			String successStepName = currentStep.getName();
+	    			if (!assignedSuccessSteps.contains(successStepName)) {//
+						sessionEditOrCreateLearningStrategyModAtt//
+		    			.getSelectableSuccessSteps()//
+		    			.add(successStepName);//
+	    			}
+	    		}
 	    );
 	}
 	@RequestMapping(value="/controlActionEditOrCreateLearningStrategy", method=RequestMethod.POST, params= {"submit"})
@@ -204,10 +217,8 @@ public class EditOrCreateLearningStrategyController {
 			.getLearningStrategy()//
 			.getAssignedSuccessSteps()//
 			.add(successStepName);
-		SessionAppUser sessionAppUser = (SessionAppUser)session.getAttribute(//
-				ControllerConstants.sessionAppUser.name()//
-		);
-		initSelectableSteps(sessionAppUser, editOrCreateLearningStrategyModAtt);
+		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
+		initSelectableSteps(sessionAppUser , editOrCreateLearningStrategyModAtt);
 		model.addAttribute(//
 	    		Constants.editOrCreateLearningStrategyModAtt.name()//
 	    		, editOrCreateLearningStrategyModAtt//

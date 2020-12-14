@@ -8,6 +8,7 @@ public class CreateQuestionsWithAnswersModAtt {
 	private Boolean mandatoryViolated;
 	private Boolean questionAlreadyExists;
 	private Boolean noIndexBoxExists;
+	private Boolean unallowedSubstring;
 	private List<String> indexBoxesDescriptions; 
 	private List<String> learningStrategiesDescriptions;
 	private QuestionWithAnswerAttrRef questionWithAnswer;
@@ -61,6 +62,11 @@ public class CreateQuestionsWithAnswersModAtt {
 	public void setSelectedLearningStrategyIndex(int selectedLearningStrategyDescription) {
 		this.selectedLearningStrategyIndex = selectedLearningStrategyDescription;
 	}
-
+	public Boolean getUnallowedSubstring() {
+		return unallowedSubstring;
+	}
+	public void setUnallowedSubstring(Boolean unallowedSubstring) {
+		this.unallowedSubstring = unallowedSubstring;
+	}
 
 }

@@ -38,7 +38,7 @@ public class MenuController {
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"learn"})
 	public String learn(Model model, StandardSessionFacade session) {
-		return learnFilterIndexBoxesController.showLearnFilterIndexBoxesPage(session, model);
+		return learnFilterIndexBoxesController.showLearnFilterIndexBoxesPage(session, model, false);
 
 	}
 	@RequestMapping(value = "/controlActionMenu", method = RequestMethod.POST, params = {"manageQuestionsWithAnswers"})

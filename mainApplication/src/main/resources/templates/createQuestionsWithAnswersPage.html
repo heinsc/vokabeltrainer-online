@@ -27,6 +27,10 @@
 			<p th:utext="#{createQuestionsWithAnswersPage.noIndexBoxExists}" class="error">Please fill all
 				fields!</p>
 		</div>
+		<div th:if="*{unallowedSubstring}">
+			<p th:utext="#{createQuestionsWithAnswersPage.unallowedSubstring}" class="error">Please fill all
+				fields!</p>
+		</div>
 		<div>
 			<label th:utext="#{createQuestionsWithAnswersPage.indexBox}"></label>
 			<select th:field="*{questionWithAnswer.indexBoxDescription}" >
@@ -49,11 +53,14 @@
 			</select>
 		</div>
 		<div>
-		
-		<label th:utext="#{createQuestionsWithAnswersPage.question}"></label>
-		<input type="text" th:field="*{questionWithAnswer.question}" />
-		<label th:utext="#{createQuestionsWithAnswersPage.answer}"></label>
-		<input type="text" th:field="*{questionWithAnswer.answer}" />
+			<label th:utext="#{createQuestionsWithAnswersPage.question}"></label>
+		</div>
+		<div>
+			<textarea rows="5" th:field="*{questionWithAnswer.question}" ></textarea>
+		</div>
+		<div>
+			<label th:utext="#{createQuestionsWithAnswersPage.answer}"></label>
+			<input type="text" th:field="*{questionWithAnswer.answer}" />
 		</div>
 		<div th:unless="*{noIndexBoxExists}">
 			<button type="submit" name="submit" th:utext="#{createQuestionsWithAnswersPage.submit}" ></button>

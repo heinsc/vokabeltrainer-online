@@ -87,7 +87,9 @@ public class QuestionWithAnswerService {
 				appUser//
 				, questionWithAnswerAttrRef.getLearningStrategyDescription()//
 		);
-		LearningStrategy learningStrategy = learningStrategies.get(0);
+		LearningStrategy learningStrategy = learningStrategies.isEmpty()
+				? null
+				: learningStrategies.get(0);
 		return learningStrategy;
 	}
 	private IndexBox findUniqueIndexBoxByAppUserAndDescription(AppUser appUser, String indexBoxDescription) {
@@ -125,7 +127,11 @@ public class QuestionWithAnswerService {
 			QuestionWithAnswerAttrRef questionWithAnswerAttrRef) {
 		questionWithAnswerAttrRef.setQuestion(questionWithAnswer.getQuestion());
 		questionWithAnswerAttrRef.setAnswer(questionWithAnswer.getAnswer());
-		questionWithAnswerAttrRef.setLearningStrategyDescription(questionWithAnswer.getLearningStrategy().getName());
+		questionWithAnswerAttrRef.setLearningStrategyDescription(//
+				null != questionWithAnswer.getLearningStrategy()
+				? questionWithAnswer.getLearningStrategy().getName()//
+				: ""//
+			);
 		if (null == questionWithAnswer.getActualSuccessStep()) {
 			questionWithAnswerAttrRef.setActualSuccessStepDescription(QuestionWithAnswerService.FIRST_SUCCESS_STEP_NOT_YET_REACHED);
 			questionWithAnswerAttrRef.setFaultToleranceDescription(FaultTolerance.ORALLY.name());
@@ -259,11 +265,12 @@ public class QuestionWithAnswerService {
 				}
 			}
 		}
-		// wenn die Frage beim ersten Mal falsch war, transferiere sie vom Stock in den Pool
-		// dass die Frage noch nicht gefragt wurde, ist daran erkennbar, dass Sie noch im Stock ist.
-		if (stockOfAllNonAskedQuestions.remove(sessionQuestionWithAnswerAttrRef)) {
-			poolOfQuestionsWithIncorrectAnswer.add(sessionQuestionWithAnswerAttrRef);
-		}
+		// remove question from stock if it exists there.
+		stockOfAllNonAskedQuestions.remove(sessionQuestionWithAnswerAttrRef);
+		// remove question from pool if it exists there ...
+		poolOfQuestionsWithIncorrectAnswer.remove(sessionQuestionWithAnswerAttrRef);
+		// ... and put it at the end of the pool
+		poolOfQuestionsWithIncorrectAnswer.add(sessionQuestionWithAnswerAttrRef);
 		save(sessionQuestionWithAnswerAttrRef, questionWithAnswer);
 	}
 

@@ -20,11 +20,16 @@
 		<div th:utext="${#session.getAttribute('sessionActualAskedQuestion').actualSuccessStepDescription}"></div>
 		<div th:utext="#{${'learnDoLearnPage.'}+${#session.getAttribute('sessionActualAskedQuestion').faultToleranceDescription}}">FAULT TOLERANCE</div>
 
-		<label th:utext="#{learnDoLearnPage.question}">QUESTION</label>
-		<div th:utext="${#session.getAttribute('sessionActualAskedQuestion').question}"></div>
-		<br/>
-		<label th:utext="#{learnDoLearnPage.answer}">ANSWER</label>
-		<input type="text" th:field="*{answerByUser}" autocomplete="off"/>
+		<div>
+			<label th:utext="#{learnDoLearnPage.question}">QUESTION</label>
+		</div>
+		<div>
+			<textarea th:utext="${#session.getAttribute('sessionActualAskedQuestion').question}" rows="5" disabled="disabled"></textarea>
+		</div>
+		<div>
+			<label th:utext="#{learnDoLearnPage.answer}">ANSWER</label>
+			<input type="text" th:field="*{answerByUser}" autocomplete="off"/>
+		</div>
 		<p>
 			<button type="submit" name="checkAnswer" th:utext="#{learnDoLearnPage.checkAnswer}">CHECK ANSWER</button>
 		</p>

@@ -20,6 +20,9 @@
 		<div th:if="*{mandatoryViolated}">
 			<p th:utext="#{learnFilterIndexBoxesPage.mandatoryViolated}" class="error">You have to select at least one index box!</p>
 		</div>
+		<div th:if="*{noQuestionsWithThisSelection}">
+			<p th:utext="#{learnFilterIndexBoxesPage.noQuestionsWithThisSelection}" class="error">You have to select at least one index box!</p>
+		</div>
 		<table>
 			<tr>
 				<th th:utext=#{learnFilterIndexBoxesPage.filter}>FILTER</th>

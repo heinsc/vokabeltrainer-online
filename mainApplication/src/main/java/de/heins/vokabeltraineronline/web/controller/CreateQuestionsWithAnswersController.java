@@ -166,9 +166,22 @@ public class CreateQuestionsWithAnswersController {
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
 		createQuestionsWithAnswersModAtt.setMandatoryViolated(false);
 		createQuestionsWithAnswersModAtt.setQuestionAlreadyExists(false);
+		createQuestionsWithAnswersModAtt.setUnallowedSubstring(false);
 		refreshSelectBoxes(sessionAppUser, createQuestionsWithAnswersModAtt);
 		if (Strings.isEmpty(createQuestionsWithAnswersModAtt.getQuestionWithAnswer().getQuestion())) {
 			createQuestionsWithAnswersModAtt.setMandatoryViolated(true);
+			return Constants.createQuestionsWithAnswersPage.name();
+		}
+		if (createQuestionsWithAnswersModAtt//
+				.getQuestionWithAnswer()//
+				.getQuestion()//
+				.indexOf(";,;") > 0//\
+			|| createQuestionsWithAnswersModAtt//
+				.getQuestionWithAnswer()//
+				.getAnswer()//
+				.indexOf(";,;") > 0//
+		) {
+			createQuestionsWithAnswersModAtt.setUnallowedSubstring(true);
 			return Constants.createQuestionsWithAnswersPage.name();
 		}
 		// in comparison to de.heins.vokabeltraineronline.web.controller.EditOrCreateSuccessStepController.submit(EditOrCreateSuccessStepModAttr, StandardSessionFacade, Model)

@@ -74,8 +74,10 @@ public class EditOrCreateSuccessStepController {
 		);
 		editOrCreateSuccessModAtt.setMandatoryViolated(false);
 		editOrCreateSuccessModAtt.setSuccessStepWithThisNameAlreadyExists(false);
-		//keine Ahnung, warum die selectableBehaviours weg sind... Ich füge sie an dieser Stelle einfach wieder ein.
+		//keine Ahnung, warum die selectableBehaviours und die 
+		// selectableFaultTolerances weg sind... Ich füge sie an dieser Stelle einfach wieder ein.
 		editOrCreateSuccessModAtt.setSelectableBehaviours(successStepService.getAllBehavioursIfWrongAsStringArray());
+		editOrCreateSuccessModAtt.setSelectableFaultTolerances(successStepService.getAllFaultTolerancesAsStringArray());
 		if (Strings.isEmpty(editOrCreateSuccessModAtt.getSuccessStep().getName())) {
 			editOrCreateSuccessModAtt.setMandatoryViolated(true);
 			return Constants.editOrCreateSuccessStepPage.name();
