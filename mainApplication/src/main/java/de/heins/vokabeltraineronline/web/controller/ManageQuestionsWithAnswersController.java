@@ -1,7 +1,6 @@
 package de.heins.vokabeltraineronline.web.controller;
 
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.catalina.session.StandardSessionFacade;
@@ -14,15 +13,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import de.heins.vokabeltraineronline.business.service.IndexBoxService;
 import de.heins.vokabeltraineronline.web.entities.IndexBoxes;
+import de.heins.vokabeltraineronline.web.entities.QuestionsWithAnswers;
 import de.heins.vokabeltraineronline.web.entities.SessionAppUser;
 import de.heins.vokabeltraineronline.web.entities.attributereference.IndexBoxAttrRef;
 import de.heins.vokabeltraineronline.web.entities.attributereference.QuestionWithAnswerAttrRef;
-import de.heins.vokabeltraineronline.web.entities.htmlmodelattribute.ManageQuestionsWithAnswersModAtt;
 
 @Controller
 public class ManageQuestionsWithAnswersController {
 	private static enum Constants{
-		manageQuestionsWithAnswersModAtt
+		sessionQuestionsWithAnswers
 		, sessionIndexBoxAttrRefList
 		, manageQuestionsWithAnswersPage
 	}
@@ -30,6 +29,8 @@ public class ManageQuestionsWithAnswersController {
 	private MenuController menuController;
 	@Autowired
 	private ManageQuestionsWithAnswersController manageQuestionsWithAnswersController;
+	@Autowired
+	private EditQuestionWithAnswerController editQuestionWithAnswerController;
 	@Autowired
 	private CreateQuestionsWithAnswersController createQuestionsWithAnswersController;
 	// TODO
@@ -49,10 +50,8 @@ public class ManageQuestionsWithAnswersController {
 			, StandardSessionFacade session//
 	) {
 		IndexBoxes indexBoxes = refreshIndexBoxes(session);
-		Set<QuestionWithAnswerAttrRef> questionsWithAnswersList = findQuestionsWithAnswersList(indexBoxes);
-		ManageQuestionsWithAnswersModAtt manageQuestionsWithAnswersModAtt = new ManageQuestionsWithAnswersModAtt();
-		manageQuestionsWithAnswersModAtt.setQuestionsWithAnswers(questionsWithAnswersList);
-		model.addAttribute(Constants.manageQuestionsWithAnswersModAtt.name(), manageQuestionsWithAnswersModAtt);
+		QuestionsWithAnswers questionsWithAnswersList = findQuestionsWithAnswersList(indexBoxes);
+		session.setAttribute(Constants.sessionQuestionsWithAnswers.name(), questionsWithAnswersList);
 		return Constants.manageQuestionsWithAnswersPage.name();
 	}
 
@@ -67,13 +66,15 @@ public class ManageQuestionsWithAnswersController {
 		return indexBoxes;
 	}
 
-	private Set<QuestionWithAnswerAttrRef> findQuestionsWithAnswersList(IndexBoxes indexBoxes) {
-		Set<QuestionWithAnswerAttrRef> allQuestionsWithAnswers = new HashSet<QuestionWithAnswerAttrRef>();
+	private QuestionsWithAnswers findQuestionsWithAnswersList(IndexBoxes indexBoxes) {
+		QuestionsWithAnswers allQuestionsWithAnswers = new QuestionsWithAnswers();
 		for (IndexBoxAttrRef indexBoxAttrRef : indexBoxes) {
-			if (indexBoxAttrRef.isFilterOn()) {
-				allQuestionsWithAnswers.addAll(//
-						indexBoxAttrRef.getQuestionsWithAnswers()//
-				);
+			Set<QuestionWithAnswerAttrRef> questionsWithAnswers = indexBoxAttrRef.getQuestionsWithAnswers();
+			for (QuestionWithAnswerAttrRef questionWithAnswerAttrRef : questionsWithAnswers) {
+				questionWithAnswerAttrRef.setFilterOn(indexBoxAttrRef.isFilterOn());
+				if (indexBoxAttrRef.isFilterOn()) {
+					allQuestionsWithAnswers.add(questionWithAnswerAttrRef);
+				}
 			}
 		}
 		return allQuestionsWithAnswers;
@@ -96,52 +97,78 @@ public class ManageQuestionsWithAnswersController {
 	public String addIndexBoxToFilter(//
 			@RequestParam(name = "index", required = false, defaultValue = "")
             int index//
-            , Model model
 			, StandardSessionFacade session//
 	) {
 		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(Constants.sessionIndexBoxAttrRefList.name());
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
 		indexBox.setFilterOn(true);
-		Set<QuestionWithAnswerAttrRef> questionsWithAnswers = findQuestionsWithAnswersList(indexBoxAttrRefList);
+		indexBoxService.update(//
+				(SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name())//
+				, indexBox//
+				, indexBox.getName()//
+				, indexBox.getSubject()//
+		);
+		QuestionsWithAnswers questionsWithAnswers = findQuestionsWithAnswersList(indexBoxAttrRefList);
 		//noch mal gucken, ob das wirklich nötig ist.
 		session.setAttribute(Constants.sessionIndexBoxAttrRefList.name(), indexBoxAttrRefList);
-		ManageQuestionsWithAnswersModAtt manageQuestionsWithAnswersModAtt = new ManageQuestionsWithAnswersModAtt();
-		manageQuestionsWithAnswersModAtt.setQuestionsWithAnswers(questionsWithAnswers);
-		model.addAttribute(Constants.manageQuestionsWithAnswersModAtt.name(), manageQuestionsWithAnswersModAtt);
+		session.setAttribute(Constants.sessionQuestionsWithAnswers.name(), questionsWithAnswers);
 		
+		return Constants.manageQuestionsWithAnswersPage.name();
+	}
+	@RequestMapping({"controlLinkRemoveQuestionWithAnswerFromFilter"})
+	public String removeQuestionWithAnswerFromFilter(//
+			@RequestParam(name = "index", required = false, defaultValue = "")
+            int index//
+			, StandardSessionFacade session//
+	) {
+		QuestionsWithAnswers questionsWithAnswers = (QuestionsWithAnswers) session.getAttribute(Constants.sessionQuestionsWithAnswers.name());
+		QuestionWithAnswerAttrRef selectedQuestionWithAnswer = questionsWithAnswers.get(index);
+		selectedQuestionWithAnswer.setFilterOn(false);
+		return Constants.manageQuestionsWithAnswersPage.name();
+	}
+	@RequestMapping({"controlLinkAddQuestionWithAnswerToFilter"})
+	public String controlLinkAddQuestionWithAnswerToFilter(//
+			@RequestParam(name = "index", required = false, defaultValue = "")
+            int index//
+			, StandardSessionFacade session//
+	) {
+		QuestionsWithAnswers questionsWithAnswers = (QuestionsWithAnswers) session.getAttribute(Constants.sessionQuestionsWithAnswers.name());
+		QuestionWithAnswerAttrRef selectedQuestionWithAnswer = questionsWithAnswers.get(index);
+		selectedQuestionWithAnswer.setFilterOn(true);
 		return Constants.manageQuestionsWithAnswersPage.name();
 	}
 	@RequestMapping({"controlLinkRemoveIndexBoxFromFilter"})
 	public String removeIndexBoxFromFilter(//
 			@RequestParam(name = "index", required = false, defaultValue = "")
             int index//
-            , Model model
-			, StandardSessionFacade session//
+ 			, StandardSessionFacade session//
 	) {
 		IndexBoxes indexBoxAttrRefList = (IndexBoxes) session.getAttribute(Constants.sessionIndexBoxAttrRefList.name());
 		IndexBoxAttrRef indexBox = indexBoxAttrRefList.get(index);
 		indexBox.setFilterOn(false);
-		Set<QuestionWithAnswerAttrRef> questionsWithAnswers = findQuestionsWithAnswersList(indexBoxAttrRefList);
+		indexBoxService.update(//
+				(SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name())//
+				, indexBox//
+				, indexBox.getName()//
+				, indexBox.getSubject()//
+		);
+		QuestionsWithAnswers questionsWithAnswers = findQuestionsWithAnswersList(indexBoxAttrRefList);
 		//noch mal gucken, ob das wirklich nötig ist.
 		session.setAttribute(Constants.sessionIndexBoxAttrRefList.name(), indexBoxAttrRefList);
-		ManageQuestionsWithAnswersModAtt manageQuestionsWithAnswersModAtt = new ManageQuestionsWithAnswersModAtt();
-		manageQuestionsWithAnswersModAtt.setQuestionsWithAnswers(questionsWithAnswers);
-		model.addAttribute(Constants.manageQuestionsWithAnswersModAtt.name(), manageQuestionsWithAnswersModAtt);
+		session.setAttribute(Constants.sessionQuestionsWithAnswers.name(), questionsWithAnswers);
 		
 		return Constants.manageQuestionsWithAnswersPage.name();
 	}
 	@RequestMapping({"controlLinkEditQuestionWithAnswer"})
 	public String editQuestionWithAnswer(//
-			@RequestParam(name = "question", required = false, defaultValue = "")
-            String question//
-            , Model model//
+			@RequestParam(name = "index", required = false)
+            int index//
+			, Model model//
 			, StandardSessionFacade session//
 	) {
-		session.setAttribute(ControllerConstants.sessionOldVersionOfQuestion.name(), question);
-		// TODO EditQuestionWithAnswerController implementieren, und hier
-		// return editQuestionWithAnswerController.showEditQuestionWithAnswerPage(model, session)
-		// aufrufen.
-		return this.showManageQuestionsWithAnswersPage(model, session);
+		QuestionsWithAnswers questionsWithAnswers = (QuestionsWithAnswers) session.getAttribute(Constants.sessionQuestionsWithAnswers.name());
+		QuestionWithAnswerAttrRef questionWithAnswerAttrRef = questionsWithAnswers.get(index);
+		return editQuestionWithAnswerController.showEditQuestionWithAnswerPage(questionWithAnswerAttrRef, model, session);
 	}
 	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"createQuestionsWithAnswers"})
 	public String createQuestionsWithAnswers(//
@@ -153,6 +180,19 @@ public class ManageQuestionsWithAnswersController {
 	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"backToMenu"})
 	public String backToMenu(Model model, StandardSessionFacade session) {
 		session.removeAttribute(Constants.sessionIndexBoxAttrRefList.name());
+		session.removeAttribute(Constants.sessionQuestionsWithAnswers.name());
 		return menuController.showMenuPage(model, session);
+	}
+	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"selectAll"})
+	public String selectAll(Model model, StandardSessionFacade session) {
+		return showManageQuestionsWithAnswersPage(model, session);
+	}
+	@RequestMapping(value="/controlActionManageQuestionsWithAnswers", method=RequestMethod.POST, params= {"deselectAll"})
+	public String deselectAll(Model model, StandardSessionFacade session) {
+		QuestionsWithAnswers questionsWithAnswers = (QuestionsWithAnswers)session.getAttribute(Constants.sessionQuestionsWithAnswers.name());
+		for (QuestionWithAnswerAttrRef questionWithAnswerAttrRef : questionsWithAnswers) {
+			questionWithAnswerAttrRef.setFilterOn(false);
+		}
+		return Constants.manageQuestionsWithAnswersPage.name();
 	}
 }

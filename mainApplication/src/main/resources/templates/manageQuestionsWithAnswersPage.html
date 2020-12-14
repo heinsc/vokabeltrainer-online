@@ -18,7 +18,7 @@
 		th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
 	<form action="#"
 		th:action="@{/controlActionManageQuestionsWithAnswers}"
-		th:object="${manageQuestionsWithAnswersModAtt}" method="post">
+		method="post">
 
 		<button type="submit" name="createQuestionsWithAnswers" th:utext="#{manageQuestionsWithAnswersPage.addQuestionWithAnswer}" ></button>
 		<h2 th:utext="#{manageQuestionsWithAnswersPage.filter}">Filter</h2>
@@ -56,7 +56,7 @@
 				<th th:utext=#{manageQuestionsWithAnswersPage.learningStrategy}>LEARNING_STRATEGY</th>
 				<th th:utext=#{manageQuestionsWithAnswersPage.learningProgress}>ACTUAL_SUCCESSSTEP</th>
 			</tr>
-			<tr th:each="questionWithAnswer : *{questionsWithAnswers}">
+			<tr th:each="questionWithAnswer : ${#session.getAttribute('sessionQuestionsWithAnswers')}">
 				<td>
 					<a href="manageQuestionsWithAnswersPage.html"
 						th:href="@{/controlLinkRemoveQuestionWithAnswerFromFilter(index=${questionWithAnswerStat.index})}"
@@ -79,14 +79,14 @@
 		      			<tr>
 			      			<td>
 					      		<a href="editQuestionWithAnswerPage.html"
-										th:href="@{/controlLinkEditQuestionWithAnswer(question=${questionWithAnswer.question})}"
+										th:href="@{/controlLinkEditQuestionWithAnswer(index=${questionWithAnswerStat.index})}"
 										th:utext="#{manageQuestionsWithAnswersPage.edit}">
 											edit
 										</a>
 							</td>
 			      			<td>
 					      		<a href="deleteQuestionWithAnswer.html"
-										th:href="@{/controlLinkDeleteQuestionWithAnswer(question=${questionWithAnswer.question})}"
+										th:href="@{/controlLinkDeleteQuestionWithAnswer(index=${questionWithAnswerStat.index})}"
 										th:utext="#{manageQuestionsWithAnswersPage.delete}">
 											delete
 								</a>
@@ -101,6 +101,8 @@
 				<td th:text="${questionWithAnswer.learningProgress}">Onions</td>
 			</tr>
 		</table>
+		<button type="submit" name="selectAll" th:utext="#{manageQuestionsWithAnswersPage.selectAll}" ></button>
+		<button type="submit" name="deselectAll" th:utext="#{manageQuestionsWithAnswersPage.deselectAll}" ></button>
 		
 		<br/>
 		<button type="submit" name="backToMenu" th:utext="#{manageConfigurationsPage.menu}" ></button>

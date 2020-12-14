@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>Index Box Menu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="all"
+	href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+</head>
+
+<body>
+    <div th:insert="~{insertions::loginInfo(${#session.getAttribute('sessionAppUser')})}">LoginInfo</div>
+
+	<h1 th:utext="#{editQuestionWithAnswerPage.header}">Edit Question With Answer</h1>
+	<form action="#" th:action="@{/controlActionEditQuestionWithAnswer}"
+			th:object="${editQuestionWithAnswerModAtt}" method="post">
+		<div th:if="*{mandatoryViolated}">
+			<p th:utext="#{editQuestionWithAnswerPage.mandatoryViolated}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div th:if="*{questionAlreadyExists}">
+			<p th:utext="#{editQuestionWithAnswerPage.wordAlreadyExists}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div th:if="*{noIndexBoxExists}">
+			<p th:utext="#{editQuestionWithAnswerPage.noIndexBoxExists}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div th:if="*{unallowedSubstring}">
+			<p th:utext="#{editQuestionWithAnswerPage.unallowedSubstring}" class="error">Please fill all
+				fields!</p>
+		</div>
+		<div>
+			<label th:utext="#{editQuestionWithAnswerPage.indexBox}"></label>
+			<select th:field="*{questionWithAnswer.indexBoxDescription}" >
+			    <option
+			    	th:each="currentIndexBox : *{indexBoxesDescriptions}"
+			    	th:selected="*{selectedIndexBoxIndex} == currentIndexBox.index"
+			    	th:value="${currentIndexBox}"
+			    	th:text="${currentIndexBox}">
+			    </option>
+			</select>
+		</div>
+		<div>
+			<label th:utext="#{editQuestionWithAnswerPage.question}"></label>
+		</div>
+		<div>
+			<textarea rows="5" th:field="*{questionWithAnswer.question}" ></textarea>
+		</div>
+		<div>
+			<label th:utext="#{editQuestionWithAnswerPage.answer}"></label>
+			<input type="text" th:field="*{questionWithAnswer.answer}" />
+		</div>
+		<div th:unless="*{noIndexBoxExists}">
+			<button type="submit" name="submit" th:utext="#{editQuestionWithAnswerPage.submit}" ></button>
+		</div>
+		<button type="submit" name="cancel" th:utext="#{editQuestionWithAnswerPage.cancel}" ></button>
+	</form>
+</body>
+
+</html>
+
