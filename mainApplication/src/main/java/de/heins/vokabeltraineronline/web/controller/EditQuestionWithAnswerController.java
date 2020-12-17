@@ -105,18 +105,7 @@ public class EditQuestionWithAnswerController {
 			Model model//
 			, StandardSessionFacade session//
 			, @ModelAttribute(name = "editQuestionWithAnswerModAtt")
-			EditQuestionWithAnswerModAtt editQuestionWithAnswerModAtt
-	) {
-		String returnValue = trySaveQuestionWithAnswer(session, editQuestionWithAnswerModAtt);
-		if (!Strings.isEmpty(returnValue)) {
-			return returnValue;
-		}
-		return manageQuestionsWithAnswersController.showManageQuestionsWithAnswersPage(model, session);
-	}
-
-	private String trySaveQuestionWithAnswer(//
-			StandardSessionFacade session//
-			, EditQuestionWithAnswerModAtt editQuestionWithAnswerModAtt//
+			EditQuestionWithAnswerModAtt editQuestionWithAnswerModAtt//
 	) {
 		SessionAppUser sessionAppUser = (SessionAppUser) session.getAttribute(ControllerConstants.sessionAppUser.name());
 		editQuestionWithAnswerModAtt.setMandatoryViolated(false);
@@ -139,24 +128,24 @@ public class EditQuestionWithAnswerController {
 			editQuestionWithAnswerModAtt.setUnallowedSubstring(true);
 			return Constants.editQuestionWithAnswerPage.name();
 		}
-		// in comparison to de.heins.vokabeltraineronline.web.controller.EditOrCreateSuccessStepController.submit(EditOrCreateSuccessStepModAttr, StandardSessionFacade, Model)
-		// here the instance is always created. So the if clause for oldQuestion is not needed.
-		// the check for duplicates has to be done in every case
-		QuestionWithAnswerAttrRef fromDataBase = questionWithAnswerService.findForAppUserAndQuestion(//
-				sessionAppUser//
-				, editQuestionWithAnswerModAtt.getQuestionWithAnswer().getQuestion()
-		);
-		if (QuestionWithAnswerService.EMPTY_QUESTION_WITH_ANSWER != fromDataBase) {
-			editQuestionWithAnswerModAtt.setQuestionAlreadyExists(true);
-			return Constants.editQuestionWithAnswerPage.name();
-		}
 		String oldVersionOfQuestion = (String) session.getAttribute(Constants.sessionOldVersionOfQuestion.name());
+		if (!oldVersionOfQuestion.equals(editQuestionWithAnswerModAtt.getQuestionWithAnswer().getQuestion())) {
+			QuestionWithAnswerAttrRef fromDataBase = questionWithAnswerService.findForAppUserAndQuestion(//
+					sessionAppUser//
+					, editQuestionWithAnswerModAtt.getQuestionWithAnswer().getQuestion()
+			);
+			if (QuestionWithAnswerService.EMPTY_QUESTION_WITH_ANSWER != fromDataBase) {
+				editQuestionWithAnswerModAtt.setQuestionAlreadyExists(true);
+				return Constants.editQuestionWithAnswerPage.name();
+			}
+			
+		}
 		questionWithAnswerService.update(//
 				sessionAppUser//
 				, editQuestionWithAnswerModAtt.getQuestionWithAnswer()//
 				, oldVersionOfQuestion//
 		);
-		return "";
+		return manageQuestionsWithAnswersController.showManageQuestionsWithAnswersPage(model, session);
 	}
 
 }

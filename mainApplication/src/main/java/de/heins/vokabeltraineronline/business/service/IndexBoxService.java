@@ -196,7 +196,7 @@ public class IndexBoxService {
 				: new ArrayList<SuccessStep>();
 		if (successSteps.isEmpty()) {
 			allDaysCounter.addDays(1);
-			if (questionWithAnswer.getNextAppearance().equals(LAST_SUCCESSSTEP_MADE_DATE)) {
+			if (LAST_SUCCESSSTEP_MADE_DATE.equals(questionWithAnswer.getNextAppearance())) {
 				successDaysCounter.addDays(1);
 			}
 		} else {
